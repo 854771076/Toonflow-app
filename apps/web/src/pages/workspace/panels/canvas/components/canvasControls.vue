@@ -11,7 +11,7 @@
   <panel class="canvasControlsPanel" position="bottom-left">
     <el-card class="canvasControlsCard" shadow="never" :bodyStyle="{ padding: '2px 4px' }">
       <div class="canvasControls">
-        <el-tooltip v-if="currentUser?.role !== 'user'" :showArrow="false" :content="assetsVisible ? '关闭素材库' : '打开素材库'" placement="top" :hideAfter="0" :enterable="false" :triggerKeys="[]">
+        <el-tooltip :showArrow="false" :content="assetsVisible ? '关闭素材库' : '打开素材库'" placement="top" :hideAfter="0" :enterable="false" :triggerKeys="[]">
           <el-button
             class="toolButton"
             text
@@ -122,7 +122,6 @@ import { Panel, useVueFlow, type XYPosition } from "@vue-flow/core";
 import { MiniMap } from "@vue-flow/minimap";
 import { IconMap, IconMagnet, IconFocusCentered } from "@tabler/icons-vue";
 import { ElMessage } from "element-plus";
-import { currentUser } from "@/stores/multiTenant";
 import { arrangeCanvas } from "../arrangeCanvas";
 
 const props = defineProps<{

@@ -4,6 +4,8 @@ import type { MediaReference } from "@toonflow/tools-scaffold/runtime";
 import conf from "@/utils/conf";
 import { getStatus } from "@/utils/ffmpeg";
 import { resolveWorkspacePath } from "@/utils/workspace/files";
+import { getWorkspaceStore } from "@/utils/storage";
+import { materializeWorkspaceFile } from "@/utils/storage/temp";
 
 const references = new Map<string, { revision: string; expires: number; value: Promise<ProviderPriceReference> }>();
 let probeStatus: { config: string; expires: number; value: Promise<string | null> } | undefined;
@@ -84,9 +86,7 @@ async function probeMedia(path: string, mediaType: string, config: string, signa
   }, signal);
 }
 
-async function loadPriceReference(cwd: string, reference: MediaReference, mediaType: string, signal?: AbortSignal): Promise<ProviderPriceReference> {
-  signal?.throwIfAborted();
-  const { path } = await resolveWorkspacePath(cwd, reference.path);
+async function loadPriceReferenceAt(path: string, reference: MediaReference, mediaType: string, signal?: AbortSignal): Promise<ProviderPriceReference> {
   signal?.throwIfAborted();
   const info = await stat(path);
   signal?.throwIfAborted();
@@ -126,6 +126,20 @@ async function loadPriceReference(cwd: string, reference: MediaReference, mediaT
   references.set(key, entry);
   void value.catch(() => { if (references.get(key) === entry) references.delete(key); });
   return value;
+}
+
+async function loadPriceReference(cwd: string, reference: MediaReference, mediaType: string, signal?: AbortSignal): Promise<ProviderPriceReference> {
+  signal?.throwIfAborted();
+  if (getWorkspaceStore().mode === "local") {
+    const { path } = await resolveWorkspacePath(cwd, reference.path);
+    return loadPriceReferenceAt(path, reference, mediaType, signal);
+  }
+  const materialized = await materializeWorkspaceFile(cwd, reference.path);
+  try {
+    return await loadPriceReferenceAt(materialized.filePath, reference, mediaType, signal);
+  } finally {
+    await materialized.cleanup();
+  }
 }
 
 export function readPriceReference(cwd: string, reference: MediaReference, mediaType: string, signal?: AbortSignal) {

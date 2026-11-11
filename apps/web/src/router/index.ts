@@ -1,18 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { useHelloStore } from "@/stores/hello";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { publicWeb } from "@/stores/multiTenant";
-import { adminRoute } from "@/pages/multiTenant/router";
+import { actualPlatform } from "@/lib/platform";
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
       path: "/",
-      redirect: () => publicWeb.value ? "/home" : "/hello",
+      redirect: () => "/hello",
+    },
+    {
+      path: "/login",
+      component: () => import("@/pages/login/index.vue"),
     },
     {
       path: "/hello",
-      beforeEnter: async () => publicWeb.value || await useHelloStore().load() ? { path: "/home", replace: true } : true,
+      beforeEnter: async () => await useHelloStore().load() ? { path: "/home", replace: true } : true,
       component: () => import("@/pages/hello/index.vue"),
     },
     {
@@ -25,10 +29,21 @@ const router = createRouter({
     },
     {
       path: "/workspace",
-      beforeEnter: () => publicWeb.value && !useWorkspaceStore().project ? { path: "/home", replace: true } : true,
+      beforeEnter: () => !useWorkspaceStore().project ? { path: "/home", replace: true } : true,
       component: () => import("@/pages/workspace/index.vue"),
     },
-    adminRoute,
   ],
 });
+
+// ACT: 非桌面端（SaaS web）强制 OAuth 登录；桌面端不受影响。
+router.beforeEach(async (to) => {
+  if (actualPlatform.isLocalDesktop) return true;
+  const { useAuthStore } = await import("@/stores/auth");
+  const authStore = useAuthStore();
+  if (!authStore.initialized) await authStore.init();
+  if (!authStore.user && to.path !== "/login") return { path: "/login", replace: true };
+  if (authStore.user && to.path === "/login") return { path: "/home", replace: true };
+  return true;
+});
+
 export default router;

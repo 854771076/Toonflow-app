@@ -22,7 +22,7 @@ export default Router().post("/", validateFields({
   req.once("aborted", close);
   req.socket.once("close", close);
   try {
-    const cwd = directory ? await u.workspace.resolveWorkspace(req, directory) : undefined;
+    const cwd = directory ? await u.storage.getWorkspaceStore().resolveWorkspace(req, directory) : undefined;
     const price = await u.mediaGeneration.getMediaPrice(cwd, mediaType, parsed.data, controller.signal);
     if (!res.destroyed) res.set("Cache-Control", "no-store").json(success(price));
   } catch (err) {

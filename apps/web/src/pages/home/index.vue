@@ -18,15 +18,15 @@
           <component :is="section.icon" :size="18" aria-hidden="true" />
           <span class="sidebarText">{{ translate(section.label) }}</span>
         </button>
-        <hr v-if="currentUser?.role !== 'user'" class="sidebarDivider" />
-        <button v-if="currentUser?.role !== 'user'" class="sidebarItem" :class="{ active: assetsVisible }" type="button" aria-label="素材库" title="素材库" aria-haspopup="dialog" :aria-expanded="assetsVisible" @click="assetsVisible = true">
+        <hr class="sidebarDivider" />
+        <button class="sidebarItem" :class="{ active: assetsVisible }" type="button" aria-label="素材库" title="素材库" aria-haspopup="dialog" :aria-expanded="assetsVisible" @click="assetsVisible = true">
           <icon-library-photo :size="18" aria-hidden="true" />
           <span class="sidebarText">素材库</span>
         </button>
       </nav>
       <div class="sidebarFooter">
         <homeAdvertisementCarousel class="sidebarPromotion" :advertisements="advertisements.sidebar" @activate="activateAdvertisement" />
-        <button v-if="!publicWeb" class="sidebarItem deviceButton" :class="{ connected: deviceHubEnabled || mobileConnection.online === true }" type="button" :aria-label="mobileConnectionLabel" :title="mobileConnectionLabel" @click="mobileConnectVisible = true">
+        <button class="sidebarItem deviceButton" :class="{ connected: deviceHubEnabled || mobileConnection.online === true }" type="button" :aria-label="mobileConnectionLabel" :title="mobileConnectionLabel" @click="mobileConnectVisible = true">
           <span class="sidebarIcon">
             <component :is="deviceHubEnabled || mobileConnection.mode === 'remote' ? IconDeviceDesktop : IconQrcode" :size="18" aria-hidden="true" />
             <span v-if="deviceHubEnabled || mobileConnection.online === true" class="connectionDot" />
@@ -40,6 +40,31 @@
           </span>
           <span class="sidebarText">设置</span>
         </button>
+        <el-dropdown v-if="!actualPlatform.isLocalDesktop && authStore.user" trigger="click" placement="right-start" class="userDropdown">
+          <button class="sidebarItem" type="button" aria-label="账户菜单">
+            <el-avatar :size="18" class="userAvatar">
+              <icon-user :size="14" aria-hidden="true" />
+            </el-avatar>
+            <span class="sidebarText">{{ authStore.user.username ?? authStore.user.sub }}</span>
+          </button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <div class="userDropdownHeader">
+                <el-avatar :size="32" class="userAvatarLarge">
+                  <icon-user :size="24" aria-hidden="true" />
+                </el-avatar>
+                <div class="userDropdownInfo">
+                  <span class="userDropdownName">{{ authStore.user.username ?? authStore.user.sub }}</span>
+                  <span v-if="authStore.user.email" class="userDropdownEmail">{{ authStore.user.email }}</span>
+                </div>
+              </div>
+              <el-dropdown-item divided @click="accountInfoVisible = true">账户设置</el-dropdown-item>
+              <el-dropdown-item @click="openAccountPanel">充值 / 余额</el-dropdown-item>
+              <el-dropdown-item v-if="gatewayPublicUrl" @click="openExternal(gatewayPublicUrl + '/app.html#/subscription')">订阅 / 套餐</el-dropdown-item>
+              <el-dropdown-item divided class="logoutItem" @click="authStore.logout()">登出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <a class="sidebarItem githubLink" href="https://github.com/HBAI-Ltd/Toonflow-app" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
           <icon-brand-github :size="18" aria-hidden="true" />
           <span class="sidebarText">GitHub</span>
@@ -114,9 +139,35 @@
         </el-main>
       </div>
     </el-scrollbar>
-    <assetLibraryDialog v-if="currentUser?.role !== 'user'" v-model="assetsVisible" />
+    <assetLibraryDialog v-model="assetsVisible" />
     <settings ref="settingsDialog" v-model="settingsVisible" />
-    <mobileConnect v-if="!publicWeb" v-model="mobileConnectVisible" />
+    <mobileConnect v-model="mobileConnectVisible" />
+    <el-dialog v-model="accountInfoVisible" title="账户信息" width="420px" alignCenter appendToBody>
+      <div class="accountInfoCard">
+        <el-avatar :size="56" class="accountAvatar">
+          <icon-user :size="40" aria-hidden="true" />
+        </el-avatar>
+        <dl class="accountInfoList">
+          <div v-if="authStore.user?.username" class="accountInfoRow">
+            <dt>用户名</dt>
+            <dd>{{ authStore.user.username }}</dd>
+          </div>
+          <div v-if="authStore.user?.email" class="accountInfoRow">
+            <dt>邮箱</dt>
+            <dd>{{ authStore.user.email }}</dd>
+          </div>
+          <div class="accountInfoRow">
+            <dt>账号 ID</dt>
+            <dd>{{ authStore.user?.sub }}</dd>
+          </div>
+        </dl>
+      </div>
+      <template #footer>
+        <el-button @click="openAccountPanel">充值 / 余额</el-button>
+        <el-button v-if="gatewayPublicUrl" @click="openExternal(gatewayPublicUrl + '/app.html#/subscription')">订阅 / 套餐</el-button>
+        <el-button class="logoutButton" :loading="loggingOut" @click="logout">登出</el-button>
+      </template>
+    </el-dialog>
     <workspacePicker ref="relocationPicker" hideTrigger />
   </div>
 </template>
@@ -133,7 +184,7 @@ import {
   IconQrcode, IconDeviceDesktop, IconHome, IconCompass,
   IconArrowUp, IconPlus, IconLoader2,
   IconFolder, IconEdit, IconFileZip,
-  IconTrash, IconPaperclip,
+  IconTrash, IconPaperclip, IconUser,
 } from "@tabler/icons-vue";
 import modelPopover from "@/components/modelPopover.vue";
 import attachmentList from "@/components/agent/attachmentList.vue";
@@ -142,8 +193,9 @@ import type { AgentAttachment } from "@/components/agent/types";
 import type { HomeAdvertisement, HomeAdvertisements } from "@toonflow/server/channel";
 import logoUrl from "@toonflow/assets/logo.svg";
 import { useWorkspaceStore, type Project } from "@/stores/workspace";
-import { currentUser, publicWeb } from "@/stores/multiTenant";
+import { useAuthStore } from "@/stores/auth";
 import { hasDesktopUpdate } from "@/stores/desktopUpdate";
+import { actualPlatform } from "@/lib/platform";
 import { deviceHubEnabled, mobileConnection, mobileConnectionLabel } from "@/lib/mobile";
 import useWorkspaceFiles from "@/lib/workspaceFiles";
 import saveFile from "@/lib/saveFile";
@@ -158,6 +210,7 @@ import workspacePicker from "./workspacePicker.vue";
 import homeAdvertisementCarousel from "./homeAdvertisementCarousel.vue";
 
 const settingsVisible = ref(false);
+const accountInfoVisible = ref(false);
 const settingsDialog = ref<InstanceType<typeof settings>>();
 const advertisements = ref<HomeAdvertisements>({ banner: null, banners: [], bannerMode: "carousel", bannerInterval: 5, sidebar: [] });
 const assetsVisible = ref(false);
@@ -188,6 +241,21 @@ const attachmentAccept = `image/*,video/*,${readableFileAccept}`;
 const draggingAttachments = ref(false);
 let attachmentDragDepth = 0;
 const workspaceStore = useWorkspaceStore();
+const authStore = useAuthStore();
+const gatewayPublicUrl = import.meta.env.VITE_GATEWAY_PUBLIC_URL ?? "";
+
+function openExternal(url: string) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function openAccountPanel() {
+  accountInfoVisible.value = false;
+  settingsVisible.value = true;
+  nextTick(() => {
+    if (!settingsDialog.value?.openPanel("account")) ElMessage.warning("当前设备不支持该设置项");
+  });
+}
+
 const { project, projectList } = storeToRefs(workspaceStore);
 const workspaceDirectory = ref(project.value?.directory ?? "");
 const placeholderPhrases = [
@@ -586,6 +654,17 @@ async function createProject(fromPrompt = true) {
     creating.value = false;
   }
 }
+
+const loggingOut = ref(false);
+async function logout() {
+  if (loggingOut.value) return;
+  loggingOut.value = true;
+  try {
+    await authStore.logout();
+  } catch {
+    loggingOut.value = false;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -786,6 +865,18 @@ async function createProject(fromPrompt = true) {
       .sidebarDivider { margin: 12px 8px; border: 0; border-top: 1px solid var(--el-border-color-lighter); }
     }
     .sidebarFooter { margin-top: auto; padding-top: 24px; }
+
+    .userDropdown {
+      width: 100%;
+
+      .sidebarItem {
+        .userAvatar {
+          flex-shrink: 0;
+          background: var(--el-color-primary-light-5);
+          color: var(--el-color-primary);
+        }
+      }
+    }
 
     @media (prefers-reduced-motion: reduce) {
       --sidebarMotion: 0ms;
@@ -1119,6 +1210,80 @@ async function createProject(fromPrompt = true) {
     .homeSidebar .sidebarItem { min-height: 44px; }
   }
 }
+
+/* ACT: el-dropdown-menu 和 el-dialog 都 teleport 到 body，需要 :global 穿透 scoped。 */
+:global(.userDropdownHeader) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+:global(.userDropdownInfo) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  .userDropdownName {
+    font-weight: 500;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .userDropdownEmail {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+:global(.logoutItem) {
+  color: var(--el-color-danger);
+}
+
+:global(.accountInfoCard) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 4px;
+}
+
+:global(.accountAvatar) {
+  background: var(--el-color-primary-light-5);
+  color: var(--el-color-primary);
+}
+
+:global(.accountInfoList) {
+  width: 100%;
+  margin: 0;
+
+  .accountInfoRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--ui-radius);
+
+    &:nth-child(odd) { background: var(--el-fill-color-lighter); }
+
+    dt { color: var(--el-text-color-secondary); font-size: 13px; flex-shrink: 0; }
+    dd { margin: 0; font-size: 13px; color: var(--el-text-color-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; max-width: 60%; }
+  }
+}
+
+:global(.logoutButton) {
+  color: var(--el-color-danger);
+}
+
 @keyframes launchSpin {
   to { transform: rotate(360deg); }
 }

@@ -1,6 +1,6 @@
 import { t, translateMessage } from "@/lib/i18n";
 import { mkdir, readFile, realpath, stat, unlink } from "@toonflow/file";
-import { join, relative } from "node:path";
+import { join } from "node:path";
 import { createHash } from "node:crypto";
 import { mediaProviders, type Provider, type ProviderTaskData } from "@toonflow/providers";
 import type { GeneratedMedia, MediaGenerationRequest, MediaModel, MediaReference } from "@toonflow/tools-scaffold/runtime";
@@ -8,9 +8,9 @@ import conf from "@/utils/conf";
 import { getAccountProvider } from "@/utils/ai/provider";
 import { getMediaProvider, listMediaProviders, loadMediaProviderSource } from "@/utils/media/provider";
 import { lockWorkspaceFiles, resolveWorkspacePath, writeWorkspaceFile } from "@/utils/workspace/files";
+import { getWorkspaceStore } from "@/utils/storage";
 import { beginGeneration, getProviderPrice } from "@/utils/media/billing";
 import { detectMimeType, readPriceReference } from "@/utils/media/priceReference";
-import { modelGateway } from "@/utils/multiTenant/gateway";
 
 const maxMediaSize = 100 * 1024 * 1024;
 export type MediaGenerationCheckpoint = {
@@ -45,9 +45,7 @@ function invalid(message: string): never {
 }
 
 function requireGenerationMode(task?: MediaGenerationTask) {
-  if (modelGateway.enabled()) {
-    if (!task?.modelRouteCipher) invalid("多租户媒体生成必须通过持久任务提交");
-  } else if (task?.modelRouteCipher) {
+  if (task?.modelRouteCipher) {
     throw Object.assign(new Error("多租户模型路由尚未开启"), { status: 403 });
   }
 }
@@ -61,7 +59,6 @@ function imageOptions(value: unknown, pattern: RegExp) {
 }
 
 export async function listMediaModels(): Promise<MediaModel[]> {
-  if (modelGateway.enabled()) return modelGateway.catalog(["image", "video", "audio"]);
   const installedProviders = await listMediaProviders();
   installedProviders.sort((left, right) => Number(right.id === "toonflow") - Number(left.id === "toonflow"));
   return installedProviders.filter(provider => provider.id !== "toonflow" || !!getAccountProvider()).flatMap(provider => provider.models.flatMap(model => {
@@ -83,14 +80,23 @@ export async function listMediaModels(): Promise<MediaModel[]> {
 
 export async function readReference(cwd: string, reference: MediaReference, mediaType: string, signal?: AbortSignal): Promise<Extract<MediaInput, { type: "base64" }>> {
   signal?.throwIfAborted();
-  const { path } = await resolveWorkspacePath(cwd, reference.path);
-  const info = await stat(path);
-  if (!info.isFile() || info.size > maxMediaSize) invalid("参考媒体须为不超过 100 MB 的文件");
-  const bytes = await readFile(path, { signal });
+  const store = getWorkspaceStore();
+  let bytes: Uint8Array;
+  if (store.mode === "local") {
+    const { path } = await resolveWorkspacePath(cwd, reference.path);
+    const info = await stat(path);
+    if (!info.isFile() || info.size > maxMediaSize) invalid("参考媒体须为不超过 100 MB 的文件");
+    bytes = await readFile(path, { signal });
+  } else {
+    const info = await store.stat(cwd, reference.path);
+    if (info.type !== "file" || info.size > maxMediaSize) invalid("参考媒体须为不超过 100 MB 的文件");
+    bytes = await store.read(cwd, reference.path);
+    signal?.throwIfAborted();
+  }
   if (!bytes.length || bytes.length > maxMediaSize) invalid("参考媒体为空或超过 100 MB");
   const mimeType = detectMimeType(bytes, reference.mimeType);
   if (!mimeType.startsWith(`${mediaType}/`)) invalid(t`参考媒体类型须为 ${mediaType}`);
-  return { type: "base64", data: bytes.toString("base64"), mimeType, name: reference.path };
+  return { type: "base64", data: Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString("base64"), mimeType, name: reference.path };
 }
 
 async function downloadAsset(url: string, signal?: AbortSignal) {
@@ -200,11 +206,7 @@ async function prepareRequest<T>(directory: string | undefined, mediaType: "imag
 
 async function configuredProvider(request: MediaGenerationRequest, mediaType: "image" | "video" | "audio", signal?: AbortSignal, directory?: string,
   saveTaskData?: (data: ProviderTaskData) => Promise<void>, resume = false, modelRouteCipher?: string) {
-  if (modelGateway.enabled() || modelRouteCipher) {
-    const { upstream } = await modelGateway.resolve(mediaType, request.providerId, request.modelId, modelRouteCipher, request);
-    const provider = await loadMediaProviderSource(upstream.source, upstream.config, signal, undefined, directory, saveTaskData, upstream.cloud);
-    return { provider, request: { ...request, providerId: provider.id, modelId: upstream.upstreamModelId } };
-  }
+  if (modelRouteCipher) throw Object.assign(new Error("多租户模型路由尚未开启"), { status: 403 });
   const info = await getMediaProvider(request.providerId);
   if (!resume && !info.models.some(model => model.id === request.modelId && model.type === mediaType)) invalid("所选媒体模型不存在或类型不匹配，请重新选择");
   const configurations = record(conf.get("settings", {}).mediaProviderConfigs);
@@ -229,10 +231,6 @@ async function preparePriceRequest(directory: string | undefined, mediaType: "im
 
 export async function getMediaPrice(directory: string | undefined, mediaType: "image" | "video" | "audio", request: MediaGenerationRequest, signal?: AbortSignal) {
   signal?.throwIfAborted();
-  if (modelGateway.enabled()) {
-    const quote = await modelGateway.quoteRequest(mediaType, request.providerId, request.modelId, request);
-    return { ...quote, price: `${quote.amount} ${quote.currency}`, tips: translateMessage("平台售价，按实际用量结算") };
-  }
   const { provider } = await configuredProvider(request, mediaType, signal, directory);
   if (!provider.getPrice) return null;
   const prepared = await preparePriceRequest(directory, mediaType, request, signal);
@@ -254,10 +252,7 @@ export async function generateMedia(
     return await executeMedia(cwd, mediaType, request, signal, task, () => { submitted = true; });
   } catch (cause) {
     // ACT: 仅宿主确认尚未调用供应商的异常证明未提交；供应商错误码不能伪造此证据。
-    if (!task?.modelRouteCipher || submitted) throw cause;
-    const failure = cause instanceof Error ? cause : new Error(String(cause));
-    notSubmittedFailures.add(failure);
-    throw failure;
+    throw cause;
   }
 }
 
@@ -272,19 +267,29 @@ async function executeMedia(
   signal?.throwIfAborted();
   if (!request.prompt.trim()) invalid("请输入生成提示词");
   const modelRouteCipher = task?.modelRouteCipher;
-  const directory = await realpath(cwd);
+  const store = getWorkspaceStore();
+  const local = store.mode === "local";
+  const directory = local ? await realpath(cwd) : cwd;
   const outputDirectory = request.outputDirectory ?? "assets/generated";
-  await resolveWorkspacePath(directory, outputDirectory, true);
+  if (local) await resolveWorkspacePath(directory, outputDirectory, true);
   const checkpoint = task?.checkpoint;
   const saved = new Map<number, GeneratedMedia>();
   for (const file of checkpoint?.files ?? []) {
     const expected = join(outputDirectory, `${mediaType}${task!.taskId.replaceAll("-", "")}${file.index}.${mediaExtensions[file.mimeType]}`).replace(/\\/g, "/");
     if (file.path !== expected || file.mediaType !== mediaType) invalid("任务结果文件记录与原生成请求不匹配");
-    const { path } = await resolveWorkspacePath(directory, file.path);
     try {
-      const info = await stat(path);
-      if (!info.isFile() || info.size > maxMediaSize) invalid("任务结果文件已被修改，不能覆盖");
-      const bytes = await readFile(path, { signal });
+      let bytes: Uint8Array;
+      if (local) {
+        const { path } = await resolveWorkspacePath(directory, file.path);
+        const info = await stat(path);
+        if (!info.isFile() || info.size > maxMediaSize) invalid("任务结果文件已被修改，不能覆盖");
+        bytes = await readFile(path, { signal });
+      } else {
+        const info = await store.stat(directory, file.path);
+        if (info.type !== "file" || info.size > maxMediaSize) invalid("任务结果文件已被修改，不能覆盖");
+        bytes = await store.read(directory, file.path);
+        signal?.throwIfAborted();
+      }
       if (createHash("sha256").update(bytes).digest("hex") !== file.hash) invalid("任务结果文件已被修改，不能覆盖");
       saved.set(file.index, { path: file.path, mimeType: file.mimeType, mediaType });
     } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
@@ -298,11 +303,11 @@ async function executeMedia(
     if (!checkpoint?.providerData || !provider.resumeTask) invalid("该任务没有可恢复的供应商凭据，不能重新提交生成");
     requireGenerationMode(task);
     finish();
-    if (!modelRouteCipher) finish = beginGeneration(provider);
+    finish = beginGeneration(provider);
     // 恢复只使用已保存的凭据，不重新读取参考文件、预处理或提交生成。
     return provider.resumeTask(checkpoint.providerData);
   };
-  const written: string[] = [];
+  const written: (() => Promise<void>)[] = [];
   const result: GeneratedMedia[] = [];
   try {
     signal?.throwIfAborted();
@@ -320,7 +325,7 @@ async function executeMedia(
       const { type, ...parameters } = await prepareRequest(directory, mediaType, upstreamRequest, readReference, signal);
       signal?.throwIfAborted();
       requireGenerationMode(task);
-      if (!modelRouteCipher) finish = beginGeneration(provider);
+      finish = beginGeneration(provider);
       markSubmitted();
       assets = type === "audio" ? await provider.generateAudio!(parameters as AudioRequest)
         : type === "image" ? await provider.generateImage!(parameters as ImageRequest) : await provider.generateVideo!(parameters as VideoRequest);
@@ -347,28 +352,33 @@ async function executeMedia(
       }
       const { bytes, mimeType } = content;
       signal?.throwIfAborted();
-      const output = await resolveWorkspacePath(directory, outputDirectory, true);
-      const release = lockWorkspaceFiles([output.path]);
-      try {
-        await mkdir(output.path, { recursive: true });
-        const file = join(outputDirectory, `${mediaType}${task ? `${task.taskId.replaceAll("-", "")}${index}` : crypto.randomUUID()}.${mediaExtensions[mimeType]}`);
-        const { path } = await resolveWorkspacePath(directory, file);
-        const outputFile = { path: relative(directory, path).replace(/\\/g, "/"), mimeType, mediaType };
-        if (task) {
-          const fileRecord = { ...outputFile, index, hash: createHash("sha256").update(bytes).digest("hex") };
-          await task.save({ files: [...(checkpoint?.files ?? []).filter(item => item.index !== index), fileRecord] });
-        }
-        signal?.throwIfAborted();
-        await writeWorkspaceFile(path, bytes, true);
-        written.push(path);
-        result.push(outputFile);
-      } finally { release(); }
+      const file = join(outputDirectory, `${mediaType}${task ? `${task.taskId.replaceAll("-", "")}${index}` : crypto.randomUUID()}.${mediaExtensions[mimeType]}`).replace(/\\/g, "/");
+      const outputFile = { path: file, mimeType, mediaType };
+      if (task) {
+        const fileRecord = { ...outputFile, index, hash: createHash("sha256").update(bytes).digest("hex") };
+        await task.save({ files: [...(checkpoint?.files ?? []).filter(item => item.index !== index), fileRecord] });
+      }
+      signal?.throwIfAborted();
+      if (local) {
+        const output = await resolveWorkspacePath(directory, outputDirectory, true);
+        const release = lockWorkspaceFiles([output.path]);
+        try {
+          await mkdir(output.path, { recursive: true });
+          const { path } = await resolveWorkspacePath(directory, file);
+          await writeWorkspaceFile(path, bytes, true);
+          written.push(() => unlink(path).catch((error: NodeJS.ErrnoException) => { if (error.code !== "ENOENT") throw error; }));
+        } finally { release(); }
+      } else {
+        await store.write(directory, file, bytes);
+        written.push(() => store.remove(directory, file, false).catch((error: NodeJS.ErrnoException) => { if (error.code !== "ENOENT") throw error; }));
+      }
+      result.push(outputFile);
     }
     signal?.throwIfAborted();
     return result;
   } catch (err) {
     // ACT: 只回滚本次创建的文件，保留目录中已有的节点资源。
-    if (!task && !modelRouteCipher) await Promise.all(written.map(path => unlink(path).catch((error: NodeJS.ErrnoException) => { if (error.code !== "ENOENT") throw error; })));
+    if (!task) await Promise.all(written.map(remove => remove()));
     throw err;
   } finally { finish(); }
 }

@@ -23,6 +23,8 @@ import * as question from "@/agent/bridge/question";
 import * as workspace from "@/utils/workspace";
 import * as workspaceFile from "@/utils/workspace/files";
 import * as workspaceDownload from "@/utils/workspace/download";
+import * as storage from "@/utils/storage";
+import * as storageTemp from "@/utils/storage/temp";
 import * as chatImages from "@/utils/workspace/chatImages";
 import * as skillFile from "@/utils/skills/files";
 import * as mcpControl from "@/utils/mcp/control";
@@ -36,7 +38,7 @@ import * as personalization from "@/utils/personalization";
 import * as mentionFiles from "@/agent/mentionFiles";
 import * as network from "@/utils/network";
 import * as channel from "@/utils/channel";
-import * as multiTenant from "@/utils/multiTenant";
+import * as gatewayAuth from "@/utils/gatewayAuth";
 
 export default {
   assets,
@@ -66,6 +68,8 @@ export default {
   workspace,
   workspaceFile,
   workspaceDownload,
+  storage,
+  storageTemp,
   chatImages,
   skillFile,
   mcpControl,
@@ -79,5 +83,5 @@ export default {
   mentionFiles,
   network,
   channel,
-  multiTenant,
+  gatewayAuth,
 };

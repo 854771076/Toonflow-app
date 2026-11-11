@@ -12,6 +12,7 @@ test-results/
 /apps/updateServer/public/
 /apps/updateServer/releases/
 /.hutch/
+/.trae/
 /.cottontail-tmp/
 coverage/
 *.tsbuildinfo

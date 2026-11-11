@@ -9,6 +9,6 @@ export default Router().post("/", validateFields({
   resume: z.boolean().optional(),
 }), async (req, res) => {
   const { directory, taskIds } = req.body;
-  const cwd = await u.workspace.resolveWorkspace(req, directory);
-  res.set("Cache-Control", "no-store").json(success(await u.mediaTasks.status(cwd, taskIds, req.body.resume === true, u.multiTenant.requestIdentity(req))));
+  const cwd = await u.storage.getWorkspaceStore().resolveWorkspace(req, directory);
+  res.set("Cache-Control", "no-store").json(success(await u.mediaTasks.status(cwd, taskIds, req.body.resume === true, null)));
 });

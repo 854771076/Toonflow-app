@@ -1,15 +1,6 @@
 <template>
   <div class="general">
     <ui />
-    <section v-if="!publicWeb" class="settingSection" aria-labelledby="extensionAssociationsTitle">
-      <div class="settingHeader">
-        <div class="settingInfo">
-          <h3 id="extensionAssociationsTitle">默认打开方式</h3>
-          <p class="description">按文件类型选择默认扩展。</p>
-        </div>
-        <el-button size="small" aria-label="设置默认打开方式" @click="associationsVisible = true">设置</el-button>
-      </div>
-    </section>
     <section class="settingSection" aria-labelledby="startupTitle">
       <div class="settingHeader">
         <div class="settingInfo">
@@ -95,7 +86,6 @@
     </section>
     <nodeMenuSettings />
     <canvasShortcuts />
-    <extensionAssociationsDialog v-if="!publicWeb" v-model="associationsVisible" />
   </div>
 </template>
 
@@ -103,15 +93,12 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { defaultUiSettings, generalSettings, uiSettings, updateGeneralSettings, updateUiSettings } from "@/stores/settings";
-import { publicWeb } from "@/stores/multiTenant";
 import { getNotificationPermission, requestNotificationPermission } from "@/lib/notification";
 import { actualPlatform } from "@/lib/platform";
 import ui from "./ui.vue";
 import canvasShortcuts from "./canvasShortcuts.vue";
 import nodeMenuSettings from "./nodeMenuSettings.vue";
-import extensionAssociationsDialog from "./extensionAssociationsDialog.vue";
 
-const associationsVisible = ref(false);
 const notificationPermission = ref(getNotificationPermission());
 const requestingPermission = ref(false);
 

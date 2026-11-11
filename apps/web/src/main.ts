@@ -7,11 +7,9 @@ import "element-plus/es/components/button/style/css";
 import "element-plus/es/components/result/style/css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
-import { initializeMultiTenant } from "@/bootstrap/multiTenant";
 import { createCreationApp } from "@/bootstrap/creation";
 import { actualPlatform } from "@/lib/platform";
 import { getMissingBrowserFeatures } from "@/lib/browserCapabilities";
-import { publicWeb } from "@/stores/multiTenant";
 import { detectLocale, locale, setLocale, translate } from "@toonflow/i18n/vue";
 
 setLocale(detectLocale(navigator.languages));
@@ -25,7 +23,7 @@ const requiresMobileWebViewUpdate = actualPlatform.isMobile && getMissingBrowser
 let isMounted = false;
 
 async function notifyDesktopReady(failed = false) {
-  if (!actualPlatform.isDesktop || publicWeb.value) return;
+  if (!actualPlatform.isDesktop) return;
   const response = await fetch("/api/desktop/ready", {
     method: "POST",
     headers: { "x-toonflow-desktop": "1", "Content-Type": "application/json", "Accept-Language": locale.value },
@@ -38,11 +36,10 @@ async function notifyDesktopReady(failed = false) {
 async function initialize() {
   if (requiresWebView2Update) throw new Error("当前 Microsoft Edge WebView2 Runtime 版本过旧。请以管理员身份运行微软最新版安装器；若仍提示已安装，请修复 WebView2 或联系管理员检查更新服务。更新完成后，请完全退出 Toonflow 再重新打开。");
   if (requiresMobileWebViewUpdate) throw new Error("当前移动端浏览器内核缺少 Toonflow 所需能力。请更新 Toonflow 和系统浏览器内核；部分系统需要通过系统更新升级。更新完成后，请完全退出并重新打开 Toonflow。");
-  const { session, app: tenantApp } = await initializeMultiTenant();
-  app = tenantApp ?? await createCreationApp(session);
+  app = await createCreationApp();
   app.mount("#app");
   isMounted = true;
-  if (!actualPlatform.isDesktop || session.publicWeb) return;
+  if (!actualPlatform.isDesktop) return;
   await nextTick();
   // ACT: 隐藏的 WebView 不依赖 requestAnimationFrame；等待首页挂载和页面资源就绪。
   if (document.readyState !== "complete") {

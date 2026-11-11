@@ -8,7 +8,7 @@ export default Router().post("/", validateFields({
   directory: z.string().min(1).max(4096), taskIds: z.array(z.uuid()).min(1).max(100),
 }), async (req, res) => {
   const { directory, taskIds } = req.body;
-  const cwd = await u.workspace.resolveWorkspace(req, directory);
-  await u.mediaTasks.cancel(cwd, taskIds, u.multiTenant.requestIdentity(req));
+  const cwd = await u.storage.getWorkspaceStore().resolveWorkspace(req, directory);
+  await u.mediaTasks.cancel(cwd, taskIds, null);
   res.json(success());
 });

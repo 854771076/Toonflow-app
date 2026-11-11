@@ -32,7 +32,7 @@ export function getMcpSettings() {
 }
 
 function allowedHost(req: Request) {
-  return req.res?.locals.multiTenantWeb === true || isMobileLinkRequest(req) || !getRuntimePlatform().requiresLocalHost || ["localhost", "127.0.0.1", "[::1]"].includes(req.hostname);
+  return false || isMobileLinkRequest(req) || !getRuntimePlatform().requiresLocalHost || ["localhost", "127.0.0.1", "[::1]"].includes(req.hostname);
 }
 
 export function getAppOrigin(req: Request) {

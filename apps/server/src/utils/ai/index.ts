@@ -6,42 +6,105 @@ import { z } from "zod";
 import { readReference } from "@/utils/media/generation";
 import { createFileTransport, getUnsupportedFileText, type FileProvider } from "@/utils/ai/files";
 import { getRequestFiles } from "@/utils/ai/requestFiles";
-import { readFile, stat } from "@toonflow/file";
-import { resolveWorkspacePath } from "@/utils/workspace/files";
+import { getWorkspaceStore } from "@/utils/storage";
 import { getReadableFileMimeType } from "@/lib/documentFormats";
 import { readDocument } from "@/utils/documents";
 import { getConfiguredProviders, getModelLimits, getModelReasoning, getProviderBaseUrl, providerSchema } from "@/utils/ai/provider";
-import { modelGateway, requireDirectModelAccess } from "@/utils/multiTenant/gateway";
 import { createBillingUsageTracker } from "@/utils/ai/billingUsage";
+import * as gatewayAuth from "@/utils/gatewayAuth";
 
 export { fetchProviderModels } from "@/utils/ai/models";
 export { accountProviderSchema, getAccountProvider, getAccountToken, getConfiguredProviders, getModelLimits, getModelReasoning, providerSchema, reasoningEffortsSchema } from "@/utils/ai/provider";
 
+const gatewayProviderId = "gateway";
+const gatewayProviderLabel = "Toonflow 网关";
+
+interface GatewayModelEntry {
+  id: string;
+  label: string;
+}
+
+let gatewayModelsCache: { sub: string; expiresAt: number; models: GatewayModelEntry[] } | undefined;
+
+async function getGatewayModels(): Promise<GatewayModelEntry[]> {
+  const sessionId = gatewayAuth.currentGatewaySessionId();
+  const session = sessionId ? gatewayAuth.getSession(sessionId) : undefined;
+  if (!session) throw Object.assign(new Error("登录已失效，请重新登录"), { status: 401 });
+
+  const cached = gatewayModelsCache;
+  if (cached && cached.sub === session.sub && cached.expiresAt > Date.now()) return cached.models;
+
+  const res = await gatewayAuth.gatewayApiFetch("/v1/models");
+  if (!res.ok) throw Object.assign(new Error("获取网关模型列表失败"), { status: res.status === 401 ? 401 : 502 });
+  const body = (await res.json()) as { data?: { id?: unknown; display_name?: unknown }[] };
+  const models = (Array.isArray(body.data) ? body.data : []).flatMap(item => {
+    const id = typeof item?.id === "string" ? item.id.trim() : "";
+    if (!id) return [];
+    const label = typeof item.display_name === "string" && item.display_name.trim() ? item.display_name.trim() : id;
+    return [{ id, label }];
+  });
+
+  gatewayModelsCache = { sub: session.sub, expiresAt: Date.now() + 5 * 60 * 1000, models };
+  return models;
+}
+
+async function getGatewayModel(modelId: string) {
+  const models = await getGatewayModels();
+  const target = models.find(item => item.id === modelId);
+  if (!target) throw Object.assign(new Error("所选模型不存在，请重新选择"), { status: 400 });
+
+  // 网关模型没有能力元数据，统一关闭推理档位，避免向不支持的上游发送推理参数。
+  const model = { id: target.id, label: target.label, reasoningEfforts: false as const };
+  const provider = providerSchema.parse({
+    apiUrl: gatewayAuth.getConfig().baseUrl,
+    apiKey: await gatewayAuth.getAccessToken(),
+    protocol: "openai-completions",
+    models: [model],
+  });
+  const limits = getModelLimits(gatewayProviderId, model);
+  return {
+    provider,
+    model: { ...model, ...getModelReasoning(gatewayProviderId, model, provider.protocol), contextWindow: limits.contextWindow, maxOutputTokens: limits.maxTokens },
+    baseUrl: getProviderBaseUrl(provider.apiUrl, provider.protocol),
+  };
+}
+
 export async function getConfiguredModel(providerId: string, modelId: string) {
-  const execution = modelGateway.enabled() ? await modelGateway.resolve("text", providerId, modelId) : undefined;
-  const resolved = execution?.upstream;
-  const parsed = providerSchema.safeParse(resolved?.provider ?? getConfiguredProviders().find(item => item?.id === providerId));
+  if (providerId === gatewayProviderId) return getGatewayModel(modelId);
+  const parsed = providerSchema.safeParse(getConfiguredProviders().find(item => item?.id === providerId));
   if (!parsed.success) {
     const official = providerId.toLowerCase() === "toonflow";
     throw Object.assign(new Error(official ? "请先登录 Toonflow 账号并刷新供应商" : "请先在设置中配置模型供应商"), { status: official ? 401 : 400 });
   }
   const provider = parsed.data;
-  const model = resolved?.model ?? provider.models.find(item => item.id === modelId);
+  const model = provider.models.find(item => item.id === modelId);
   if (!model) throw Object.assign(new Error("所选模型不存在，请重新选择"), { status: 400 });
   const baseUrl = getProviderBaseUrl(provider.apiUrl, provider.protocol);
-  const upstreamProviderId = execution?.route.providerId ?? providerId;
-  const limits = getModelLimits(upstreamProviderId, model);
+  const limits = getModelLimits(providerId, model);
   return {
     provider,
-    model: { ...model, label: execution?.route.label ?? model.label, ...getModelReasoning(upstreamProviderId, model, provider.protocol), contextWindow: limits.contextWindow, maxOutputTokens: limits.maxTokens },
-    baseUrl, execution, route: execution?.route, revision: execution?.revision, publicProviderId: providerId, publicModelId: modelId,
+    model: { ...model, ...getModelReasoning(providerId, model, provider.protocol), contextWindow: limits.contextWindow, maxOutputTokens: limits.maxTokens },
+    baseUrl,
   };
 }
 
 export type ConfiguredModel = Awaited<ReturnType<typeof getConfiguredModel>>;
 
 export async function listAiModels() {
-  if (modelGateway.enabled()) return modelGateway.catalog(["text"]);
+  if (gatewayAuth.currentGatewaySessionId()) {
+    const models = await getGatewayModels();
+    return models.map(entry => {
+      const model = { id: entry.id, label: entry.label, reasoningEfforts: false as const };
+      const limits = getModelLimits(gatewayProviderId, model);
+      return {
+        providerId: gatewayProviderId, providerLabel: gatewayProviderLabel, protocol: "openai-completions" as const,
+        modelId: entry.id, label: entry.label,
+        contextWindow: limits.contextWindow, maxOutputTokens: limits.maxTokens,
+        reasoningLevels: [] as string[],
+      };
+    });
+  }
+
   return getConfiguredProviders().flatMap(item => {
     const parsed = providerSchema.extend({ id: z.string().min(1), label: z.string() }).safeParse(item);
     if (!parsed.success) return [];
@@ -57,25 +120,8 @@ export async function listAiModels() {
   });
 }
 
-export function publicAiMessage(configured: ConfiguredModel, message: AssistantMessage, usageKnown = true) {
-  if (!configured.route) return message;
-  const priceQuote = usageKnown && configured.execution ? modelGateway.quote(configured.execution, message.usage) : undefined;
-  return {
-    role: message.role, content: message.content, api: message.api,
-    provider: configured.publicProviderId, model: configured.publicModelId,
-    usage: {
-      input: message.usage.input, output: message.usage.output, cacheRead: message.usage.cacheRead,
-      cacheWrite: message.usage.cacheWrite, totalTokens: message.usage.totalTokens,
-      // ACT: SDK cost 默认按美元解释；平台报价单独携带币种和精确金额，不将它伪装成上游 cost 或结算记录。
-      cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
-    },
-    stopReason: message.stopReason, timestamp: message.timestamp,
-    ...(message.providerThinkingLevel === undefined ? {} : { providerThinkingLevel: message.providerThinkingLevel }),
-    usageKnown,
-    modelRouteRevision: configured.revision,
-    ...(message.errorMessage ? { errorMessage: "模型请求失败，请稍后重试" } : {}),
-    ...(priceQuote ? { priceQuote: { ...priceQuote, routeRevision: configured.revision } } : {}),
-  };
+export function publicAiMessage(_configured: ConfiguredModel, message: AssistantMessage, _usageKnown = true) {
+  return message;
 }
 
 const aiApis = {
@@ -103,10 +149,12 @@ export async function readAiReferences(
     if (!directory) throw Object.assign(new Error("文件参考需要工作目录"), { status: 400 });
     if (item.dataType === "FILE") {
       if (!getReadableFileMimeType(item.value.url, item.value.mimeType)) throw Object.assign(new Error("不支持此参考文件格式"), { status: 400 });
-      const { path } = await resolveWorkspacePath(directory, item.value.url);
-      const info = await stat(path);
-      if (!info.isFile() || info.size > 100 * 1024 * 1024) throw Object.assign(new Error("参考文档须为不超过 100 MB 的文件"), { status: 400 });
-      const content = await readDocument(item.value.url, await readFile(path, { signal }), item.value.mimeType);
+      const store = getWorkspaceStore();
+      const info = await store.stat(directory, item.value.url);
+      if (info.type !== "file" || info.size > 100 * 1024 * 1024) throw Object.assign(new Error("参考文档须为不超过 100 MB 的文件"), { status: 400 });
+      const bytes = await store.read(directory, item.value.url);
+      signal?.throwIfAborted();
+      const content = await readDocument(item.value.url, Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength), item.value.mimeType);
       signal?.throwIfAborted();
       return { dataType: "STRING" as const, value: `参考文档：${item.value.url}\n${content.toString("utf8")}` };
     }
@@ -158,28 +206,13 @@ export function streamAi(
     maxTokens: configuredModel.maxOutputTokens,
   };
   const usageTracker = createBillingUsageTracker(provider.protocol);
-  const files = createFileTransport({ ...provider, apiUrl: baseUrl }, {
-    signal, ...(configured.route ? { fetch: usageTracker.fetch(globalThis.fetch) } : {}),
-  });
-  const requestContext = configured.route ? {
-    ...context,
-    messages: context.messages.map(message => message.role === "assistant"
-      && message.provider === configured.publicProviderId && message.model === configured.publicModelId
-      && (message as AssistantMessage & { modelRouteRevision?: unknown }).modelRouteRevision === configured.revision
-      // ACT: 对外只留逻辑身份；同一路由版本进入 SDK 时恢复内部身份，避免工具循环误判跨模型而丢弃推理签名。
-      ? { ...message, provider: model.provider, model: model.id } : message),
-  } : context;
-  const stream = aiApis[provider.protocol].streamSimple(model, requestContext, {
+  const files = createFileTransport({ ...provider, apiUrl: baseUrl }, { signal });
+  const stream = aiApis[provider.protocol].streamSimple(model, context, {
     apiKey: provider.apiKey,
     headers: provider.headers,
     signal,
-    ...(configured.route ? { maxTokens: configuredModel.maxOutputTokens } : {}),
-    // 此入口没有 AgentSession，仅重试尚未交付响应的请求，已输出的流不能直接拼接重放。
-    maxRetries: configured.route ? 0 : 3,
-    fetch: Object.assign((input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
-      if (!configured.execution) requireDirectModelAccess();
-      return files.fetch(input, init);
-    }, files.fetch),
+    maxRetries: 3,
+    fetch: files.fetch,
     onPayload: async (payload) => {
       let body = payload as Record<string, unknown>;
       if (references.length) {

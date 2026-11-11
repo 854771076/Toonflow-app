@@ -7,7 +7,7 @@
         </transition>
       </router-view>
       <loadingPage v-model:visible="workspaceStore.projectLoadingVisible" v-model:drawn="workspaceStore.projectLoadingDrawn" :active="workspaceStore.projectLoading" />
-      <ffmpegRequired v-if="currentUser?.role !== 'user'" />
+      <ffmpegRequired />
       <desktopQuit v-if="actualPlatform.isDesktop" />
       <updateBox
         v-if="updateBoxBuild && !installFailure"
@@ -60,7 +60,6 @@ import { actualPlatform, isMobile } from "@/lib/platform";
 import { saveSettings, settings, uiSettings } from "@/stores/settings";
 import { desktopUpdateSnapshot, stopDesktopUpdateObservation } from "@/stores/desktopUpdate";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { currentUser } from "@/stores/multiTenant";
 import loadingPage from "@/components/loadingPage.vue";
 import { useMcpControl } from "@/lib/mcpControl";
 import ffmpegRequired from "@/components/settings/ffmpegRequired.vue";
@@ -68,7 +67,7 @@ import desktopQuit from "@/components/desktopQuit.vue";
 import updateBox from "@/components/updateBox.vue";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
-if (currentUser.value?.role !== "user") useMcpControl();
+useMcpControl();
 const workspaceStore = useWorkspaceStore();
 
 // ACT: TDesign 缺少的语言使用英语基底，聊天控件由应用字典补齐。

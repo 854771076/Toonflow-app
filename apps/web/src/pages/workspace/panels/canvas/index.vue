@@ -72,7 +72,7 @@
         @create="createEmptyNode" />
       <canvasViewportHint v-if="active && !settingsVisible && project?.directory && canvasReady" :key="canvasId" />
       <canvasMenu ref="canvasMenuRef" v-model:canvasId="canvasId" :directory="project?.directory" :initialCanvasId="initialCanvasId" :activateCanvas="activateCanvas" :flushSave="flushCanvases ?? flushCanvasSave">
-        <assetLibrary v-if="currentUser?.role !== 'user'" ref="assetLibraryRef" v-model="assetsVisible" :directory="project?.directory" />
+        <assetLibrary ref="assetLibraryRef" v-model="assetsVisible" :directory="project?.directory" />
       </canvasMenu>
       <canvasControls
         v-if="canvasId"
@@ -107,7 +107,7 @@
         :disabled="!canvasId || !project?.directory" />
       <nodeSearch ref="nodeSearchRef" :disabled="!active || settingsVisible || !canvasId || !project?.directory" />
     </vue-flow>
-    <el-dialog v-if="currentUser?.role !== 'user'" :modelValue="!!assetSelection" class="referenceAssetDialog" title="全局素材库" width="min(1200px, 88vw)" alignCenter appendToBody destroyOnClose @update:modelValue="finishAssetSelection()">
+    <el-dialog v-if="!!assetSelection" :modelValue="!!assetSelection" class="referenceAssetDialog" title="全局素材库" width="min(1200px, 88vw)" alignCenter appendToBody destroyOnClose @update:modelValue="finishAssetSelection()">
       <assetLibrary :modelValue="!!assetSelection" expanded :canSelect="canSelectAsset" :selecting="assetSelecting" @select="selectAsset" />
     </el-dialog>
     <teleport to="body">
@@ -187,7 +187,6 @@ import { useNodeEvent } from "@toonflow/nodes-scaffold/nodeEvent";
 import type { NodeDocumentContext, NodeDocumentState } from "@toonflow/nodes-scaffold/nodeDocument";
 import { useNodeToolsContext } from "@toonflow/nodes-scaffold/nodeTools";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { currentUser } from "@/stores/multiTenant";
 import { generalSettings } from "@/stores/settings";
 import { getShortcutBindings, shortcutLabel, shortcutMatches, shortcutPressed } from "@/lib/canvasShortcuts";
 import useWorkspaceFiles from "@/lib/workspaceFiles";
@@ -287,7 +286,7 @@ provide("copyNodeToClipboard", async (node: Parameters<typeof copyNodeToClipboar
 });
 provide("retainNodeFiles", true);
 provide("selectionConnection", shallowRef<NodeConnectionFeedback>());
-provide("saveNodeToAssets", currentUser.value?.role === "user" ? undefined : (label: string, outputs: { label: string; output: NodeOutput }[]) => assetLibraryRef.value?.openSave(label, outputs));
+provide("saveNodeToAssets", (label: string, outputs: { label: string; output: NodeOutput }[]) => assetLibraryRef.value?.openSave(label, outputs));
 let canvasController = new AbortController();
 let workspaceController = new AbortController();
 type AssetReference = { source: string; sourceHandle: string };
@@ -298,7 +297,7 @@ provide("selectNodeAsset", (targetId: string, targetHandleId: string) => {
   finishAssetSelection();
   const target = findNode(targetId);
   const directory = project.value?.directory;
-  if (currentUser.value?.role === "user" || !target || !directory || !props.active || !canvasId.value) return Promise.resolve(undefined);
+  if (!target || !directory || !props.active || !canvasId.value) return Promise.resolve(undefined);
   return new Promise<AssetReference | undefined>(resolve => {
     const controller = new AbortController();
     const signal = AbortSignal.any([controller.signal, canvasController.signal, workspaceController.signal]);

@@ -30,23 +30,9 @@ export default router.put("/", validateFields({ expectedRevision: z.number().int
 }) }), async (req, res) => {
   u.mcpControl.assertAppRequest(req);
   const { settings } = req.body;
-  const user = u.multiTenant.requestIdentity(req);
-  if (user?.role === "user") {
-    const saved = await u.multiTenant.writeUserSettings(user.id, u.multiTenant.userSettings(settings), req.body.expectedRevision);
-    res.set("X-Toonflow-Settings-Revision", String(saved.revision));
-    return res.json(success({ multiTenantEnabled: true, aiModels: await u.ai.listAiModels() }, "设置已保存"));
-  }
+  // ACT: 非多租户模式下 requestIdentity 始终返回 null，跳过用户级设置分支。
   // ACT: 系统代理读取是异步的；串行保存完整快照，避免较早的请求覆盖较晚的配置。
   const saving = saveQueue.then(async () => {
-    if (res.locals.multiTenantWeb === true && user?.role === "admin") {
-      const previousSettings = u.conf.get("settings", {});
-      const creationSettings = { ...previousSettings };
-      for (const field of Object.keys(u.multiTenant.userSettings(previousSettings, true))) delete creationSettings[field];
-      Object.assign(creationSettings, u.multiTenant.userSettings(settings, true));
-      u.cleanNodeMenuSettings(creationSettings);
-      u.conf.set("settings", creationSettings);
-      return { aiModels: await u.ai.listAiModels(), nodeMenu: u.conf.get("settings.general.nodeMenu") ?? null, multiTenantEnabled: u.multiTenant.isEnabled() };
-    }
     u.removeLegacySettings(settings);
     u.cleanNodeMenuSettings(settings);
     const previousSettings = u.conf.get("settings", {});
@@ -57,14 +43,14 @@ export default router.put("/", validateFields({ expectedRevision: z.number().int
       ? await u.network.prepareNetwork(settings.network) : undefined;
     const commit = () => {
       // 开关只由超管接口修改；异步准备完成后读取最新值，避免其他页面的旧快照覆盖。
-      settings.multiTenantEnabled = u.multiTenant.isEnabled();
+      settings.multiTenantEnabled = false;
       u.conf.set("settings", settings);
     };
     if (network) u.network.configureNetwork(network, undefined, commit);
     else commit();
     await u.mcpRuntime.reloadMcpRuntime();
     return { customProviders: settings.customProviders ?? [], mediaProviderConfigs: settings.mediaProviderConfigs ?? {}, toonflowProvider: settings.toonflowProvider ?? null,
-      aiModels: await u.ai.listAiModels(), nodeMenu: u.conf.get("settings.general.nodeMenu") ?? null, multiTenantEnabled: u.multiTenant.isEnabled() };
+      aiModels: await u.ai.listAiModels(), nodeMenu: u.conf.get("settings.general.nodeMenu") ?? null, multiTenantEnabled: false };
   });
   saveQueue = saving.then(() => {}, () => {});
   res.json(success(await saving, "设置已保存"));

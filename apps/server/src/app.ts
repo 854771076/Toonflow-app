@@ -11,6 +11,8 @@ import desktopRequest from "@/lib/desktop";
 import { getRuntimePlatform } from "@/lib/platform";
 import initializePlugins from "@/utils/plugins/initialize";
 import { languageRequest, setLocaleFallback, translateError, translateMessage } from "@/lib/i18n";
+import { parseCookies } from "@/lib/middleware";
+import { runWithGatewaySession } from "@/utils/gatewayAuth";
 import { detectLocale, normalizeLocale } from "@toonflow/i18n";
 
 const autoInstallProviders = ["apiMart.ts", "metaso.ts", "compshare.ts"];
@@ -41,6 +43,8 @@ export async function createApp({
   // conf 由下方的路由动态加载，必须先确定整个进程共用的数据目录。
   if (dataDirectory) process.env.TOONFLOW_DATA_DIR = resolve(dataDirectory);
   const { default: conf } = await import("@/utils/conf");
+  const { initializeWorkspaceStorage } = await import("@/utils/storage");
+  initializeWorkspaceStorage();
   const providerDirectory = resolve(dirname(conf.path), "providers");
   const providerDirectoryInfo = await lstat(providerDirectory).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") return null;
@@ -109,9 +113,8 @@ export async function createApp({
   }
   app.use(cors());
   app.use(languageRequest);
-  const { initializeMultiTenantRuntime, multiTenantAccess } = await import("@/utils/multiTenant/runtime");
-  initializeMultiTenantRuntime(app);
-  app.use(multiTenantAccess);
+  app.use(parseCookies);
+  app.use((req, _res, next) => runWithGatewaySession(req.cookies.gateway_session, next));
   app.use("/a2a", express.json({ limit: "2mb" }));
   app.use(["/api/workspaces/files/write", "/api/assets/save"], express.raw({ type: "application/octet-stream", limit: "100mb" }));
   app.use(express.json({ limit: "100mb" }));

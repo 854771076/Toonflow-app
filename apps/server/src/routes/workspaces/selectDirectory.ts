@@ -10,6 +10,7 @@ const router = Router();
 const runFile = promisify(execFile);
 
 export default router.post("/", async (req, res) => {
+  if (u.storage.getWorkspaceStore().mode === "supabase") return res.status(501).json(error("当前环境不支持该操作", null, 501));
   const native = getRuntimePlatform().nativeDevelopment && u.workspace.isLocalHostRequest(req);
   res.set("Cache-Control", "no-store");
   if (!native) return res.json(success({ native: false, directory: null }));

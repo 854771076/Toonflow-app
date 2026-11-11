@@ -22,9 +22,7 @@
         <div class="panelContent">
           <transition name="el-fade-in" mode="out-in">
             <keep-alive include="personalization">
-              <userAccount v-if="publicWeb && activePanel.id === 'account'" :request="http" :userName="currentUser?.userName ?? ''" :role="currentUser?.role" @loggedOut="loggedOut" />
               <component
-                v-else
                 :is="activePanel.component"
                 v-bind="
                   ['account', 'pluginMarket', 'languageModel', 'mediaModel', 'personalization', 'deviceLink'].includes(activePanel.id) ? { visible } : {}
@@ -40,12 +38,11 @@
 <script setup lang="ts">
 import { translate } from "@toonflow/i18n/vue";
 import { computed, defineAsyncComponent, shallowRef, watch } from "vue";
-import userAccount from "@toonflow/multi-tenant-user-web/account";
+import type { Component } from "vue";
 import { hasDesktopUpdate } from "@/stores/desktopUpdate";
-import { multiTenantEnabled } from "@/stores/settings";
-import { currentUser, publicWeb } from "@/stores/multiTenant";
+import { useAuthStore } from "@/stores/auth";
 import http from "@/lib/http";
-import { isMobile } from "@/lib/platform";
+import { actualPlatform, isMobile } from "@/lib/platform";
 import {
   IconSettings,
   IconPhotoVideo,
@@ -58,11 +55,18 @@ import {
   IconDevices,
   IconNetwork,
   IconUserCircle,
-  IconUsersGroup,
 } from "@tabler/icons-vue";
 
+// Web 版使用 new-api 网关账号，桌面端继续使用 Toonflow 自建账号。
+const gatewayMode = !actualPlatform.isLocalDesktop && !!useAuthStore().user;
+
 const allSettingsPanels = [
-  { id: "account", label: "账号与余额", icon: IconUserCircle, component: defineAsyncComponent(() => import("./panels/account/index.vue")) },
+  {
+    id: "account",
+    label: "账号与余额",
+    icon: IconUserCircle,
+    component: defineAsyncComponent<Component>(() => (gatewayMode ? import("./panels/gatewayAccount.vue") : import("./panels/account/index.vue"))),
+  },
   { id: "general", label: "通用设置", icon: IconSettings, component: defineAsyncComponent(() => import("./panels/general/index.vue")) },
   {
     id: "languageModel",
@@ -92,23 +96,15 @@ const allSettingsPanels = [
     component: defineAsyncComponent(() => import("./panels/personalization/index.vue")),
   },
   { id: "developer", label: "开发者选项", icon: IconCode, component: defineAsyncComponent(() => import("./panels/developer/index.vue")) },
-  { id: "multiTenant", label: "多租户能力", icon: IconUsersGroup, component: defineAsyncComponent(() => import("./panels/multiTenant/developmentNotice.vue")) },
   { id: "about", label: "关于", icon: IconInfoCircle, component: defineAsyncComponent(() => import("./panels/about/index.vue")) },
 ];
-const publicAccountPanel = { ...allSettingsPanels[0]!, get label() { return translate("账号"); } };
-const settingsPanels = computed(() => allSettingsPanels.filter(item => {
-  if (publicWeb.value && currentUser.value?.role === "user") return ["account", "general", "about"].includes(item.id);
-  if (publicWeb.value && ["multiTenant", "deviceLink", "network", "mcp", "developer", "pluginMarket"].includes(item.id)) return false;
-  return !multiTenantEnabled.value || !["languageModel", "mediaModel", "developer"].includes(item.id);
-}).map(item => publicWeb.value && item.id === "account" ? publicAccountPanel : item));
+const settingsPanels = computed(() => allSettingsPanels);
 const activePanel = shallowRef(settingsPanels.value[0]!);
 const visible = defineModel<boolean>({ default: false });
 
 watch(settingsPanels, panels => {
   activePanel.value = panels.find(item => item.id === activePanel.value.id) ?? panels[0]!;
 });
-
-function loggedOut() { window.location.reload(); }
 
 function openPanel(id: string) {
   const panel = settingsPanels.value.find(item => item.id === id);

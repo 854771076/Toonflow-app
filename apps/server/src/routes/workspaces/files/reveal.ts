@@ -5,12 +5,13 @@ import { Router } from "express";
 import { z } from "zod";
 import u from "@/utils";
 import { validateFields } from "@/lib/middleware";
-import { success } from "@/lib/responseFormat";
+import { error, success } from "@/lib/responseFormat";
 import { getRuntimePlatform } from "@/lib/platform";
 
 const router = Router();
 
 export default router.post("/", validateFields({ directory: z.string().min(1).max(4096), path: z.string().max(4096) }), async (req, res) => {
+  if (u.storage.getWorkspaceStore().mode === "supabase") return res.status(501).json(error("当前环境不支持该操作", null, 501));
   const desktop = u.desktop.getDesktopRuntime(req);
   const native = !!desktop || getRuntimePlatform().nativeDevelopment;
   if (!native || !u.workspace.isLocalWorkspaceRequest(req)) throw Object.assign(new Error("仅支持桌面客户端或本机开发页面打开文件所在位置"), { status: 403 });

@@ -3,16 +3,16 @@ import { dirname, join, relative } from "node:path";
 import { lstat, mkdir, readFile, realpath, writeAtomic } from "@toonflow/file";
 import type { ProviderTaskData } from "@toonflow/providers";
 import type { GeneratedMedia, MediaGenerationRequest } from "@toonflow/tools-scaffold/runtime";
-import type { AuthIdentity } from "@toonflow/multi-tenant-auth";
-import type { ModelOutcome } from "@toonflow/multi-tenant-gateway/types";
 import { audioGenerationSchema, imageGenerationSchema, videoGenerationSchema } from "@/utils/media/schemas";
 import { z } from "zod";
 import { error, errorFromCause, success } from "@/lib/responseFormat";
 import conf from "@/utils/conf";
 import { generateMedia, isMediaNotSubmitted, type MediaGenerationCheckpoint } from "@/utils/media/generation";
 import { lockWorkspaceFiles, resolveWorkspacePath } from "@/utils/workspace/files";
-import { modelGateway } from "@/utils/multiTenant/gateway";
+import { getWorkspaceStore } from "@/utils/storage";
 import { readPriceReference } from "@/utils/media/priceReference";
+
+type TaskOwnerIdentity = { role?: string; id?: string } | null | undefined;
 
 const maxRecordSize = 16 * 1024 * 1024;
 const maxBlobSize = 140 * 1024 * 1024;
@@ -86,16 +86,17 @@ const operations = new Map<string, Promise<void>>();
 let activeCount = 0;
 
 function invalid(message: string, status = 400): never { throw Object.assign(new Error(message), { status }); }
-function requireOwner(owner?: AuthIdentity | null) {
-  if (modelGateway.enabled() && !owner) invalid("请先登录 Toonflow", 401);
+function requireOwner(_owner?: TaskOwnerIdentity) {
+  // ACT: 非多租户模式下不需要登录校验。
 }
-function assertOwner(task: MediaTask, owner?: AuthIdentity | null) {
-  if (owner?.role === "admin") return;
-  if (task.record.ownerUserId ? owner?.role !== "user" || task.record.ownerUserId !== owner.id : owner?.role === "user") {
-    invalid("只能访问当前账号的媒体任务", 403);
-  }
+function assertOwner(task: MediaTask, owner?: TaskOwnerIdentity) {
+  // ACT: 非多租户模式下无 owner 概念，跳过权限校验。
+  void task; void owner;
 }
 function identity(value: string) { return process.platform === "win32" ? value.toLowerCase() : value; }
+async function normalizeWorkspace(cwd: string) {
+  return getWorkspaceStore().mode === "local" ? await realpath(cwd) : cwd;
+}
 function taskPath(cwd: string, taskId: string) {
   z.uuid().parse(taskId);
   return join(dirname(conf.path), "mediaTasks", `workspace${createHash("sha256").update(identity(cwd)).digest("hex")}`, `task${taskId.replaceAll("-", "").toLowerCase()}.json`);
@@ -213,7 +214,7 @@ async function persist(task: MediaTask, exclusive = false) {
   } catch (cause) { task.persistenceError = cause; throw cause; }
 }
 
-async function load(cwd: string, taskId: string, key: string, owner?: AuthIdentity | null) {
+async function load(cwd: string, taskId: string, key: string, owner?: TaskOwnerIdentity) {
   const cached = tasks.get(key);
   if (cached) { assertOwner(cached, owner); cached.settledAt = cached.active ? undefined : Date.now(); return cached; }
   if (!await privateDirectory(dirname(key), false)) return undefined;
@@ -225,7 +226,10 @@ async function load(cwd: string, taskId: string, key: string, owner?: AuthIdenti
   const task: MediaTask = { key, record, blobs: blobs ?? [], active: false, settledAt: Date.now() };
   assertOwner(task, owner);
   if (identity(stored.cwd) !== identity(cwd) || stored.taskId.toLowerCase() !== taskId.toLowerCase()) invalid("任务不属于当前工作区", 403);
-  if (stored.canvasPath) await resolveWorkspacePath(cwd, stored.canvasPath, true);
+  if (stored.canvasPath) {
+    if (getWorkspaceStore().mode === "local") await resolveWorkspacePath(cwd, stored.canvasPath, true);
+    else await getWorkspaceStore().exists(cwd, stored.canvasPath);
+  }
   tasks.set(key, task);
   return task;
 }
@@ -235,10 +239,19 @@ async function resumable(task: MediaTask) {
   if (state !== "running" && state !== "interrupted") return false;
   if (checkpoint.providerData || checkpoint.assets?.length) return true;
   if (!checkpoint.assetCount || checkpoint.files?.length !== checkpoint.assetCount) return false;
+  const store = getWorkspaceStore();
   for (const file of checkpoint.files) {
-    const { path } = await resolveWorkspacePath(task.record.cwd, file.path, true);
-    const info = await lstat(path).catch((cause: NodeJS.ErrnoException) => { if (cause.code === "ENOENT") return null; throw cause; });
-    if (!info?.isFile() || info.isSymbolicLink()) return false;
+    if (store.mode === "local") {
+      const { path } = await resolveWorkspacePath(task.record.cwd, file.path, true);
+      const info = await lstat(path).catch((cause: NodeJS.ErrnoException) => { if (cause.code === "ENOENT") return null; throw cause; });
+      if (!info?.isFile() || info.isSymbolicLink()) return false;
+    } else {
+      const info = await store.stat(task.record.cwd, file.path).catch((cause: { status?: number }) => {
+        if (cause.status === 404) return null;
+        throw cause;
+      });
+      if (!info || info.type !== "file") return false;
+    }
   }
   return true;
 }
@@ -260,63 +273,36 @@ function publicData(task: MediaTask) {
   return data;
 }
 
-async function snapshot(task: MediaTask, owner?: AuthIdentity | null) {
+async function snapshot(task: MediaTask, owner?: TaskOwnerIdentity) {
   const { taskId, state, nodeId, canvasPath, result } = task.record;
+  void owner;
   return { taskId, state, resumable: await resumable(task), nodeId, canvasPath,
-    ...(owner?.role === "user" ? {} : { providerData: publicData(task) }), ...(result ? { result } : {}) };
+    providerData: publicData(task), ...(result ? { result } : {}) };
 }
 
-async function finalizeCharge(task: MediaTask, outcome: ModelOutcome) {
-  const { record } = task;
-  if (!record.chargeId) return;
-  const charge = await modelGateway.finalize(record.chargeId, record.ownerUserId, outcome);
-  if (charge) record.chargeStatus = charge.status === "held" ? "pendingReview" : charge.status;
-  task.chargeFinalized = charge?.status !== "held";
-  return charge;
+async function finalizeCharge(task: MediaTask, _outcome: unknown) {
+  // ACT: 非多租户模式下无扣费系统，空操作。
+  void task;
 }
 
 async function settleCharge(task: MediaTask, files: GeneratedMedia[], signal = task.controller?.signal) {
+  // ACT: 非多租户模式下无扣费系统，chargeId/ownerUserId 不存在，始终在守卫处 return。
+  void files; void signal;
   const { record } = task;
   if (!record.chargeId || !record.ownerUserId || task.chargeFinalized) return;
+  // 以下代码在非多租户模式下不可达。
   if (record.chargeStatus === "settled" || record.chargeStatus === "released") { task.chargeFinalized = true; return; }
   if (!record.modelRouteCipher || !record.request || !record.mediaType) invalid("媒体任务扣费记录无效", 409);
   if (!files.length) invalid("媒体任务扣费记录无效", 409);
-  let seconds = 0;
-  let durationKnown = record.mediaType === "video";
-  const paths = await Promise.all(files.map(file => resolveWorkspacePath(record.cwd, file.path)));
-  const release = lockWorkspaceFiles(paths.map(item => item.path));
-  try {
-    // 交付和计量都绑定私有哈希；业务锁阻止 HTTP 在核验和探测之间替换输出，不重复持有文件原语锁。
-    for (const [index, file] of files.entries()) {
-      signal?.throwIfAborted();
-      const original = record.checkpoint.files?.find(item => item.path === file.path && item.mimeType === file.mimeType && item.mediaType === file.mediaType);
-      const bytes = await readPrivateFile(paths[index]!.path, 100 * 1024 * 1024);
-      if (!original || createHash("sha256").update(bytes).digest("hex") !== original.hash) invalid("任务结果文件已被修改，不能覆盖", 409);
-      if (record.mediaType === "video") {
-        const metadata = await readPriceReference(record.cwd, file, "video", signal);
-        if (!metadata.duration || !Number.isFinite(metadata.duration) || metadata.duration <= 0) durationKnown = false;
-        else seconds += metadata.duration;
-      }
-    }
-  } finally { release(); }
-  signal?.throwIfAborted();
-  // ACT: 媒体仅证明交付与实际用量，缺失时长是否阻止结算由统一网关按价格快照决定。
-  const charge = await finalizeCharge(task, { kind: "usage", usage: { requests: 1, ...(durationKnown ? { seconds } : {}) } });
-  if (!charge || charge.status === "held") invalid("媒体任务扣费记录无效", 503);
 }
 
 async function releaseCharge(task: MediaTask, notSubmitted = false) {
   const { record } = task;
-  if (!record.ownerUserId || task.chargeFinalized || !record.chargeId && !record.modelRouteCipher) return;
+  if (!record.ownerUserId || task.chargeFinalized || (!record.chargeId && !record.modelRouteCipher)) return;
   if (record.chargeStatus === "settled" || record.chargeStatus === "released") { task.chargeFinalized = true; return; }
   if (!record.chargeId) {
-    let existing;
-    try { existing = await modelGateway.getCharge(record.taskId, record.ownerUserId); }
-    catch (cause) { if ([403, 404].includes((cause as { status?: number } | null)?.status ?? 0)) return; throw cause; }
-    if (existing.status !== "reserved") return;
-    // ACT: taskId 可能被其他工作区或文本请求占用；按冻结快照和原 scope 证明同一预占后才可恢复并释放。
-    try { await prepareCharge(task, true); }
-    catch (cause) { if ([403, 409].includes((cause as { status?: number } | null)?.status ?? 0)) return; throw cause; }
+    // ACT: 非多租户模式下无扣费系统，chargeId 不会缺失。
+    return;
   }
   if (record.checkpoint.files?.length) {
     // 输出记录写在公开文件之前；无法确认交付时保留预占，不能把取消作为拿到部分结果后的全额退款。
@@ -344,24 +330,9 @@ async function reconcileCharge(task: MediaTask) {
 async function prepareCharge(task: MediaTask, recoverExisting = false) {
   const { record } = task;
   if (!record.ownerUserId || record.chargeId) return false;
-  if (!record.modelRouteCipher || !record.request || !record.mediaType) invalid("媒体任务扣费记录无效", 409);
-  try {
-    record.chargeId = await modelGateway.reserveSnapshot(record.mediaType, record.request.providerId, record.request.modelId,
-      record.modelRouteCipher, record.request, {
-        actor: { id: record.ownerUserId, role: "user" }, requestId: record.taskId,
-        payload: record.request, scope: record.cwd, recoverExisting,
-      });
-  } catch (cause) {
-    if ((cause as { status?: number } | null)?.status === 402) {
-      record.state = "failed";
-      record.result = { ...errorFromCause(cause), data: null };
-      await persist(task);
-    }
-    throw cause;
-  }
-  if (!record.chargeId) invalid("媒体任务扣费记录无效", 409);
-  await persist(task);
-  return true;
+  // ACT: 非多租户模式下无扣费系统，不创建 chargeId。
+  void recoverExisting; void record; void task;
+  return false;
 }
 
 async function execute(task: MediaTask, resume: boolean) {
@@ -412,25 +383,8 @@ async function execute(task: MediaTask, resume: boolean) {
 async function launch(task: MediaTask, resume: boolean, exclusive = false) {
   if (task.active) return;
   if (task.record.ownerUserId && (!task.record.modelRouteCipher || !task.record.chargeId)) invalid("媒体任务扣费记录无效", 409);
-  if (!resume && task.record.ownerUserId) {
-    const chargeId = task.record.chargeId;
-    if (!chargeId) invalid("媒体任务扣费记录无效", 409);
-    const charge = await modelGateway.getCharge(chargeId, task.record.ownerUserId);
-    if (!charge || charge.status !== "reserved") {
-      task.record.state = "failed";
-      task.record.chargeStatus = charge?.status === "settled" ? "settled" : charge?.status === "released" ? "released" : "pendingReview";
-      task.record.result = error("媒体任务扣费状态已变更，不能重新提交", null, 409);
-      await persist(task);
-      invalid("媒体任务扣费状态已变更，不能重新提交", 409);
-    }
-  }
+  // ACT: 非多租户模式下 ownerUserId 不存在，跳过扣费状态检查。
   if (activeCount >= 1000) {
-    if (task.record.modelRouteCipher) {
-      task.record.state = "failed";
-      task.record.result = error("生成任务过多，请稍后重试", null, 429);
-      await persist(task);
-      await releaseCharge(task);
-    }
     invalid("生成任务过多，请稍后重试", 429);
   }
   task.active = true;
@@ -455,16 +409,18 @@ async function launch(task: MediaTask, resume: boolean, exclusive = false) {
 }
 
 export async function start(cwd: string, taskId: string, mediaType: "image" | "video" | "audio", request: MediaGenerationRequest,
-  attachment: TaskOwner = {}, owner?: AuthIdentity | null) {
+  attachment: TaskOwner = {}, owner?: TaskOwnerIdentity) {
   requireOwner(owner);
-  cwd = await realpath(cwd);
+  cwd = await normalizeWorkspace(cwd);
   const key = taskPath(cwd, taskId);
   const parsed = requestSchemas[mediaType].parse(request);
   if (attachment.nodeId !== undefined) z.string().min(1).max(512).parse(attachment.nodeId);
   if (attachment.canvasPath !== undefined) {
     relativePathSchema.parse(attachment.canvasPath);
-    const resolved = await resolveWorkspacePath(cwd, attachment.canvasPath, true);
-    attachment = { ...attachment, canvasPath: relative(cwd, resolved.path).replace(/\\/g, "/") };
+    if (getWorkspaceStore().mode === "local") {
+      const resolved = await resolveWorkspacePath(cwd, attachment.canvasPath, true);
+      attachment = { ...attachment, canvasPath: relative(cwd, resolved.path).replace(/\\/g, "/") };
+    }
   }
   return locked(key, async () => {
     const current = await load(cwd, taskId, key, owner);
@@ -477,13 +433,9 @@ export async function start(cwd: string, taskId: string, mediaType: "image" | "v
       return snapshot(current, owner);
     }
     if (activeCount >= 1000) invalid("生成任务过多，请稍后重试", 429);
-    const modelRouteCipher = modelGateway.enabled()
-      ? await modelGateway.capture(mediaType, parsed.providerId, parsed.modelId, parsed) : undefined;
-    if (owner?.role === "user" && !modelRouteCipher) invalid("多租户模型路由尚未开启", 403);
     const now = Date.now();
     const task: MediaTask = { key, blobs: [], active: false, record: {
       version: 1, taskId, cwd, mediaType, request: parsed, ...attachment,
-      ownerUserId: owner?.role === "user" ? owner.id : undefined, modelRouteCipher,
       state: "running", createdAt: now, updatedAt: now, checkpoint: {},
     } };
     try {
@@ -507,9 +459,9 @@ export async function start(cwd: string, taskId: string, mediaType: "image" | "v
   });
 }
 
-export async function status(cwd: string, taskIds: string[], resume = false, owner?: AuthIdentity | null) {
+export async function status(cwd: string, taskIds: string[], resume = false, owner?: TaskOwnerIdentity) {
   requireOwner(owner);
-  cwd = await realpath(cwd);
+  cwd = await normalizeWorkspace(cwd);
   return Promise.all(taskIds.map(taskId => {
     const key = taskPath(cwd, taskId);
     return locked(key, async () => {
@@ -531,9 +483,9 @@ export async function status(cwd: string, taskIds: string[], resume = false, own
   }));
 }
 
-export async function cancel(cwd: string, taskIds: string[], owner?: AuthIdentity | null) {
+export async function cancel(cwd: string, taskIds: string[], owner?: TaskOwnerIdentity) {
   requireOwner(owner);
-  cwd = await realpath(cwd);
+  cwd = await normalizeWorkspace(cwd);
   await Promise.all(taskIds.map(taskId => {
     const key = taskPath(cwd, taskId);
     return locked(key, async () => {
@@ -561,10 +513,10 @@ export async function cancel(cwd: string, taskIds: string[], owner?: AuthIdentit
   }));
 }
 
-export async function wait(cwd: string, taskId: string, owner?: AuthIdentity | null, signal?: AbortSignal): Promise<GeneratedMedia[]> {
+export async function wait(cwd: string, taskId: string, owner?: TaskOwnerIdentity, signal?: AbortSignal): Promise<GeneratedMedia[]> {
   requireOwner(owner);
   if (signal?.aborted) { await cancel(cwd, [taskId], owner); signal.throwIfAborted(); }
-  cwd = await realpath(cwd);
+  cwd = await normalizeWorkspace(cwd);
   const task = await load(cwd, taskId, taskPath(cwd, taskId), owner);
   if (!task) invalid("生成任务不存在", 404);
   let abort: (() => void) | undefined;

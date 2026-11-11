@@ -23,12 +23,8 @@ import { createAssetContext } from "@/agent/assets";
 import { readDocument } from "@/utils/documents";
 import { createMcpAgentTools } from "@/utils/mcp/servers";
 import { createPluginMarketTools } from "./pluginMarket";
-import { currentIdentity } from "@/utils/multiTenant/context";
-import { modelGateway, requireDirectModelAccess } from "@/utils/multiTenant/gateway";
-import * as mediaTasks from "@/utils/media/tasks";
 
 export function createAgentToolContext(cwd: string, config: Record<string, unknown> = {}, canvas?: CanvasContext, question?: QuestionContext, workspaceAvailable = true): ToolContext {
-  const actor = currentIdentity();
   const sourceCanvas = canvas;
   if (sourceCanvas) {
     canvas = {
@@ -52,11 +48,7 @@ export function createAgentToolContext(cwd: string, config: Record<string, unkno
   async function generate(mediaType: "image" | "video" | "audio", request: MediaGenerationRequest, signal?: AbortSignal) {
     requireWorkspace();
     signal?.throwIfAborted();
-    if (!modelGateway.enabled()) return generateMedia(cwd, mediaType, request, signal);
-    if (!actor) throw Object.assign(new Error("请先登录 Toonflow"), { status: 401 });
-    const taskId = crypto.randomUUID();
-    await mediaTasks.start(cwd, taskId, mediaType, request, {}, actor);
-    return mediaTasks.wait(cwd, taskId, actor, signal);
+    return generateMedia(cwd, mediaType, request, signal);
   }
   const resolvePath = async (path: string, readOnly = false) => {
     requireWorkspace();
@@ -123,7 +115,7 @@ export function createAgentToolContext(cwd: string, config: Record<string, unkno
     }),
   };
   return {
-    cwd, config, files, resolvePath, writeFile: files.writeFile, canvas, question, requireDirectModelAccess,
+    cwd, config, files, resolvePath, writeFile: files.writeFile, canvas, question,
     skills: workspaceAvailable ? createSkillContext(cwd) : undefined, assets: workspaceAvailable ? createAssetContext(cwd) : undefined,
     browser: createBrowserContext(cwd),
     // ACT: OHOS 使用禁用 WASM 的嵌入式 Node，无法启动当前沙盒子进程。

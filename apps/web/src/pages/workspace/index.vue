@@ -25,7 +25,7 @@
         :fileAction="performFileAction"
         :saveNode="saveDocumentNode" />
     </keep-alive>
-    <workspaceMenu class="workspaceMenu" @openSettings="settingsVisible = true" />
+    <workspaceMenu class="workspaceMenu" @openSettings="settingsVisible = true" @openAccount="openAccountPanel" />
     <div class="workspaceTools">
       <el-segmented :modelValue="activePanel" class="panelSwitcher" :options="panelOptions" size="small" aria-label="切换面板" @change="switchPanel">
         <template #default="{ item }">
@@ -111,7 +111,7 @@
       </div>
     </div>
     <floatingAgent v-model="agentVisible" :inert="workspaceStore.projectLoadingVisible" @resize="agentWidth = $event" />
-    <settings v-model="settingsVisible" />
+    <settings ref="settingsRef" v-model="settingsVisible" />
     <el-dialog v-model="contactVisible" :title="contactInfo.title" width="min(360px, calc(100vw - 32px))" alignCenter appendToBody>
       <div class="contactContent">
         <q-r-code
@@ -172,6 +172,7 @@ const panelOptions = [
 const agentVisible = ref(true);
 const agentWidth = ref(0);
 const settingsVisible = ref(false);
+const settingsRef = ref<InstanceType<typeof settings>>();
 const helpVisible = ref(false);
 const contactVisible = ref(false);
 const contactType = ref<"community" | "business">("community");
@@ -193,6 +194,13 @@ function showContact(type: "community" | "business") {
   contactType.value = type;
   helpVisible.value = false;
   contactVisible.value = true;
+}
+
+function openAccountPanel() {
+  if (!settingsRef.value?.openPanel("account")) {
+    // ACT: account 面板不可用时直接打开设置
+    settingsVisible.value = true;
+  }
 }
 const canvasPanelRef = ref<InstanceType<typeof canvasPanel>>();
 watch(() => canvasPanelRef.value?.canvasListReady, ready => {

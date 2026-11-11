@@ -9,7 +9,6 @@ import { nodeToolPermissionsSchema } from "@toonflow/tool-canvas/runtime";
 import type { ReasoningEfforts, ThinkingLevel } from "@toonflow/server/modelReasoning";
 import type { ProviderSources } from "@toonflow/server/channel";
 import http from "@/lib/http";
-import { currentUser, publicWeb } from "@/stores/multiTenant";
 import "element-plus/es/components/message/style/css";
 
 export const settings = ref<Record<string, unknown>>({});
@@ -21,7 +20,7 @@ let applyingSettings = false;
 let multiTenantVersion = 0;
 let settingsRevision: number | undefined;
 
-export const multiTenantEnabled = computed(() => settings.value.multiTenantEnabled === true);
+export const multiTenantEnabled = computed(() => false);
 
 export function applyMultiTenantEnabled(enabled: boolean) {
   multiTenantVersion++;
@@ -36,7 +35,6 @@ export const settingsStorage = {
   getItem(key: string) {
     const stores = settings.value.stores as Record<string, unknown> | undefined;
     if (stores && Object.hasOwn(stores, key)) return JSON.stringify(stores[key]);
-    if (publicWeb.value) return null;
     // ACT: 只迁移当前来源可读取的旧缓存，保留原值；不同端口的 localStorage 不能互读。
     const value = localStorage.getItem(key);
     if (value !== null) settingsStorage.setItem(key, value);
@@ -131,7 +129,7 @@ export async function refreshToonflowProvider() {
   toonflowProviderError.value = "";
   toonflowProviderLoading.value = false;
   const token = toonflowAccountToken.value;
-  if (multiTenantEnabled.value || !token) { providerRequest = undefined; return; }
+  if (!token) { providerRequest = undefined; return; }
   const request = new AbortController();
   providerRequest = request;
   toonflowProviderLoading.value = true;
@@ -146,10 +144,10 @@ export async function refreshToonflowProvider() {
       { signal: request.signal, headers: { "x-toonflow-workspace": "1", Authorization: `Bearer ${token}` }, timeout: 45000 },
     );
     if (data.code !== 200 || data.data?.provider?.id !== "Toonflow") throw new Error(data.message || "安装账号供应商失败");
-    await saveSettings(() => request.signal.aborted || multiTenantEnabled.value || toonflowAccountToken.value !== token
+    await saveSettings(() => request.signal.aborted || toonflowAccountToken.value !== token
       ? undefined : { toonflowProvider: data.data.provider }, request.signal);
   } catch (error) {
-    if (!request.signal.aborted && !multiTenantEnabled.value && toonflowAccountToken.value === token) {
+    if (!request.signal.aborted && toonflowAccountToken.value === token) {
       toonflowProviderError.value = axios.isAxiosError<{ message?: string }>(error)
         ? error.response?.data?.message || "安装账号供应商失败，请刷新重试"
         : error instanceof Error ? error.message : "安装账号供应商失败，请刷新重试";
@@ -259,6 +257,6 @@ watch(settings, () => {
   });
 }, { deep: true, flush: "sync" });
 
-watch([() => settings.value.toonflowAccount, multiTenantEnabled], () => {
+watch(() => settings.value.toonflowAccount, () => {
   if (settingsReady) void refreshToonflowProvider();
 }, { flush: "sync" });

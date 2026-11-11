@@ -4,7 +4,6 @@
   "type": "module",
   "exports": {
     "./app": "./src/app.ts",
-    "./multiTenant": "./src/utils/multiTenant/index.ts",
     "./remoteConnection": "./src/remoteConnection.ts",
     "./desktop": "./src/types/desktop.ts",
     "./pluginDevelopment": "./src/lib/pluginDevelopment.ts",
@@ -17,6 +16,7 @@
     "./mobileLink": "./src/utils/mobileLink/index.ts",
     "./browser": "./src/utils/browser/index.ts",
     "./agent/types": "./src/agent/runtime/types.ts",
+    "./multiTenant": "./src/utils/multiTenantCompat.ts",
     "./singleAgent/types": "./src/utils/singleAgent/types.ts",
     "./agent/mentionSources": "./src/agent/mentionSources.ts",
     "./i18n": "./src/lib/i18n.ts"
@@ -35,15 +35,11 @@
     "@earendil-works/pi-coding-agent": "^0.85.1",
     "@firecrawl/anydoc": "0.2.4",
     "@firecrawl/anydoc-wasm": "0.2.4",
+    "@supabase/supabase-js": "^2.119.0",
     "@toonflow/ffmpeg": "workspace:*",
     "@toonflow/file": "workspace:*",
     "@toonflow/i18n": "workspace:*",
     "@toonflow/mcp": "workspace:*",
-    "@toonflow/multi-tenant-auth": "workspace:*",
-    "@toonflow/multi-tenant-billing": "workspace:*",
-    "@toonflow/multi-tenant-gateway": "workspace:*",
-    "@toonflow/multi-tenant-models": "workspace:*",
-    "@toonflow/multi-tenant-source-mapping": "workspace:*",
     "@toonflow/providers": "workspace:*",
     "@toonflow/teams-scaffold": "workspace:*",
     "@toonflow/tool-asset-operator": "workspace:*",
@@ -62,6 +58,7 @@
     "zod": "^4.6.2"
   },
   "devDependencies": {
+    "@types/bun": "^1.4.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10"

@@ -14,6 +14,7 @@ export default defineConfig(({ command }) => ({
   css: { postcss: postcssConfig },
   define: {
     "import.meta.env.appVersion": JSON.stringify(desktopConfig.app.version),
+    "import.meta.env.VITE_GATEWAY_PUBLIC_URL": JSON.stringify(process.env.GATEWAY_PUBLIC_URL ?? process.env.GATEWAY_BASE_URL ?? ""),
   },
   server: {
     proxy: {

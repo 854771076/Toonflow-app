@@ -38,8 +38,6 @@
     "@toonflow/ext-scaffold": "workspace:*",
     "@toonflow/i18n": "workspace:*",
     "@toonflow/model-icons": "workspace:*",
-    "@toonflow/multi-tenant-admin-web": "workspace:*",
-    "@toonflow/multi-tenant-user-web": "workspace:*",
     "@toonflow/node-text": "workspace:*",
     "@toonflow/node-shared": "workspace:*",
     "@toonflow/node-video": "workspace:*",

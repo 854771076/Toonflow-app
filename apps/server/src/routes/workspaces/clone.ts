@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { lstat, mkdir, mkdtemp, realpath, rm } from "@toonflow/file";
-import { dirname, join } from "node:path";
+import { randomUUID } from "node:crypto";
+import { join } from "node:path";
 import { z } from "zod";
 import u from "@/utils";
 import { validateFields } from "@/lib/middleware";
 import { success } from "@/lib/responseFormat";
-import { t, translateError, translateMessage } from "@/lib/i18n";
 
 const inputSchema = z.strictObject({
   directory: z.string().min(1).max(4096),
@@ -16,16 +15,14 @@ const inputSchema = z.strictObject({
 export default Router().post("/", validateFields(inputSchema.shape), async (req, res) => {
   u.mcpControl.assertAppRequest(req);
   const input = inputSchema.parse(req.body);
-  const parent = await u.workspace.resolveWorkspace(req, input.directory);
+  const store = u.storage.getWorkspaceStore();
+  const workspace = await store.resolveWorkspace(req, input.directory);
   const controller = new AbortController();
   const close = () => { if (!res.writableFinished) controller.abort(new Error("项目克隆已取消")); };
   res.once("close", close);
   req.once("aborted", close);
   req.socket.once("close", close);
   const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(300000)]);
-  let directory: string | undefined;
-  let created: Awaited<ReturnType<typeof lstat>> | undefined;
-  let release: (() => void) | undefined;
   try {
     // ACT: 复用内存 ZIP 校验，压缩包和解压内容各限 512 MB、2 万条目；更大项目需改为流式暂存与解压。
     const maxBytes = 512 * 1024 * 1024;
@@ -54,35 +51,30 @@ export default Router().post("/", validateFields(inputSchema.shape), async (req,
     signal.throwIfAborted();
     let name = input.name.replace(/[<>:"/\\|?*\x00-\x1f]/g, "_").replace(/[. ]+$/, "").slice(0, 80);
     if (!name || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name)) name = "Toonflow";
-    directory = await mkdtemp(join(parent, `${name}-`));
-    created = await lstat(directory);
-    if (!u.workspaceFile.isWithin(parent, await realpath(directory))) throw new Error("项目下载目录超出所选位置");
-    release = u.workspaceFile.lockWorkspaceFiles([directory]);
+    // ACT: 存储抽象没有 mkdtemp；写入失败时不自动删除已写内容，避免绕过画布保护的批量删除，残留目录由用户手动清理。
+    const folder = `${name}-${randomUUID().slice(0, 8)}`;
+    await store.mkdir(workspace, folder);
+    const directories = new Set<string>();
+    for (const path of paths) {
+      const parts = path.split("/").filter(part => part && part !== ".");
+      for (let index = 1; index < parts.length; index++) directories.add(`${folder}/${parts.slice(0, index).join("/")}`);
+    }
+    for (const directory of [...directories].sort((a, b) => a.split("/").length - b.split("/").length)) {
+      await store.mkdir(workspace, directory).catch(error => {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+      });
+    }
     for (const [path, content] of files) {
       signal.throwIfAborted();
-      const candidate = await u.workspaceFile.resolveWorkspacePath(directory, path, true);
-      await mkdir(dirname(candidate.path), { recursive: true });
-      const target = await u.workspaceFile.resolveWorkspacePath(directory, path);
-      await u.workspaceFile.writeWorkspaceFile(target.path, content, true);
+      await store.write(workspace, `${folder}/${path}`, content);
     }
     signal.throwIfAborted();
+    const directory = await store.resolveWorkspace(req, store.mode === "local" ? join(workspace, folder) : `${workspace}/${folder}`);
     res.json(success({ directory }));
   } catch (error) {
-    if (directory && created) {
-      try {
-        const current = await lstat(directory);
-        const actual = await realpath(directory);
-        if (current.isSymbolicLink() || current.ino !== created.ino || current.dev !== created.dev
-          || actual !== directory || !u.workspaceFile.isWithin(parent, actual) || directory === parent) throw new Error("项目目录已变更，未自动删除");
-        await rm(directory, { recursive: true });
-      } catch (cleanupError) {
-        throw new Error(t`项目克隆失败，未能清理下载目录 ${directory}：${cleanupError instanceof Error ? translateError(cleanupError) : translateMessage("请检查目录权限")}`, { cause: error });
-      }
-    }
     if (signal.aborted && !controller.signal.aborted) throw Object.assign(new Error("项目克隆超时（5 分钟），请检查网络后重试", { cause: error }), { status: 504 });
     throw error;
   } finally {
-    release?.();
     res.off("close", close);
     req.off("aborted", close);
     req.socket.off("close", close);
