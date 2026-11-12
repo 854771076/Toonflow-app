@@ -37,7 +37,6 @@ import * as a2aSettings from "@/agent/a2a/settings";
 import * as personalization from "@/utils/personalization";
 import * as mentionFiles from "@/agent/mentionFiles";
 import * as network from "@/utils/network";
-import * as channel from "@/utils/channel";
 import * as gatewayAuth from "@/utils/gatewayAuth";
 
 export default {
@@ -82,6 +81,5 @@ export default {
   personalization,
   mentionFiles,
   network,
-  channel,
   gatewayAuth,
 };

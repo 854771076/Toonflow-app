@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Biểu trưng Toonflow" width="120" height="120" />
+  <img src="../images/logo.png" alt="Biểu trưng YuYuer Drama" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20Ideas%20into%20Stories" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20Ideas%20into%20Stories" alt="Toonflow · Xưởng phim ngắn AI · Biến cảm hứng thành câu chuyện có thể nhìn thấy" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20Ideas%20into%20Stories" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20Ideas%20into%20Stories" alt="YuYuer Drama · Xưởng phim ngắn AI · Biến cảm hứng thành câu chuyện có thể nhìn thấy" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Chứng nhận Toonflow AtomGit G-Star No.540" width="100%" />
+          <img src="../images/gStar.png" alt="Chứng nhận YuYuer Drama AtomGit G-Star No.540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Chứng nhận Toonflow Gitee GVP" width="100%" />
+          <img src="../images/gvp.jpg" alt="Chứng nhận YuYuer Drama Gitee GVP" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 Tài trợ và hỗ trợ
 
-Xin cảm ơn các đối tác sau đã hỗ trợ dự án mã nguồn mở Toonflow.
+Xin cảm ơn các đối tác sau đã hỗ trợ dự án mã nguồn mở YuYuer Drama.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@ Xin cảm ơn các đối tác sau đã hỗ trợ dự án mã nguồn mở Too
 
 ## 2. 🌟 Điểm nổi bật
 
-Toonflow là nền tảng sáng tạo AI mã nguồn mở dành cho sản xuất phim ngắn nhiều tập, phim truyện tranh và video ngắn, kết hợp kịch bản, tài nguyên và các đoạn video trên cùng một canvas vô hạn.
+YuYuer Drama là nền tảng sáng tạo AI mã nguồn mở dành cho sản xuất phim ngắn nhiều tập, phim truyện tranh và video ngắn, kết hợp kịch bản, tài nguyên và các đoạn video trên cùng một canvas vô hạn.
 
 | Khả năng | Mô tả |
 | --- | --- |
@@ -224,25 +224,25 @@ Các ngôn ngữ được hỗ trợ: 简体中文, 繁體中文, English, 日�
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Trang chủ dự án và sáng tạo từ ý tưởng trong Toonflow" width="80%" /></a><br /><sub>Trang chủ dự án và sáng tạo từ ý tưởng</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Trang chủ dự án và sáng tạo từ ý tưởng trong YuYuer Drama" width="80%" /></a><br /><sub>Trang chủ dự án và sáng tạo từ ý tưởng</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Khởi động lần đầu và cấu hình nhanh Toonflow" width="80%" /></a><br /><sub>Khởi động lần đầu và cấu hình nhanh</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Khởi động lần đầu và cấu hình nhanh YuYuer Drama" width="80%" /></a><br /><sub>Khởi động lần đầu và cấu hình nhanh</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Canvas giao diện tối và trợ lý AI của Toonflow" width="80%" /></a><br /><sub>Canvas sáng tạo · Giao diện tối</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Canvas giao diện tối và trợ lý AI của YuYuer Drama" width="80%" /></a><br /><sub>Canvas sáng tạo · Giao diện tối</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Canvas giao diện sáng và trợ lý AI của Toonflow" width="80%" /></a><br /><sub>Canvas sáng tạo · Giao diện sáng</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Canvas giao diện sáng và trợ lý AI của YuYuer Drama" width="80%" /></a><br /><sub>Canvas sáng tạo · Giao diện sáng</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Canvas tài nguyên nhân vật, bối cảnh và đạo cụ của Toonflow" width="80%" /></a><br /><sub>Tài nguyên nhân vật, bối cảnh và đạo cụ</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Canvas tài nguyên nhân vật, bối cảnh và đạo cụ của YuYuer Drama" width="80%" /></a><br /><sub>Tài nguyên nhân vật, bối cảnh và đạo cụ</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Bàn đạo diễn 3D và xem trước cảnh quay trong Toonflow" width="80%" /></a><br /><sub>Bàn đạo diễn 3D và xem trước cảnh quay</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Bàn đạo diễn 3D và xem trước cảnh quay trong YuYuer Drama" width="80%" /></a><br /><sub>Bàn đạo diễn 3D và xem trước cảnh quay</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Tạo ảnh nhân vật từ ba góc nhìn trong Toonflow" width="80%" /></a><br /><sub>Nhân vật ở ba góc nhìn và tạo ảnh</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Tạo ảnh nhân vật từ ba góc nhìn trong YuYuer Drama" width="80%" /></a><br /><sub>Nhân vật ở ba góc nhìn và tạo ảnh</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Tạo video từ nhiều tư liệu tham chiếu trong Toonflow" width="80%" /></a><br /><sub>Tạo video từ nhiều tư liệu tham chiếu</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Tạo video từ nhiều tư liệu tham chiếu trong YuYuer Drama" width="80%" /></a><br /><sub>Tạo video từ nhiều tư liệu tham chiếu</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Menu nút và thao tác nhóm trong Toonflow" width="80%" /></a><br /><sub>Menu nút và thao tác nhóm</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Menu nút và thao tác nhóm trong YuYuer Drama" width="80%" /></a><br /><sub>Menu nút và thao tác nhóm</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Chợ plugin Toonflow" width="80%" /></a><br /><sub>Chợ plugin</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Chợ plugin YuYuer Drama" width="80%" /></a><br /><sub>Chợ plugin</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ Các ngôn ngữ được hỗ trợ: 简体中文, 繁體中文, English, 日�
 
 Trình cài đặt Windows tự động kiểm tra và cài đặt WebView2. Nếu ứng dụng đóng đột ngột ngay khi mở sau khi cài đặt, hãy truy cập [trang tải WebView2](https://developer.microsoft.com/microsoft-edge/webview2/) để cài đặt môi trường chạy theo cách thủ công.
 
-Trên macOS (Apple Silicon), chỉ cần kéo Toonflow vào “Ứng dụng” rồi mở trực tiếp, không cần chạy lệnh trong Terminal trước. Nếu hệ thống hiển thị cảnh báo bảo mật, hãy thực hiện theo thứ tự sau.
+Trên macOS (Apple Silicon), chỉ cần kéo YuYuer Drama vào “Ứng dụng” rồi mở trực tiếp, không cần chạy lệnh trong Terminal trước. Nếu hệ thống hiển thị cảnh báo bảo mật, hãy thực hiện theo thứ tự sau.
 
 <details>
 <summary><strong>Cách xử lý khi không thể cài đặt hoặc mở trên macOS</strong></summary>
 
-**1. Cho phép Toonflow trong “Quyền riêng tư & Bảo mật”**
+**1. Cho phép YuYuer Drama trong “Quyền riêng tư & Bảo mật”**
 
-Nếu thấy thông báo “không thể xác minh nhà phát triển” hoặc “Apple không thể kiểm tra xem ứng dụng có chứa phần mềm độc hại hay không”, trước tiên hãy thử mở Toonflow, rồi vào “Cài đặt hệ thống → Quyền riêng tư & Bảo mật”. Tìm thông báo Toonflow bị chặn, nhấp “Vẫn mở” và xác nhận theo hướng dẫn. Xem [hướng dẫn chính thức của Apple](https://support.apple.com/zh-cn/102445) để biết chi tiết.
+Nếu thấy thông báo “không thể xác minh nhà phát triển” hoặc “Apple không thể kiểm tra xem ứng dụng có chứa phần mềm độc hại hay không”, trước tiên hãy thử mở YuYuer Drama, rồi vào “Cài đặt hệ thống → Quyền riêng tư & Bảo mật”. Tìm thông báo YuYuer Drama bị chặn, nhấp “Vẫn mở” và xác nhận theo hướng dẫn. Xem [hướng dẫn chính thức của Apple](https://support.apple.com/zh-cn/102445) để biết chi tiết.
 
 **2. Nếu vẫn không mở được do hạn chế cách ly của hệ thống, hãy thử xóa thuộc tính cách ly**
 
@@ -388,7 +388,7 @@ Khi thấy thông báo “Khởi động dịch vụ thành công” (`服务启
 
 ### 4.5 Triển khai trên nền tảng đám mây
 
-Nền tảng đối tác [AI-Galaxy (智星云)](https://www.ai-galaxy.com/) cung cấp image Toonflow thương mại được ủy quyền chính thức, cho phép sử dụng trực tiếp môi trường đã cài sẵn. Xem các bước cụ thể trong [hướng dẫn triển khai image có hình minh họa](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
+Nền tảng đối tác [AI-Galaxy (智星云)](https://www.ai-galaxy.com/) cung cấp image YuYuer Drama thương mại được ủy quyền chính thức, cho phép sử dụng trực tiếp môi trường đã cài sẵn. Xem các bước cụ thể trong [hướng dẫn triển khai image có hình minh họa](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
 
 ---
 
@@ -414,7 +414,7 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 Trợ lý hỗ trợ tham gia nhóm:
 
-<img src="../images/qr.png" alt="Mã QR cộng đồng Toonflow" height="400"/>
+<img src="../images/qr.png" alt="Mã QR cộng đồng YuYuer Drama" height="400"/>
 
 Bạn cũng có thể nhấp vào biểu tượng để tham gia Discord:
 
@@ -426,15 +426,15 @@ Hoặc nhấp vào liên kết mời: [https://discord.gg/HEjKmpNpAZ](https://di
 
 ## 7. 💌 Liên hệ
 
-📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 Giấy phép mã nguồn mở
 
-Toonflow sử dụng [giấy phép MIT](../../LICENSE). Các gói phụ thuộc và tư liệu bên thứ ba tuân theo giấy phép và thông báo bản quyền tương ứng.
+YuYuer Drama sử dụng [giấy phép MIT](../../LICENSE). Các gói phụ thuộc và tư liệu bên thứ ba tuân theo giấy phép và thông báo bản quyền tương ứng.
 
-[![Lịch sử số sao của Toonflow](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![Lịch sử số sao của YuYuer Drama](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **Điều khoản không hồi tố**: Người dùng sử dụng theo AGPL-3.0 trước khi v1.0.8 được phát hành tiếp tục tuân theo AGPL-3.0; các phiên bản v1.0.8 ~ v1.1.8 tiếp tục tuân theo Apache-2.0 cùng thỏa thuận bổ sung, không chịu ảnh hưởng của thay đổi giấy phép này.
 
@@ -457,4 +457,4 @@ Bản quyền © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Chân trang Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Chân trang YuYuer Drama" width="100%" />

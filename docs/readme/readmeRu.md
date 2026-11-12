@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Логотип Toonflow" width="120" height="120" />
+  <img src="../images/logo.png" alt="Логотип YuYuer Drama" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;%D0%98%D0%98-%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%BA%D0%BE%D1%80%D0%BE%D1%82%D0%BA%D0%B8%D1%85%20%D0%B4%D1%80%D0%B0%D0%BC;%D0%9E%D0%B6%D0%B8%D0%B2%D0%BB%D1%8F%D0%B9%D1%82%D0%B5%20%D1%81%D0%B2%D0%BE%D0%B8%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;%D0%98%D0%98-%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%BA%D0%BE%D1%80%D0%BE%D1%82%D0%BA%D0%B8%D1%85%20%D0%B4%D1%80%D0%B0%D0%BC;%D0%9E%D0%B6%D0%B8%D0%B2%D0%BB%D1%8F%D0%B9%D1%82%D0%B5%20%D1%81%D0%B2%D0%BE%D0%B8%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8" alt="Toonflow · ИИ-студия коротких драм · Оживляйте свои истории" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;%D0%98%D0%98-%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%BA%D0%BE%D1%80%D0%BE%D1%82%D0%BA%D0%B8%D1%85%20%D0%B4%D1%80%D0%B0%D0%BC;%D0%9E%D0%B6%D0%B8%D0%B2%D0%BB%D1%8F%D0%B9%D1%82%D0%B5%20%D1%81%D0%B2%D0%BE%D0%B8%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;%D0%98%D0%98-%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%BA%D0%BE%D1%80%D0%BE%D1%82%D0%BA%D0%B8%D1%85%20%D0%B4%D1%80%D0%B0%D0%BC;%D0%9E%D0%B6%D0%B8%D0%B2%D0%BB%D1%8F%D0%B9%D1%82%D0%B5%20%D1%81%D0%B2%D0%BE%D0%B8%20%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8" alt="YuYuer Drama · ИИ-студия коротких драм · Оживляйте свои истории" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Сертификат Toonflow AtomGit G-Star №540" width="100%" />
+          <img src="../images/gStar.png" alt="Сертификат YuYuer Drama AtomGit G-Star №540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Сертификат Toonflow Gitee GVP" width="100%" />
+          <img src="../images/gvp.jpg" alt="Сертификат YuYuer Drama Gitee GVP" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 Спонсоры и поддержка
 
-Благодарим следующих партнёров за поддержку открытого проекта Toonflow.
+Благодарим следующих партнёров за поддержку открытого проекта YuYuer Drama.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@
 
 ## 2. 🌟 Возможности
 
-Toonflow — открытая ИИ-платформа для создания коротких драм, анимированных комиксов и коротких видео. Она объединяет сценарии, материалы и видеоклипы на одном бесконечном холсте.
+YuYuer Drama — открытая ИИ-платформа для создания коротких драм, анимированных комиксов и коротких видео. Она объединяет сценарии, материалы и видеоклипы на одном бесконечном холсте.
 
 | Возможность | Описание |
 | --- | --- |
@@ -224,25 +224,25 @@ Toonflow — открытая ИИ-платформа для создания к
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Главная страница проектов Toonflow и работа с идеями" width="80%" /></a><br /><sub>Главная страница проектов и работа с идеями</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Главная страница проектов YuYuer Drama и работа с идеями" width="80%" /></a><br /><sub>Главная страница проектов и работа с идеями</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Первый запуск и быстрая настройка Toonflow" width="80%" /></a><br /><sub>Первый запуск и быстрая настройка</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Первый запуск и быстрая настройка YuYuer Drama" width="80%" /></a><br /><sub>Первый запуск и быстрая настройка</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Холст Toonflow в тёмной теме и ИИ-помощник" width="80%" /></a><br /><sub>Творческий холст · Тёмная тема</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Холст YuYuer Drama в тёмной теме и ИИ-помощник" width="80%" /></a><br /><sub>Творческий холст · Тёмная тема</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Холст Toonflow в светлой теме и ИИ-помощник" width="80%" /></a><br /><sub>Творческий холст · Светлая тема</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Холст YuYuer Drama в светлой теме и ИИ-помощник" width="80%" /></a><br /><sub>Творческий холст · Светлая тема</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Холст Toonflow с материалами персонажей, сцен и реквизита" width="80%" /></a><br /><sub>Материалы персонажей, сцен и реквизита</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Холст YuYuer Drama с материалами персонажей, сцен и реквизита" width="80%" /></a><br /><sub>Материалы персонажей, сцен и реквизита</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="3D-студия режиссёра Toonflow и предварительная визуализация кадров" width="80%" /></a><br /><sub>3D-студия режиссёра и предварительная визуализация кадров</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="3D-студия режиссёра YuYuer Drama и предварительная визуализация кадров" width="80%" /></a><br /><sub>3D-студия режиссёра и предварительная визуализация кадров</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Персонажи в трёх проекциях и генерация изображений в Toonflow" width="80%" /></a><br /><sub>Персонажи в трёх проекциях и генерация изображений</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Персонажи в трёх проекциях и генерация изображений в YuYuer Drama" width="80%" /></a><br /><sub>Персонажи в трёх проекциях и генерация изображений</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Генерация видео в Toonflow по нескольким референсам" width="80%" /></a><br /><sub>Генерация видео по нескольким референсам</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Генерация видео в YuYuer Drama по нескольким референсам" width="80%" /></a><br /><sub>Генерация видео по нескольким референсам</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Меню узлов Toonflow и операции с группами" width="80%" /></a><br /><sub>Меню узлов и операции с группами</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Меню узлов YuYuer Drama и операции с группами" width="80%" /></a><br /><sub>Меню узлов и операции с группами</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Каталог плагинов Toonflow" width="80%" /></a><br /><sub>Каталог плагинов</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Каталог плагинов YuYuer Drama" width="80%" /></a><br /><sub>Каталог плагинов</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ Toonflow — открытая ИИ-платформа для создания к
 
 Установщик Windows автоматически проверяет наличие WebView2 и устанавливает его при необходимости. Если после установки приложение сразу закрывается, установите среду выполнения вручную со [страницы загрузки WebView2](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-В macOS (Apple Silicon) перетащите Toonflow в папку «Программы» и откройте приложение. Заранее выполнять команды в терминале не требуется. Если появится предупреждение системы безопасности, последовательно выполните следующие действия.
+В macOS (Apple Silicon) перетащите YuYuer Drama в папку «Программы» и откройте приложение. Заранее выполнять команды в терминале не требуется. Если появится предупреждение системы безопасности, последовательно выполните следующие действия.
 
 <details>
-<summary><strong>Что делать, если Toonflow не устанавливается или не открывается в macOS</strong></summary>
+<summary><strong>Что делать, если YuYuer Drama не устанавливается или не открывается в macOS</strong></summary>
 
-**1. Разрешите запуск Toonflow в разделе «Конфиденциальность и безопасность»**
+**1. Разрешите запуск YuYuer Drama в разделе «Конфиденциальность и безопасность»**
 
-Если система сообщает, что не может проверить разработчика или что Apple не может проверить приложение на наличие вредоносного ПО, сначала попробуйте открыть Toonflow. Затем перейдите в «Системные настройки → Конфиденциальность и безопасность», найдите сообщение о блокировке Toonflow, нажмите «Всё равно открыть» и подтвердите действие. Подробнее — в [официальной инструкции Apple](https://support.apple.com/zh-cn/102445).
+Если система сообщает, что не может проверить разработчика или что Apple не может проверить приложение на наличие вредоносного ПО, сначала попробуйте открыть YuYuer Drama. Затем перейдите в «Системные настройки → Конфиденциальность и безопасность», найдите сообщение о блокировке YuYuer Drama, нажмите «Всё равно открыть» и подтвердите действие. Подробнее — в [официальной инструкции Apple](https://support.apple.com/zh-cn/102445).
 
 **2. Если запуск по-прежнему блокируется карантином системы, попробуйте удалить атрибут карантина**
 
@@ -388,7 +388,7 @@ bun run start:server
 
 ### 4.5 Развёртывание в облаке
 
-Наш партнёр [AI Galaxy (智星云)](https://www.ai-galaxy.com/) предоставляет официально авторизованный коммерческий образ Toonflow с готовым окружением. Порядок действий описан в [иллюстрированном руководстве по развёртыванию образа](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
+Наш партнёр [AI Galaxy (智星云)](https://www.ai-galaxy.com/) предоставляет официально авторизованный коммерческий образ YuYuer Drama с готовым окружением. Порядок действий описан в [иллюстрированном руководстве по развёртыванию образа](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
 
 ---
 
@@ -414,7 +414,7 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 Помощник для приглашения в группу:
 
-<img src="../images/qr.png" alt="QR-код сообщества Toonflow" height="400"/>
+<img src="../images/qr.png" alt="QR-код сообщества YuYuer Drama" height="400"/>
 
 Также можно нажать на значок, чтобы присоединиться к Discord:
 
@@ -426,15 +426,15 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 ## 7. 💌 Связаться с нами
 
-📧 Электронная почта: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 Электронная почта: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 Лицензия открытого исходного кода
 
-Toonflow распространяется по [лицензии MIT](../../LICENSE). Сторонние зависимости и материалы регулируются собственными лицензиями и уведомлениями об авторских правах.
+YuYuer Drama распространяется по [лицензии MIT](../../LICENSE). Сторонние зависимости и материалы регулируются собственными лицензиями и уведомлениями об авторских правах.
 
-[![История звёзд Toonflow](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![История звёзд YuYuer Drama](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **Отсутствие обратной силы**: пользователи, использовавшие версии до v1.0.8 по AGPL-3.0, продолжают соблюдать AGPL-3.0. Для версий с v1.0.8 по v1.1.8 сохраняются Apache-2.0 и дополнительное соглашение. Изменение лицензии на них не распространяется.
 
@@ -457,4 +457,4 @@ Copyright © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Нижний колонтитул Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Нижний колонтитул YuYuer Drama" width="100%" />

@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import type { Request } from "express";
 
 export interface GatewaySession {
   sessionId: string;
@@ -75,6 +76,15 @@ export function getConfig(): GatewayConfig {
     scopes,
     appPublicUrl,
   };
+}
+
+export function resolveRedirectUri(req: Request): string {
+  // ACT: 本地开发走 http 直连（web Vite 代理 / Android 模拟器 / 真机局域网），
+  // req.protocol 默认为 http；生产 https 需开启 trust proxy 并透传 x-forwarded-proto。
+  // host 来自请求头，即使被篡改，网关也会按登记的 redirect_uri 白名单校验，安全性不受影响。
+  const host = req.get("host");
+  if (host) return `${req.protocol}://${host}/api/auth/callback`;
+  return `${getConfig().appPublicUrl}/api/auth/callback`;
 }
 
 export function generateCodeVerifier(): string {

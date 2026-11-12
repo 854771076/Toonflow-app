@@ -87,7 +87,7 @@
                       href="https://docs.qq.com/smartsheet/form/EmvmQBrmlPmr%2Fss_vsqk2v%2FvhiGzE?tab=ss_vsqk2v"
                       target="_blank"
                       rel="noopener noreferrer"
-                      title="Toonflow 需求/BUG反馈表"
+                      title="YuYuer Drama 需求/BUG反馈表"
                       @click="helpVisible = false">
                       汇报 BUG
                     </el-button>
@@ -99,12 +99,12 @@
             </el-tooltip>
           </div>
         </el-card>
-        <el-tooltip v-if="!agentVisible" content="Toonflow Agent" placement="top" :showArrow="false" :hideAfter="0">
+        <el-tooltip v-if="!agentVisible" content="YuYuer Drama Agent" placement="top" :showArrow="false" :hideAfter="0">
           <el-button
             class="agentButton"
             :class="{ standalone: activePanel !== 'canvas' }"
             :aria-expanded="agentVisible"
-            aria-label="Toonflow Agent"
+            aria-label="YuYuer Drama Agent"
             aria-controls="agentPanel"
             @click="agentVisible = !agentVisible"></el-button>
         </el-tooltip>
@@ -140,7 +140,6 @@ import { QRCode } from "tdesign-vue-next";
 import settings from "@/components/settings/index.vue";
 import { useWorkspaceStore } from "@/stores/workspace";
 import { registerWorkspaceControl, waitForControlValue } from "@/lib/mcpControl";
-import anonymousData from "@/lib/anonymousData";
 import { useProviderBalances } from "@/lib/providerBilling";
 import canvasPanel from "./panels/canvas/canvasHost.vue";
 import type { DocumentNodeOptions } from "./panels/canvas/canvasFiles";
@@ -157,7 +156,6 @@ function preventSideButtonNavigation(event: MouseEvent) {
   if (event.button === 3 || event.button === 4) event.preventDefault();
 }
 onMounted(() => {
-  anonymousData.track("workspace.canvas");
   for (const eventName of sideButtonEvents) window.addEventListener(eventName, preventSideButtonNavigation, true);
 });
 onScopeDispose(() => {
@@ -180,7 +178,7 @@ const contacts = {
   community: {
     title: "加入交流群",
     url: "https://work.weixin.qq.com/u/vc36adcc89845edcbe?v=5.0.3.63936&bb=85b8d228e8",
-    tip: "Toonflow 是为爱发电的开源项目。欢迎文明交流、友善反馈；回复可能需要一些时间，请避免责问或命令式沟通，感谢你的理解与尊重。",
+    tip: "YuYuer Drama 是为爱发电的开源项目。欢迎文明交流、友善反馈；回复可能需要一些时间，请避免责问或命令式沟通，感谢你的理解与尊重。",
   },
   business: {
     title: "商务合作",
@@ -314,10 +312,8 @@ async function switchPanel(value: string | number | boolean) {
   if (value !== "canvas" && value !== "document") return false;
   try {
     if (activePanel.value === "document") await documentPanelRef.value?.flushSave();
-    const changed = activePanel.value !== value;
     activePanel.value = value;
     await nextTick();
-    if (changed) anonymousData.track(value === "canvas" ? "workspace.canvas" : "workspace.document");
     return true;
   } catch (error) {
     ElMessage.error(error instanceof Error ? error.message : "文本保存失败");

@@ -8,7 +8,7 @@ import desktopConfig from "../../electrobun.config.ts";
 import postcssConfig from "../../postcss.config.ts";
 import { i18nPlugin } from "@toonflow/i18n/vite";
 
-const serverOrigin = `http://127.0.0.1:${process.env.TOONFLOW_SERVER_PORT || 3000}`;
+const serverOrigin = `http://127.0.0.1:${process.env.TOONFLOW_SERVER_PORT || 3100}`;
 
 export default defineConfig(({ command }) => ({
   css: { postcss: postcssConfig },

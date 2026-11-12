@@ -5,7 +5,7 @@ import { validateFields } from "@/lib/middleware";
 import { success } from "@/lib/responseFormat";
 import { maxSystemPromptLength } from "@/agent/runtime/prompt";
 import { t } from "@/lib/i18n";
-import { accountProviderSchema, providerSchema } from "@/utils/ai";
+import { providerSchema } from "@/utils/ai";
 import { nodeToolPermissionsSchema } from "@toonflow/tool-canvas/runtime";
 
 const router = Router();
@@ -15,9 +15,8 @@ export default router.put("/", validateFields({ expectedRevision: z.number().int
   agentSystemPrompt: z.string().max(maxSystemPromptLength, { error: () => t`系统提示词不能超过 ${maxSystemPromptLength} 个字符` }).optional(),
   agentNodeTools: nodeToolPermissionsSchema.optional(),
   customProviders: z.array(providerSchema.extend({
-    id: z.string().min(1).refine(value => value.toLowerCase() !== "toonflow", "toonflow 为账号供应商保留 ID"), label: z.string(),
+    id: z.string().min(1), label: z.string(),
   })).optional(),
-  toonflowProvider: accountProviderSchema.nullable().optional(),
   network: u.network.networkSchema.optional(),
   multiTenantEnabled: z.boolean().optional(),
   desktopAutoUpdate: z.boolean().optional(),
@@ -36,9 +35,6 @@ export default router.put("/", validateFields({ expectedRevision: z.number().int
     u.removeLegacySettings(settings);
     u.cleanNodeMenuSettings(settings);
     const previousSettings = u.conf.get("settings", {});
-    const previousAccount = previousSettings.toonflowAccount as { token?: unknown } | null | undefined;
-    const nextAccount = settings.toonflowAccount as { token?: unknown } | null | undefined;
-    if (!nextAccount?.token || nextAccount.token !== previousAccount?.token) settings.toonflowProvider = null;
     const network = settings.network !== undefined || previousSettings.network !== undefined
       ? await u.network.prepareNetwork(settings.network) : undefined;
     const commit = () => {
@@ -49,7 +45,7 @@ export default router.put("/", validateFields({ expectedRevision: z.number().int
     if (network) u.network.configureNetwork(network, undefined, commit);
     else commit();
     await u.mcpRuntime.reloadMcpRuntime();
-    return { customProviders: settings.customProviders ?? [], mediaProviderConfigs: settings.mediaProviderConfigs ?? {}, toonflowProvider: settings.toonflowProvider ?? null,
+    return { customProviders: settings.customProviders ?? [], mediaProviderConfigs: settings.mediaProviderConfigs ?? {},
       aiModels: await u.ai.listAiModels(), nodeMenu: u.conf.get("settings.general.nodeMenu") ?? null, multiTenantEnabled: false };
   });
   saveQueue = saving.then(() => {}, () => {});

@@ -1,7 +1,7 @@
 <template>
   <div class="loginContainer">
     <div class="loginCard">
-      <h1 class="loginTitle">欢迎使用 Toonflow</h1>
+      <h1 class="loginTitle">欢迎使用 YuYuer Drama</h1>
       <p class="loginSubtitle">使用 new-api 账号登录开始创作</p>
       <el-button type="primary" size="large" class="loginButton" @click="redirectToLogin()">
         使用 new-api 账号登录

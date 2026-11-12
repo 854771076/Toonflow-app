@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Logo Toonflow" width="120" height="120" />
+  <img src="../images/logo.png" alt="Logo YuYuer Drama" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="Toonflow · Studio Drama Pendek AI · Jadikan idea sebagai cerita" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="YuYuer Drama · Studio Drama Pendek AI · Jadikan idea sebagai cerita" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Sijil AtomGit G-Star No.540 Toonflow" width="100%" />
+          <img src="../images/gStar.png" alt="Sijil AtomGit G-Star No.540 YuYuer Drama" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Sijil Gitee GVP Toonflow" width="100%" />
+          <img src="../images/gvp.jpg" alt="Sijil Gitee GVP YuYuer Drama" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 Penaja dan Sokongan
 
-Terima kasih kepada rakan kongsi berikut kerana menyokong projek sumber terbuka Toonflow.
+Terima kasih kepada rakan kongsi berikut kerana menyokong projek sumber terbuka YuYuer Drama.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@ Terima kasih kepada rakan kongsi berikut kerana menyokong projek sumber terbuka 
 
 ## 2. 🌟 Ciri Utama
 
-Toonflow ialah platform penciptaan AI sumber terbuka untuk drama pendek, komik animasi dan video pendek, yang menghimpunkan skrip, aset dan klip video pada satu kanvas tanpa had.
+YuYuer Drama ialah platform penciptaan AI sumber terbuka untuk drama pendek, komik animasi dan video pendek, yang menghimpunkan skrip, aset dan klip video pada satu kanvas tanpa had.
 
 | Keupayaan | Penerangan |
 | --- | --- |
@@ -224,25 +224,25 @@ Bahasa yang disokong: 简体中文, 繁體中文, English, 日本語, Русск
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Toonflow · Halaman utama projek dan penciptaan idea" width="80%" /></a><br /><sub>Halaman utama projek dan penciptaan idea</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="YuYuer Drama · Halaman utama projek dan penciptaan idea" width="80%" /></a><br /><sub>Halaman utama projek dan penciptaan idea</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Toonflow · Pelancaran pertama dan persediaan pantas" width="80%" /></a><br /><sub>Pelancaran pertama dan persediaan pantas</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="YuYuer Drama · Pelancaran pertama dan persediaan pantas" width="80%" /></a><br /><sub>Pelancaran pertama dan persediaan pantas</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Toonflow · Kanvas kreatif · Tema gelap" width="80%" /></a><br /><sub>Kanvas kreatif · Tema gelap</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="YuYuer Drama · Kanvas kreatif · Tema gelap" width="80%" /></a><br /><sub>Kanvas kreatif · Tema gelap</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Toonflow · Kanvas kreatif · Tema cerah" width="80%" /></a><br /><sub>Kanvas kreatif · Tema cerah</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="YuYuer Drama · Kanvas kreatif · Tema cerah" width="80%" /></a><br /><sub>Kanvas kreatif · Tema cerah</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Toonflow · Aset watak, adegan dan prop" width="80%" /></a><br /><sub>Aset watak, adegan dan prop</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="YuYuer Drama · Aset watak, adegan dan prop" width="80%" /></a><br /><sub>Aset watak, adegan dan prop</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Toonflow · Studio pengarah 3D dan prapenggambaran syot" width="80%" /></a><br /><sub>Studio pengarah 3D dan prapenggambaran syot</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="YuYuer Drama · Studio pengarah 3D dan prapenggambaran syot" width="80%" /></a><br /><sub>Studio pengarah 3D dan prapenggambaran syot</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Toonflow · Helaian watak tiga pandangan dan penjanaan imej" width="80%" /></a><br /><sub>Helaian watak tiga pandangan dan penjanaan imej</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="YuYuer Drama · Helaian watak tiga pandangan dan penjanaan imej" width="80%" /></a><br /><sub>Helaian watak tiga pandangan dan penjanaan imej</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Toonflow · Penjanaan video dengan pelbagai aset rujukan" width="80%" /></a><br /><sub>Penjanaan video dengan pelbagai aset rujukan</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="YuYuer Drama · Penjanaan video dengan pelbagai aset rujukan" width="80%" /></a><br /><sub>Penjanaan video dengan pelbagai aset rujukan</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Toonflow · Menu nod dan operasi pengelompokan" width="80%" /></a><br /><sub>Menu nod dan operasi pengelompokan</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="YuYuer Drama · Menu nod dan operasi pengelompokan" width="80%" /></a><br /><sub>Menu nod dan operasi pengelompokan</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Toonflow · Pasaran Pemalam" width="80%" /></a><br /><sub>Pasaran Pemalam</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="YuYuer Drama · Pasaran Pemalam" width="80%" /></a><br /><sub>Pasaran Pemalam</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ Aplikasi Android hanya menyokong peranti ARM64. Muat turun dan pasang `toonflow-
 
 Pemasang Windows mengesan dan memasang WebView2 secara automatik. Jika aplikasi terus tertutup selepas pemasangan, muat turun dan pasang persekitaran masa jalan secara manual daripada [halaman muat turun WebView2](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-Pada macOS (Apple Silicon), seret Toonflow ke folder Applications dan bukanya terus. Anda tidak perlu menjalankan arahan terminal terlebih dahulu. Jika macOS memaparkan amaran keselamatan, ikuti langkah di bawah mengikut urutan.
+Pada macOS (Apple Silicon), seret YuYuer Drama ke folder Applications dan bukanya terus. Anda tidak perlu menjalankan arahan terminal terlebih dahulu. Jika macOS memaparkan amaran keselamatan, ikuti langkah di bawah mengikut urutan.
 
 <details>
-<summary><strong>Jika Toonflow tidak dapat dipasang atau dibuka pada macOS</strong></summary>
+<summary><strong>Jika YuYuer Drama tidak dapat dipasang atau dibuka pada macOS</strong></summary>
 
-**1. Benarkan Toonflow dalam Privasi & Keselamatan**
+**1. Benarkan YuYuer Drama dalam Privasi & Keselamatan**
 
-Jika anda melihat amaran bahawa pembangun tidak dapat disahkan atau Apple tidak dapat memeriksa aplikasi untuk perisian hasad, cuba buka Toonflow terlebih dahulu. Kemudian pergi ke Tetapan Sistem → Privasi & Keselamatan, cari mesej bahawa Toonflow telah disekat, klik Buka Juga dan sahkan apabila diminta. Rujuk [arahan rasmi Apple](https://support.apple.com/zh-cn/102445).
+Jika anda melihat amaran bahawa pembangun tidak dapat disahkan atau Apple tidak dapat memeriksa aplikasi untuk perisian hasad, cuba buka YuYuer Drama terlebih dahulu. Kemudian pergi ke Tetapan Sistem → Privasi & Keselamatan, cari mesej bahawa YuYuer Drama telah disekat, klik Buka Juga dan sahkan apabila diminta. Rujuk [arahan rasmi Apple](https://support.apple.com/zh-cn/102445).
 
 **2. Jika sekatan kuarantin masih menghalang aplikasi dibuka, cuba buang atribut kuarantin**
 
@@ -388,7 +388,7 @@ Apabila anda melihat “服务启动成功” (perkhidmatan berjaya dimulakan), 
 
 ### 4.5 Pemasangan di Awan
 
-Rakan kongsi kami [AI Galaxy (智星云)](https://www.ai-galaxy.com/) menyediakan imej komersial Toonflow yang mendapat kebenaran rasmi, lengkap dengan persekitaran sedia guna. Untuk arahan, rujuk [panduan bergambar pemasangan imej](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
+Rakan kongsi kami [AI Galaxy (智星云)](https://www.ai-galaxy.com/) menyediakan imej komersial YuYuer Drama yang mendapat kebenaran rasmi, lengkap dengan persekitaran sedia guna. Untuk arahan, rujuk [panduan bergambar pemasangan imej](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
 
 ---
 
@@ -414,7 +414,7 @@ Kos ini ialah angka yang direkodkan untuk contoh ini dan diberikan sebagai rujuk
 
 Imbas kod QR untuk menghubungi pembantu jemputan kumpulan:
 
-<img src="../images/qr.png" alt="Kod QR komuniti Toonflow" height="400"/>
+<img src="../images/qr.png" alt="Kod QR komuniti YuYuer Drama" height="400"/>
 
 Anda juga boleh mengklik ikon untuk menyertai Discord:
 
@@ -426,15 +426,15 @@ Atau gunakan pautan jemputan: [https://discord.gg/HEjKmpNpAZ](https://discord.gg
 
 ## 7. 💌 Hubungi Kami
 
-📧 E-mel: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 E-mel: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 Lesen Sumber Terbuka
 
-Toonflow dilesenkan di bawah [MIT License](../../LICENSE). Kebergantungan dan aset pihak ketiga kekal tertakluk pada lesen serta notis hak cipta masing-masing.
+YuYuer Drama dilesenkan di bawah [MIT License](../../LICENSE). Kebergantungan dan aset pihak ketiga kekal tertakluk pada lesen serta notis hak cipta masing-masing.
 
-[![Sejarah Bintang Toonflow](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![Sejarah Bintang YuYuer Drama](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **Klausa tiada kuat kuasa kebelakangan**: Pengguna yang menggunakan versi sebelum v1.0.8 di bawah AGPL-3.0 kekal tertakluk pada AGPL-3.0. Versi v1.0.8 hingga v1.1.8 kekal tertakluk pada Apache-2.0 dan perjanjian tambahannya. Perubahan lesen ini tidak terpakai kepada pengguna tersebut.
 
@@ -457,4 +457,4 @@ Hak Cipta © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Pengaki Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Pengaki YuYuer Drama" width="100%" />

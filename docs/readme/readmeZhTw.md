@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Toonflow 標誌" width="120" height="120" />
+  <img src="../images/logo.png" alt="YuYuer Drama 標誌" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20%E7%9F%AD%E5%8A%87%E5%B7%A5%E5%BB%A0;%E8%AE%93%E9%9D%88%E6%84%9F%E6%88%90%E7%82%BA%E7%9C%8B%E5%BE%97%E8%A6%8B%E7%9A%84%E6%95%85%E4%BA%8B" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20%E7%9F%AD%E5%8A%87%E5%B7%A5%E5%BB%A0;%E8%AE%93%E9%9D%88%E6%84%9F%E6%88%90%E7%82%BA%E7%9C%8B%E5%BE%97%E8%A6%8B%E7%9A%84%E6%95%85%E4%BA%8B" alt="Toonflow · AI 短劇工廠 · 讓靈感成為看得見的故事" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20%E7%9F%AD%E5%8A%87%E5%B7%A5%E5%BB%A0;%E8%AE%93%E9%9D%88%E6%84%9F%E6%88%90%E7%82%BA%E7%9C%8B%E5%BE%97%E8%A6%8B%E7%9A%84%E6%95%85%E4%BA%8B" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20%E7%9F%AD%E5%8A%87%E5%B7%A5%E5%BB%A0;%E8%AE%93%E9%9D%88%E6%84%9F%E6%88%90%E7%82%BA%E7%9C%8B%E5%BE%97%E8%A6%8B%E7%9A%84%E6%95%85%E4%BA%8B" alt="YuYuer Drama · AI 短劇工廠 · 讓靈感成為看得見的故事" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Toonflow AtomGit G-Star 認證證書 No.540" width="100%" />
+          <img src="../images/gStar.png" alt="YuYuer Drama AtomGit G-Star 認證證書 No.540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Toonflow Gitee GVP 認證證書" width="100%" />
+          <img src="../images/gvp.jpg" alt="YuYuer Drama Gitee GVP 認證證書" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 贊助與支持
 
-感謝以下合作夥伴對 Toonflow 開源專案的支持。
+感謝以下合作夥伴對 YuYuer Drama 開源專案的支持。
 
 <table>
   <tr>
@@ -200,7 +200,7 @@
 
 ## 2. 🌟 亮點
 
-Toonflow 是面向短劇、動態漫畫與短影片製作的開源 AI 創作平台，將劇本、素材與影片片段整合到同一張無限畫布。
+YuYuer Drama 是面向短劇、動態漫畫與短影片製作的開源 AI 創作平台，將劇本、素材與影片片段整合到同一張無限畫布。
 
 | 功能 | 說明 |
 | --- | --- |
@@ -224,25 +224,25 @@ Toonflow 是面向短劇、動態漫畫與短影片製作的開源 AI 創作平�
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Toonflow 專案首頁與靈感創作" width="80%" /></a><br /><sub>專案首頁與靈感創作</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="YuYuer Drama 專案首頁與靈感創作" width="80%" /></a><br /><sub>專案首頁與靈感創作</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Toonflow 首次啟動與快速設定" width="80%" /></a><br /><sub>首次啟動與快速設定</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="YuYuer Drama 首次啟動與快速設定" width="80%" /></a><br /><sub>首次啟動與快速設定</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Toonflow 深色主題畫布與 AI 助手" width="80%" /></a><br /><sub>創作畫布 · 深色主題</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="YuYuer Drama 深色主題畫布與 AI 助手" width="80%" /></a><br /><sub>創作畫布 · 深色主題</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Toonflow 淺色主題畫布與 AI 助手" width="80%" /></a><br /><sub>創作畫布 · 淺色主題</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="YuYuer Drama 淺色主題畫布與 AI 助手" width="80%" /></a><br /><sub>創作畫布 · 淺色主題</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Toonflow 角色、場景與道具素材畫布" width="80%" /></a><br /><sub>角色、場景與道具素材</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="YuYuer Drama 角色、場景與道具素材畫布" width="80%" /></a><br /><sub>角色、場景與道具素材</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Toonflow 3D 導演台與鏡頭預演" width="80%" /></a><br /><sub>3D 導演台與鏡頭預演</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="YuYuer Drama 3D 導演台與鏡頭預演" width="80%" /></a><br /><sub>3D 導演台與鏡頭預演</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Toonflow 角色三視圖圖片生成" width="80%" /></a><br /><sub>角色三視圖與圖片生成</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="YuYuer Drama 角色三視圖圖片生成" width="80%" /></a><br /><sub>角色三視圖與圖片生成</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Toonflow 多參考素材影片生成" width="80%" /></a><br /><sub>多參考素材影片生成</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="YuYuer Drama 多參考素材影片生成" width="80%" /></a><br /><sub>多參考素材影片生成</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Toonflow 節點選單與群組操作" width="80%" /></a><br /><sub>節點選單與群組操作</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="YuYuer Drama 節點選單與群組操作" width="80%" /></a><br /><sub>節點選單與群組操作</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Toonflow 外掛市集" width="80%" /></a><br /><sub>外掛市集</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="YuYuer Drama 外掛市集" width="80%" /></a><br /><sub>外掛市集</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ Android 版僅支援 ARM64 裝置，下載發行頁面的 `toonflow-版本號-an
 
 Windows 安裝程式會自動偵測並安裝 WebView2；如果安裝後開啟時閃退，請前往 [WebView2 下載頁面](https://developer.microsoft.com/microsoft-edge/webview2/) 手動安裝執行階段。
 
-macOS（Apple Silicon）將 Toonflow 拖入「應用程式」後直接開啟即可，無需事先執行終端機指令。若遇到系統安全提示，請依以下順序處理。
+macOS（Apple Silicon）將 YuYuer Drama 拖入「應用程式」後直接開啟即可，無需事先執行終端機指令。若遇到系統安全提示，請依以下順序處理。
 
 <details>
 <summary><strong>macOS 無法安裝或開啟時的處理方式</strong></summary>
 
-**1. 在「隱私權與安全性」中允許 Toonflow**
+**1. 在「隱私權與安全性」中允許 YuYuer Drama**
 
-如果提示「無法驗證開發者」或「Apple 無法檢查 App 是否包含惡意軟體」，先嘗試開啟 Toonflow，再前往「系統設定 → 隱私權與安全性」，找到 Toonflow 被阻擋的提示，按一下「強制打開」，並依提示確認。詳見 [Apple 官方說明](https://support.apple.com/zh-cn/102445)。
+如果提示「無法驗證開發者」或「Apple 無法檢查 App 是否包含惡意軟體」，先嘗試開啟 YuYuer Drama，再前往「系統設定 → 隱私權與安全性」，找到 YuYuer Drama 被阻擋的提示，按一下「強制打開」，並依提示確認。詳見 [Apple 官方說明](https://support.apple.com/zh-cn/102445)。
 
 **2. 仍因系統隔離限制無法開啟時，再嘗試移除隔離屬性**
 
@@ -388,7 +388,7 @@ bun run start:server
 
 ### 4.5 雲端平台部署
 
-合作平台[智星雲](https://www.ai-galaxy.com/)提供官方授權的 Toonflow 商用映像檔，可直接使用預先安裝的環境。具體步驟請參閱[映像檔部署圖文教學](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1)。
+合作平台[智星雲](https://www.ai-galaxy.com/)提供官方授權的 YuYuer Drama 商用映像檔，可直接使用預先安裝的環境。具體步驟請參閱[映像檔部署圖文教學](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1)。
 
 ---
 
@@ -414,7 +414,7 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 入群小幫手：
 
-<img src="../images/qr.png" alt="Toonflow 入群 QR Code" height="400"/>
+<img src="../images/qr.png" alt="YuYuer Drama 入群 QR Code" height="400"/>
 
 也可以點擊圖示加入 Discord：
 
@@ -426,15 +426,15 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 ## 7. 💌 聯絡我們
 
-📧 電子郵件：[ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 電子郵件：[ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 開源授權
 
-Toonflow 採用 [MIT 授權條款](../../LICENSE)。第三方相依套件與素材遵循各自的授權及著作權聲明。
+YuYuer Drama 採用 [MIT 授權條款](../../LICENSE)。第三方相依套件與素材遵循各自的授權及著作權聲明。
 
-[![Toonflow 星標歷史](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![YuYuer Drama 星標歷史](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **不溯及既往條款**：在 v1.0.8 發布前依 AGPL-3.0 使用的使用者，繼續適用 AGPL-3.0；v1.0.8 ~ v1.1.8 繼續適用 Apache-2.0 與附加協議，不受本次授權變更影響。
 
@@ -457,4 +457,4 @@ Copyright © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Toonflow 頁尾" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="YuYuer Drama 頁尾" width="100%" />

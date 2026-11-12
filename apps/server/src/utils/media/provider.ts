@@ -1,15 +1,14 @@
 import { t, translateMessage, validationOptions } from "@/lib/i18n";
 
 import { createHash } from "node:crypto";
-import { lstat, mkdir, readFile, readdir, unlink, writeAtomicSync } from "@toonflow/file";
+import { lstat, mkdir, readFile, readdir, unlink } from "@toonflow/file";
 import { dirname, join } from "node:path";
 import { createContext, SourceTextModule } from "node:vm";
 import type { AudioConvertOptions, Provider, ProviderTaskData, ProviderTools } from "@toonflow/providers";
 import { parse, parseExpression } from "@babel/parser";
 import { z } from "zod";
 import conf from "@/utils/conf";
-import { accountProviderSchema, getAccountProvider, getAccountToken, providerSchema } from "@/utils/ai/provider";
-import type { ProviderSources } from "@/utils/channel/types";
+import { providerSchema } from "@/utils/ai/provider";
 import { convertAudio } from "@/utils/media/audioProcessor";
 import { createWorkspaceFfmpeg } from "@/utils/ffmpeg";
 import { lockWorkspaceFiles, writeWorkspaceFile } from "@/utils/workspace/files";
@@ -18,7 +17,6 @@ type Expression = Extract<ReturnType<typeof parseExpression>, { type: "Parenthes
 type ObjectExpression = Extract<Expression, { type: "ObjectExpression" }>;
 
 const providerTranspiler = new Bun.Transpiler({ loader: "ts", target: "bun", define: { require: "undefined" } });
-const accountSourcePrefix = "// Toonflow account provider\n";
 
 const providerIdSchema = z.string().max(96).regex(/^[a-z][a-zA-Z0-9]*$/)
   .refine(value => !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(value), "供应商 ID 不能是系统保留文件名");
@@ -229,7 +227,7 @@ function literal(value: Expression): z.infer<ReturnType<typeof z.json>> {
   return invalid("供应商元数据和 models 必须直接使用字面量");
 }
 
-function parseProvider(source: string, accountLanguage = false) {
+function parseProvider(source: string) {
   if (Buffer.byteLength(source, "utf8") > 2 * 1024 * 1024) invalid("供应商文件不能超过 2 MB");
   let module: ReturnType<typeof parse>;
   try { module = parse(source, { sourceType: "module", plugins: ["typescript"] }); }
@@ -244,7 +242,7 @@ function parseProvider(source: string, accountLanguage = false) {
         : target.computed && target.property.type === "StringLiteral" ? target.property.value : "";
       return ["vendor", "textRequest", "imageRequest", "videoRequest", "ttsRequest"].includes(name);
     });
-    if (legacy) invalid("检测到旧版 Toonflow 供应商 TS，无法在 Toonflow 2.0 中使用。请在「添加自定义媒体供应商」中点击「一键复制提示词」，结合旧代码和接口资料重新生成新版代码后再导入。");
+    if (legacy) invalid("检测到旧版 YuYuer Drama 供应商 TS，无法在 YuYuer Drama 2.0 中使用。请在「添加自定义媒体供应商」中点击「一键复制提示词」，结合旧代码和接口资料重新生成新版代码后再导入。");
     invalid("供应商须通过 export default 导出对象");
   }
   const object = unwrap(exported.declaration as Expression);
@@ -271,9 +269,7 @@ function parseProvider(source: string, accountLanguage = false) {
   const version = value("version");
   const readme = value("readme");
   const modelsUrl = value("modelsUrl");
-  if (accountLanguage) {
-    if (id !== "Toonflow") invalid("账号文本供应商 ID 必须为 Toonflow");
-  } else if (!providerIdSchema.safeParse(id).success) invalid("供应商 ID 必须为小驼峰文件名");
+  if (!providerIdSchema.safeParse(id).success) invalid("供应商 ID 必须为小驼峰文件名");
   if (typeof label !== "string" || !label.trim() || label.length > 200) invalid("供应商名称无效");
   if (icon !== undefined && typeof icon !== "string") invalid("供应商图标必须为字符串");
   if (version !== undefined && (typeof version !== "string" || !version.trim())) invalid("供应商版本必须为非空字符串");
@@ -365,7 +361,6 @@ export async function getMediaProvider(id: string) {
 
 export async function getMediaProviderSource(fileName: string) {
   if (!mediaProviderFileSchema.safeParse(fileName).success) invalid("供应商文件名无效");
-  if (fileName.toLowerCase() === "toonflow.ts") invalid("Toonflow 供应商由账号与余额管理，请在账号页刷新");
   const path = await directory();
   if (!path) invalid("供应商文件不存在", 404);
   return readProvider(path, fileName).catch((error: NodeJS.ErrnoException) => {
@@ -395,7 +390,6 @@ export async function listMediaProviders() {
 export async function addMediaProvider(source: string, signal?: AbortSignal) {
   signal?.throwIfAborted();
   const result = validateMediaProviderSource(source);
-  if (result.id.toLowerCase() === "toonflow") invalid("Toonflow 供应商由账号与余额管理，请登录后刷新");
   const { fileName } = result;
   const path = join((await directory(true))!, fileName);
   const release = lockWorkspaceFiles([path]);
@@ -411,56 +405,8 @@ export async function addMediaProvider(source: string, signal?: AbortSignal) {
   return result;
 }
 
-export function parseAccountProviderSources(sources: ProviderSources) {
-  const mediaSource = sources.media;
-  if (Buffer.byteLength(accountSourcePrefix + mediaSource, "utf8") > 2 * 1024 * 1024) invalid("供应商文件不能超过 2 MB");
-  const media = parseProvider(mediaSource);
-  if (media.id !== "toonflow") invalid("账号媒体供应商 ID 必须为 toonflow");
-  const mediaToken = media.value("token");
-  if (mediaToken !== undefined && (typeof mediaToken !== "string" || !mediaToken.trim())) invalid("账号媒体供应商 token 无效");
-  const parsed = parseProvider(sources.language, true);
-  if (parsed.models.some(model => model.type !== "text")) invalid("账号文本配置只能包含文本模型");
-  const checked = accountProviderSchema.safeParse({
-    id: parsed.id, label: parsed.label, version: parsed.version,
-    apiUrl: parsed.value("apiUrl"), protocol: parsed.value("protocol"), apiKey: "",
-    token: parsed.value("token"),
-    models: parsed.models,
-  });
-  if (!checked.success || !checked.data.token) invalid("账号文本供应商配置或 token 无效，请刷新重试");
-  return { language: checked.data, mediaSource, mediaModels: media.models, mediaToken };
-}
-
-export async function installAccountProvider(sources: ProviderSources, token: string, signal?: AbortSignal) {
-  function requireAccount() {
-    signal?.throwIfAborted();
-    if (!token.trim() || getAccountToken() !== token.trim()) invalid("账号已变更，请重新登录后刷新", 401);
-  }
-  requireAccount();
-  const customProviders = conf.get("settings", {}).customProviders;
-  if (Array.isArray(customProviders) && customProviders.some(provider => typeof provider?.id === "string" && provider.id.toLowerCase() === "toonflow")) {
-    invalid("已有自定义文本供应商使用 toonflow ID，请先修改该 ID", 409);
-  }
-  const { language, mediaSource } = parseAccountProviderSources(sources);
-  const folder = (await directory(true))!;
-  const fileName = "toonflow.ts";
-  const path = join(folder, fileName);
-  const release = lockWorkspaceFiles([path]);
-  try {
-    const current = await readProvider(folder, fileName).catch((error: NodeJS.ErrnoException) => {
-      if (error.code === "ENOENT") return undefined;
-      throw error;
-    });
-    if (current && !current.source.startsWith(accountSourcePrefix)) invalid("已存在同名自定义供应商，请先处理文件冲突", 409);
-    requireAccount();
-    // ACT: 最多 2 MB；同步原子替换使账号校验与提交之间不插入其他设置写入。
-    writeAtomicSync(path, accountSourcePrefix + mediaSource, { exclusive: !current });
-    return { provider: language };
-  } finally { release(); }
-}
-
 export async function saveMediaProvider(fileName: string, content: string | z.infer<typeof mediaModelsSchema>, revision: string, expectedApiKey?: string) {
   if (!mediaProviderFileSchema.safeParse(fileName).success) invalid("供应商文件名无效");
-  if (fileName.toLowerCase() === "toonflow.ts") invalid("Toonflow 供应商由账号与余额管理，请在账号页刷新");
   const path = await directory();
   if (!path) invalid("供应商文件不存在", 404);
   const release = lockWorkspaceFiles([join(path, fileName)]);
@@ -482,7 +428,6 @@ function getMediaProviderApiKey(id: string) {
 
 export async function refreshMediaProviderModels(fileName: string, revision: string) {
   if (!mediaProviderFileSchema.safeParse(fileName).success) invalid("供应商文件名无效");
-  if (fileName.toLowerCase() === "toonflow.ts") invalid("Toonflow 供应商由账号与余额管理，请在账号页刷新");
   const provider = await getMediaProvider(fileName.slice(0, -3));
   if (revision !== provider.revision) invalid("供应商文件已被修改，请刷新页面后再获取", 409);
   if (!provider.modelsUrl) invalid("供应商未配置 modelsUrl");
@@ -522,7 +467,6 @@ export async function refreshMediaProviderModels(fileName: string, revision: str
 
 export async function deleteMediaProvider(fileName: string, revision: string) {
   if (!mediaProviderFileSchema.safeParse(fileName).success) invalid("供应商文件名无效");
-  if (fileName.toLowerCase() === "toonflow.ts") invalid("Toonflow 供应商由账号与余额管理");
   const path = await directory();
   if (!path) invalid("供应商文件不存在", 404);
   const file = join(path, fileName);
@@ -536,28 +480,9 @@ export async function deleteMediaProvider(fileName: string, revision: string) {
 }
 
 export async function loadMediaProviderSource(source: string, config: Record<string, unknown> = {}, signal?: AbortSignal, fetchRequest = fetch, cwd?: string,
-  saveTaskData?: (data: ProviderTaskData) => Promise<void>, platformAccount = false) {
+  saveTaskData?: (data: ProviderTaskData) => Promise<void>) {
   signal?.throwIfAborted();
-  const { id, value } = parseProvider(source);
-  if (platformAccount && id !== "toonflow") invalid("账号媒体供应商 ID 必须为 toonflow", 403);
-  if (id === "toonflow") {
-    if (!platformAccount) {
-      const installed = await getMediaProvider(id);
-      if (source !== installed.source || !source.startsWith(accountSourcePrefix)) invalid("只能运行已安装的 Toonflow 账号供应商", 403);
-      const account = getAccountProvider();
-      if (!account) invalid("请先登录 Toonflow 账号并刷新供应商", 401);
-      const accountToken = getAccountToken();
-      const originalFetch = fetchRequest;
-      fetchRequest = Object.assign((input: Parameters<typeof fetch>[0], init?: RequestInit) => {
-        if (getAccountToken() !== accountToken) invalid("Toonflow 账号已变更，请重新发起请求", 401);
-        return originalFetch(input, init);
-      }, { preconnect: originalFetch.preconnect }) as typeof fetch;
-    }
-    const token = value("token");
-    if (token !== undefined && (typeof token !== "string" || !token.trim())) invalid("账号媒体供应商 token 无效");
-    // 导出的媒体 token 用于配置和脱敏；请求实现也可直接使用源码中内嵌的凭据。
-    if (typeof token === "string") config = { ...config, token };
-  }
+  const { id } = parseProvider(source);
   // ACT: VM 只隔离可信供应商的全局上下文；不可信代码需要独立进程等更强隔离。
   const context = createContext({
     Buffer, atob, btoa, URL, URLSearchParams, TextEncoder, TextDecoder, Blob,
@@ -609,7 +534,7 @@ export async function loadMediaProviderSource(source: string, config: Record<str
   ] as const) {
     if (!generate) continue;
     Object.assign(provider, { [name]: async (request: ImageRequest | VideoRequest | AudioRequest | ProviderTaskData) => {
-      let failure: { status?: number; message: string; taskFailed?: boolean } | undefined;
+      let failure: { status?: number; message: string } | undefined;
       let pendingRequests = 0;
       let overlappingRequests = false;
       let requestCount = 0;
@@ -630,7 +555,7 @@ export async function loadMediaProviderSource(source: string, config: Record<str
                 const taskFailed = states.some(state => ["failed", "failure", "error", "rejected", "cancelled", "canceled", "expired"]
                   .includes(String(state.status ?? state.state ?? "").toLowerCase()));
                 const failed = taskFailed || states.some(state => state.success === false || (typeof state.code === "number" && state.code >= 400 && state.code < 600));
-                if (failed) failure = { message: mediaErrorMessage(result, provider.config), taskFailed: taskFailed && (data.code === undefined || data.code === 200) };
+                if (failed) failure = { message: mediaErrorMessage(result, provider.config) };
               }
               return result;
             } });
@@ -651,9 +576,7 @@ export async function loadMediaProviderSource(source: string, config: Record<str
       catch (error) {
         const info = error as { name?: unknown; message?: unknown; code?: unknown; status?: unknown } | null;
         if (signal?.aborted || info?.name === "AbortError") throw error;
-        // ACT: 兼容旧 Toonflow 供应商的普通错误；仅明确任务终态补标，查询异常仍保留复查。
-        const taskFailed = id === "toonflow" && !overlappingRequests && failure?.taskFailed === true && info?.code === undefined;
-        let message = mediaErrorMessage(error, provider.config) || (taskFailed ? "媒体生成失败" : "");
+        let message = mediaErrorMessage(error, provider.config);
         if (!message) throw error;
         // ACT: 只补充串行请求中匹配的错误；并发时无法精确关联响应，由适配器使用 errorMessage 提取。
         const matchesFailure = failure?.status !== undefined
@@ -662,10 +585,10 @@ export async function loadMediaProviderSource(source: string, config: Record<str
         if (!overlappingRequests && failure?.message && matchesFailure) {
           message = [...new Set([...message.split("\n"), ...failure.message.split("\n")])].join("\n").slice(0, 4000);
         }
-        if (message === (typeof error === "string" ? error : info?.message) && !taskFailed) throw error;
+        if (message === (typeof error === "string" ? error : info?.message)) throw error;
         throw Object.assign(new Error(message), typeof error === "object" ? error : undefined, {
           message, cause: error,
-          ...(taskFailed ? { code: "MEDIA_TASK_FAILED" } : typeof info?.code === "string" ? { code: info.code } : {}),
+          ...(typeof info?.code === "string" ? { code: info.code } : {}),
           ...(typeof info?.status === "number" ? { status: info.status } : {}),
         });
       }

@@ -25,7 +25,7 @@
               <component
                 :is="activePanel.component"
                 v-bind="
-                  ['account', 'pluginMarket', 'languageModel', 'mediaModel', 'personalization', 'deviceLink'].includes(activePanel.id) ? { visible } : {}
+                  ['account', 'languageModel', 'mediaModel', 'personalization', 'deviceLink'].includes(activePanel.id) ? { visible } : {}
                 " />
             </keep-alive>
           </transition>
@@ -40,13 +40,10 @@ import { translate } from "@toonflow/i18n/vue";
 import { computed, defineAsyncComponent, shallowRef, watch } from "vue";
 import type { Component } from "vue";
 import { hasDesktopUpdate } from "@/stores/desktopUpdate";
-import { useAuthStore } from "@/stores/auth";
-import http from "@/lib/http";
-import { actualPlatform, isMobile } from "@/lib/platform";
+import { isMobile } from "@/lib/platform";
 import {
   IconSettings,
   IconPhotoVideo,
-  IconBuildingStore,
   IconInfoCircle,
   IconCode,
   IconPlugConnected,
@@ -57,15 +54,12 @@ import {
   IconUserCircle,
 } from "@tabler/icons-vue";
 
-// Web 版使用 new-api 网关账号，桌面端继续使用 Toonflow 自建账号。
-const gatewayMode = !actualPlatform.isLocalDesktop && !!useAuthStore().user;
-
 const allSettingsPanels = [
   {
     id: "account",
     label: "账号与余额",
     icon: IconUserCircle,
-    component: defineAsyncComponent<Component>(() => (gatewayMode ? import("./panels/gatewayAccount.vue") : import("./panels/account/index.vue"))),
+    component: defineAsyncComponent<Component>(() => import("./panels/gatewayAccount.vue")),
   },
   { id: "general", label: "通用设置", icon: IconSettings, component: defineAsyncComponent(() => import("./panels/general/index.vue")) },
   {
@@ -76,13 +70,6 @@ const allSettingsPanels = [
     component: defineAsyncComponent(() => import("./panels/languageModel/index.vue")),
   },
   { id: "mediaModel", label: "媒体模型", icon: IconPhotoVideo, component: defineAsyncComponent(() => import("./panels/mediaModel/index.vue")) },
-  {
-    id: "pluginMarket",
-    label: "插件市场",
-    icon: IconBuildingStore,
-    groupLabel: "市场",
-    component: defineAsyncComponent(() => import("./panels/pluginMarket/index.vue")),
-  },
   { id: "mcp", label: "MCP", icon: IconPlugConnected, groupLabel: "通讯", component: defineAsyncComponent(() => import("./panels/mcp/index.vue")) },
   { id: "network", label: "网络设置", icon: IconNetwork, component: defineAsyncComponent(() => import("./panels/network/index.vue")) },
   ...(!isMobile

@@ -7,11 +7,11 @@ import { z } from "zod";
 import nodeGuide from "@toonflow/nodes-scaffold/readme.md" with { type: "text" };
 import toolGuide from "@toonflow/tools-scaffold/readme.md" with { type: "text" };
 import instructions from "../readme.md" with { type: "text" };
-import { pluginDevelopmentSchema, pluginManifestSchema, type PluginManifest, type PluginUploadDraft, type PluginDevelopmentHost } from "./runtime";
+import { pluginDevelopmentSchema, pluginManifestSchema, type PluginManifest, type PluginDevelopmentHost } from "./runtime";
 import { ensureSdk } from "./sdk";
 import { ensureBundledSdk } from "./bundledSdk";
 
-type BuildReceipt = Omit<PluginUploadDraft, "source"> & { hash: string };
+type BuildReceipt = Pick<PluginManifest, "type" | "name" | "displayName" | "description"> & { version: string; fileName: string; hash: string };
 
 const receipts = new Map<string, BuildReceipt>();
 const maxSourceBytes = 16 * 1024 * 1024;
@@ -48,11 +48,10 @@ export async function develop(directory: string, input: unknown, host: PluginDev
       if (!receipt) throw new Error("该项目没有成功构建的产物，请先执行 build");
       const { hash, ...metadata } = receipt;
       const artifact = await projectFile(join("build", metadata.fileName));
-      const bytes = await readBounded(artifact, request.action === "upload" ? 10 * 1024 * 1024 : maxArtifactBytes);
+      const bytes = await readBounded(artifact, maxArtifactBytes);
       if (createHash("sha256").update(bytes).digest("hex") !== hash) throw new Error("构建产物已被修改，请重新构建");
       signal?.throwIfAborted();
       const source = bytes.toString("utf8");
-      if (request.action === "upload") return { ...metadata, source } satisfies PluginUploadDraft;
       const install = metadata.type === "node" ? installNode : installTool;
       const result = await install(metadata.fileName, source);
       return { type: metadata.type, name: result.name, installed: true };

@@ -22,7 +22,6 @@ import { createSkillContext } from "@/agent/skills";
 import { createAssetContext } from "@/agent/assets";
 import { readDocument } from "@/utils/documents";
 import { createMcpAgentTools } from "@/utils/mcp/servers";
-import { createPluginMarketTools } from "./pluginMarket";
 
 export function createAgentToolContext(cwd: string, config: Record<string, unknown> = {}, canvas?: CanvasContext, question?: QuestionContext, workspaceAvailable = true): ToolContext {
   const sourceCanvas = canvas;
@@ -161,7 +160,7 @@ export function createAgentToolContext(cwd: string, config: Record<string, unkno
 }
 
 export async function createAgentTools(cwd: string, canvas?: CanvasContext, question?: QuestionContext, includeMcp = true): Promise<ToolDefinition[]> {
-  const tools = createPluginMarketTools(question);
+  const tools: ToolDefinition[] = [];
   const names = new Set(tools.map(tool => tool.name));
   const context = createAgentToolContext(cwd, {}, canvas, question);
   function appendTools(definitions: ToolDefinition[], prompt: string, label: string) {

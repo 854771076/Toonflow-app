@@ -1,12 +1,12 @@
 # 开发与扩展指南
 
-[返回 Toonflow 首页](../README.md) · [文档目录](./readme.md) · [贡献指南](../CONTRIBUTING.md) · [开发规范](../AGENTS.md)
+[返回 YuYuer Drama 首页](../README.md) · [文档目录](./readme.md) · [贡献指南](../CONTRIBUTING.md) · [开发规范](../AGENTS.md)
 
 本文收录插件开发、源码运行、桌面打包和更新发布的详细说明。首次参与开发，可先阅读贡献指南。
 
 ## 🧩 插件与模型扩展
 
-通过“设置 → 插件市场”发现和管理节点、工具与技能；市场顶部可以直接打开 [网页版市场](https://api.toonflow.net/console/plugIn) 和 [开发者文档](https://qcn7xdsqgc4z.feishu.cn/docx/KNBNd9naqolsy6xjAOCcEAkqnRd)。市场使用“账号与余额”中登录的 Toonflow 账号。
+通过“设置 → 插件市场”发现和管理节点、工具与技能；市场顶部可以直接打开 [网页版市场](https://api.toonflow.net/console/plugIn) 和 [开发者文档](https://qcn7xdsqgc4z.feishu.cn/docx/KNBNd9naqolsy6xjAOCcEAkqnRd)。市场使用“账号与余额”中登录的 YuYuer Drama 账号。
 
 | 扩展类型 | 用途 | 开发入口 |
 | --- | --- | --- |
@@ -19,7 +19,7 @@
 
 媒体接口包含图片、视频和音频的扩展类型，实际能力由各提供方实现。技能既可以全局安装，也可以放在当前工作区的 `skill/` 目录，同名时优先使用工作区版本。
 
-需要从外部 Coding 工具操作 Toonflow 时，在“设置 → MCP”开启服务并复制客户端配置，支持 HTTP 与 stdio 连接。画布和节点等界面操作需要保持 Toonflow 窗口或网页打开，详见 [MCP 接入说明](../packages/mcp/README.md)。
+需要从外部 Coding 工具操作 YuYuer Drama 时，在“设置 → MCP”开启服务并复制客户端配置，支持 HTTP 与 stdio 连接。画布和节点等界面操作需要保持 YuYuer Drama 窗口或网页打开，详见 [MCP 接入说明](../packages/mcp/README.md)。
 
 <details>
 <summary><strong>通过网页唤起桌面安装插件</strong></summary>
@@ -110,19 +110,19 @@ Windows 桌面日志位于安装目录的 `app/bin/app.log`。桌面 JavaScript 
 
 ### 云端渠道
 
-账号、插件市场、余额统计、探索、首页广告和供应商 TS 的调用链为：页面直接请求本地 `/api/channel/*` → 后端 `Channel` 接口 → `Toonflow` 实现。前端只保留通用 HTTP 工具，不维护渠道抽象。外网地址、响应转换和供应商 TS 临时实现统一放在 `apps/server/src/utils/channel/toonflow.ts`，前后端共享的纯类型通过 `@toonflow/server/channel` 导出。
+账号、插件市场、余额统计、探索、首页广告和供应商 TS 的调用链为：页面直接请求本地 `/api/channel/*` → 后端 `Channel` 接口 → `YuYuer Drama` 实现。前端只保留通用 HTTP 工具，不维护渠道抽象。外网地址、响应转换和供应商 TS 临时实现统一放在 `apps/server/src/utils/channel/toonflow.ts`，前后端共享的纯类型通过 `@toonflow/server/channel` 导出。
 
 首页广告请求 `GET /api/channel/community/getAdvertisements`，经渠道转发至正式接口 `POST https://api.toonflow.net/web/toonflow/home/getAdvertisements`（`/web` 是部署代理前缀）。配置入口位于 API 管理后台侧栏“首页广告设置”（`/homeAdvertisement`），读取和保存分别使用管理员服务的 `POST /homeAdvertisement/getSettings`、`POST /homeAdvertisement/saveSettings`，图片通过 `POST /homeAdvertisement/getUploadSignature` 获取直传签名。客户端渠道仅公开读取广告，不转发管理员写入接口。服务端过滤停用和到期广告，返回 `banners`、`bannerMode`（`carousel` 轮换或 `stack` 叠加）、`bannerInterval`（2–60 秒，默认 5）及 `sidebar`；旧 `banner` 字段保留首条可见横幅。旧接口缺少 `banners` 时客户端兼容单条配置，明确的空数组不回退。首次部署按 API 管理员服务的迁移文档初始化广告表；构建不会自动执行数据库迁移。
 
-顶部最多配置 10 条横幅，沿用现有广告表的 `banner.items` JSON 保存 `{ items, mode, interval }`，并镜像首条到旧字段；已有单横幅配置自动兼容，无需增加数据库字段。文字横幅最低 44px，正文支持行内 Markdown、回车换行和自动折行，高度随内容撑开；轮换跟随当前条目高度，叠加按顺序显示，每条可独立关闭。后台保存配置后刷新 Toonflow 首页即可读取；正常使用不要添加 `advertisementPreview` 参数。
+顶部最多配置 10 条横幅，沿用现有广告表的 `banner.items` JSON 保存 `{ items, mode, interval }`，并镜像首条到旧字段；已有单横幅配置自动兼容，无需增加数据库字段。文字横幅最低 44px，正文支持行内 Markdown、回车换行和自动折行，高度随内容撑开；轮换跟随当前条目高度，叠加按顺序显示，每条可独立关闭。后台保存配置后刷新 YuYuer Drama 首页即可读取；正常使用不要添加 `advertisementPreview` 参数。
 
-本地 API 联调可直接请求管理服务 `62487` 和主服务 `62477`；主 API 设置 `ENABLE_BACKGROUND_JOBS=false`，关闭定时任务及视频、图片回调消费。Toonflow 广告读取统一使用正式地址，已移除临时本地接口覆盖，避免开发配置遮蔽线上已保存的广告。
+本地 API 联调可直接请求管理服务 `62487` 和主服务 `62477`；主 API 设置 `ENABLE_BACKGROUND_JOBS=false`，关闭定时任务及视频、图片回调消费。YuYuer Drama 广告读取统一使用正式地址，已移除临时本地接口覆盖，避免开发配置遮蔽线上已保存的广告。
 
 开发环境仍可通过 `/#/home?advertisementPreview=text`、`image`、`web`、`carousel` 或 `stack` 显式查看临时示例；普通首页与生产构建均使用真实接口，接口失败时不回退到示例。
 
 后端环境变量 `TOONFLOW_CHANNEL` 选择渠道，默认 `toonflow`。新增渠道时，实现 `utils/channel/types.ts` 中的 `Channel`，在 `utils/channel/index.ts` 注册实例，然后设置对应的渠道名称并重启后端；前端和业务路由无需修改。未注册的渠道会明确报错，不会回退到其他渠道。
 
-鉴权请求使用服务端设置中保存的账号 Token，并核对前端携带的账号快照；渠道实例不保存可变 Token。供应商 TS 接口暂时返回空模型配置，真实接口就绪后替换 `Toonflow.getProviderSource`。
+鉴权请求使用服务端设置中保存的账号 Token，并核对前端携带的账号快照；渠道实例不保存可变 Token。供应商 TS 接口暂时返回空模型配置，真实接口就绪后替换 `YuYuer Drama.getProviderSource`。
 
 ### 多语言维护
 
@@ -184,7 +184,7 @@ bun run build:desktop
 bun run package:desktop
 ```
 
-启动库脚本会下载固定版本的 ThorVG 源码并校验摘要。安装包为 `toonflow-<版本>-macos-<架构>.dmg`，产物分别位于 `build/desktop/artifacts/macArm64/` 和 `build/desktop/artifacts/macX64/`。打开 DMG 后将 `toonflow.app` 拖入“应用程序”，再从“应用程序”打开 Toonflow。
+启动库脚本会下载固定版本的 ThorVG 源码并校验摘要。安装包为 `toonflow-<版本>-macos-<架构>.dmg`，产物分别位于 `build/desktop/artifacts/macArm64/` 和 `build/desktop/artifacts/macX64/`。打开 DMG 后将 `toonflow.app` 拖入“应用程序”，再从“应用程序”打开 YuYuer Drama。
 
 原 PKG 打包实现已备份到 `apps/desktop/scripts/packageMacPkg.ts`，当前打包入口使用 DMG。以后恢复 PKG 时，除应用签名所需的 Developer ID Application 证书及私钥，还需要 Developer ID Installer 证书及匹配私钥。
 
@@ -230,7 +230,7 @@ DEB 不内置 Bun 二进制。`preinst` 在首次安装、重装或升级的解�
 2. 填写完整标签名，例如 `v2.0.0`，确认标签指向要发布的提交。
 3. 在左侧标签列表右键这个新标签，选择 **推送标签**，目标选择正式仓库 `origin`。只推送本次标签，不勾选“推送所有标签”。
 
-推送标签会一并上传它所引用的提交，无需创建或推送发布分支。GitHub Actions 会自动运行 **Release Toonflow**，构建六种桌面目标与 Android ARM64，全部成功后创建对应 GitHub Release。
+推送标签会一并上传它所引用的提交，无需创建或推送发布分支。GitHub Actions 会自动运行 **Release YuYuer Drama**，构建六种桌面目标与 Android ARM64，全部成功后创建对应 GitHub Release。
 
 也可在仓库终端执行下面两条命令（将 `2.0.0` 换成本次版本）：
 
@@ -243,7 +243,7 @@ git push --no-follow-tags origin refs/tags/v2.0.0:refs/tags/v2.0.0
 
 **一次构建全部平台**
 
-在 GitHub 仓库打开 **Actions → Release Toonflow → Run workflow**，选择要发布的可信分支，填写版本号（例如 `2.0.1`），将 `ref` 留空后运行。推送 `vX.Y.Z` 标签同样会触发发布。包含任一种 Mac 的签名构建要求 `ref` 与触发工作流的分支或标签指向同一提交，不允许借此切换到其他提交；在 Debug 工作流仅构建 Windows、Linux 或 Android 时可指定其他 `ref`。
+在 GitHub 仓库打开 **Actions → Release YuYuer Drama → Run workflow**，选择要发布的可信分支，填写版本号（例如 `2.0.1`），将 `ref` 留空后运行。推送 `vX.Y.Z` 标签同样会触发发布。包含任一种 Mac 的签名构建要求 `ref` 与触发工作流的分支或标签指向同一提交，不允许借此切换到其他提交；在 Debug 工作流仅构建 Windows、Linux 或 Android 时可指定其他 `ref`。
 
 工作流使用各系统与架构的原生运行器构建，全部成功后统一上传到对应 GitHub Release：
 

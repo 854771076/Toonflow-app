@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,15 +45,15 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Toonflow Logo" width="120" height="120" />
+  <img src="../images/logo.png" alt="YuYuer Drama Logo" width="120" height="120" />
 </p>
 
-<h1 align="center">Toonflow | Open-Source AI Short Drama, Animated Comic and Video Creation</h1>
+<h1 align="center">YuYuer Drama | Open-Source AI Short Drama, Animated Comic and Video Creation</h1>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="Toonflow · AI Short Drama Studio · Turn ideas into stories" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="YuYuer Drama · AI Short Drama Studio · Turn ideas into stories" width="600" />
   </picture>
 </a>
 
@@ -125,7 +125,7 @@
   </a>
 </p>
 
-Toonflow is an open-source AI creation tool for short dramas, animated comics and short videos. Write scripts and storyboards, manage character and scene references, and generate images and video clips on an infinite canvas. Deploy it locally, connect the model services you choose, and extend your creative workflow with AI agents, MCP and plugins.
+YuYuer Drama is an open-source AI creation tool for short dramas, animated comics and short videos. Write scripts and storyboards, manage character and scene references, and generate images and video clips on an infinite canvas. Deploy it locally, connect the model services you choose, and extend your creative workflow with AI agents, MCP and plugins.
 
 </div>
 
@@ -134,12 +134,12 @@ Toonflow is an open-source AI creation tool for short dramas, animated comics an
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Toonflow AtomGit G-Star Certificate No.540" width="100%" />
+          <img src="../images/gStar.png" alt="YuYuer Drama AtomGit G-Star Certificate No.540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Toonflow Gitee GVP Certificate" width="100%" />
+          <img src="../images/gvp.jpg" alt="YuYuer Drama Gitee GVP Certificate" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@ Toonflow is an open-source AI creation tool for short dramas, animated comics an
 
 ## 1. 💛 Sponsors and Support
 
-Thank you to the following partners for supporting the Toonflow open-source project.
+Thank you to the following partners for supporting the YuYuer Drama open-source project.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@ Thank you to the following partners for supporting the Toonflow open-source proj
 
 ## 2. 🌟 Highlights
 
-Toonflow is an open-source AI creation platform for short dramas, animated comics, and short videos, bringing scripts, assets, and video clips together on one infinite canvas.
+YuYuer Drama is an open-source AI creation platform for short dramas, animated comics, and short videos, bringing scripts, assets, and video clips together on one infinite canvas.
 
 | Capability | Description |
 | --- | --- |
@@ -212,7 +212,7 @@ Toonflow is an open-source AI creation platform for short dramas, animated comic
 | 🔧 **Flexible model integration** | Configure third-party APIs or connect local ComfyUI instances and LLMs. |
 | 🌐 **Multilingual support** | Supports 21 interface languages. |
 
-### How to Create AI Short Dramas and Animated Comics with Toonflow
+### How to Create AI Short Dramas and Animated Comics with YuYuer Drama
 
 1. **Write scripts and storyboards**: Develop your story, character descriptions and shot descriptions in text nodes, using a language model for assistance before reviewing and editing the results.
 2. **Prepare character and scene references**: Import reference images or use image generation nodes to create character, scene and storyboard images.
@@ -223,13 +223,13 @@ Supported references, video durations, resolutions and audio capabilities depend
 
 ### Frequently Asked Questions
 
-**Which stages of AI short drama and animated comic production does Toonflow support?**
+**Which stages of AI short drama and animated comic production does YuYuer Drama support?**
 
 Text, image and video generation nodes support script and storyboard development, character and scene asset creation, video-shot generation, and asset preview and organization. Creators need to review and refine the results. Available generation features depend on the configured models.
 
-**Is Toonflow free? Do model calls cost money?**
+**Is YuYuer Drama free? Do model calls cost money?**
 
-Toonflow is open source under the MIT License and can be self-hosted. Third-party model APIs may charge usage fees. Local models and ComfyUI require your own runtime environment and computing resources. The production costs shown in the example apply only to that project and are not a fixed price.
+YuYuer Drama is open source under the MIT License and can be self-hosted. Third-party model APIs may charge usage fees. Local models and ComfyUI require your own runtime environment and computing resources. The production costs shown in the example apply only to that project and are not a fixed price.
 
 **Can I connect my own models and ComfyUI workflows?**
 
@@ -247,25 +247,25 @@ Supported languages: 简体中文, 繁體中文, English, 日本語, Русск�
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Toonflow project home and idea creation" width="80%" /></a><br /><sub>Project home and idea creation</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="YuYuer Drama project home and idea creation" width="80%" /></a><br /><sub>Project home and idea creation</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Toonflow first launch and quick setup" width="80%" /></a><br /><sub>First launch and quick setup</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="YuYuer Drama first launch and quick setup" width="80%" /></a><br /><sub>First launch and quick setup</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Toonflow dark canvas and AI assistant" width="80%" /></a><br /><sub>Creative canvas · Dark theme</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="YuYuer Drama dark canvas and AI assistant" width="80%" /></a><br /><sub>Creative canvas · Dark theme</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Toonflow light canvas and AI assistant" width="80%" /></a><br /><sub>Creative canvas · Light theme</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="YuYuer Drama light canvas and AI assistant" width="80%" /></a><br /><sub>Creative canvas · Light theme</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Toonflow canvas for character, scene, and prop assets" width="80%" /></a><br /><sub>Character, scene, and prop assets</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="YuYuer Drama canvas for character, scene, and prop assets" width="80%" /></a><br /><sub>Character, scene, and prop assets</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Toonflow 3D director's studio and shot previsualization" width="80%" /></a><br /><sub>3D director's studio and shot previsualization</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="YuYuer Drama 3D director's studio and shot previsualization" width="80%" /></a><br /><sub>3D director's studio and shot previsualization</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Toonflow three-view character sheets and image generation" width="80%" /></a><br /><sub>Three-view character sheets and image generation</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="YuYuer Drama three-view character sheets and image generation" width="80%" /></a><br /><sub>Three-view character sheets and image generation</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Toonflow video generation with multiple reference assets" width="80%" /></a><br /><sub>Video generation with multiple reference assets</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="YuYuer Drama video generation with multiple reference assets" width="80%" /></a><br /><sub>Video generation with multiple reference assets</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Toonflow node menu and grouping operations" width="80%" /></a><br /><sub>Node menu and grouping operations</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="YuYuer Drama node menu and grouping operations" width="80%" /></a><br /><sub>Node menu and grouping operations</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Toonflow Plugin Marketplace" width="80%" /></a><br /><sub>Plugin Marketplace</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="YuYuer Drama Plugin Marketplace" width="80%" /></a><br /><sub>Plugin Marketplace</sub>
 
 </div>
 
@@ -285,14 +285,14 @@ The Android app supports ARM64 devices only. Download and install `toonflow-VERS
 
 The Windows installer automatically detects and installs WebView2. If the app closes immediately after installation, download and install the runtime manually from the [WebView2 download page](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-On macOS (Apple Silicon), drag Toonflow into Applications and open it directly. No terminal commands are required beforehand. If macOS displays a security warning, follow the steps below in order.
+On macOS (Apple Silicon), drag YuYuer Drama into Applications and open it directly. No terminal commands are required beforehand. If macOS displays a security warning, follow the steps below in order.
 
 <details>
-<summary><strong>If Toonflow cannot be installed or opened on macOS</strong></summary>
+<summary><strong>If YuYuer Drama cannot be installed or opened on macOS</strong></summary>
 
-**1. Allow Toonflow in Privacy & Security**
+**1. Allow YuYuer Drama in Privacy & Security**
 
-If you see a warning that the developer cannot be verified or that Apple cannot check the app for malicious software, first try opening Toonflow. Then go to System Settings → Privacy & Security, find the message stating that Toonflow was blocked, click Open Anyway, and confirm as prompted. See [Apple's official instructions](https://support.apple.com/zh-cn/102445).
+If you see a warning that the developer cannot be verified or that Apple cannot check the app for malicious software, first try opening YuYuer Drama. Then go to System Settings → Privacy & Security, find the message stating that YuYuer Drama was blocked, click Open Anyway, and confirm as prompted. See [Apple's official instructions](https://support.apple.com/zh-cn/102445).
 
 **2. If quarantine restrictions still prevent opening, try removing the quarantine attribute**
 
@@ -411,7 +411,7 @@ When you see “服务启动成功” (service started successfully), open `http
 
 ### 4.5 Cloud Deployment
 
-Our partner [AI Galaxy (智星云)](https://www.ai-galaxy.com/) provides an officially authorized commercial Toonflow image with a ready-to-use environment. For instructions, see the [illustrated image deployment guide](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
+Our partner [AI Galaxy (智星云)](https://www.ai-galaxy.com/) provides an officially authorized commercial YuYuer Drama image with a ready-to-use environment. For instructions, see the [illustrated image deployment guide](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
 
 ---
 
@@ -437,7 +437,7 @@ These costs are the recorded figures for this example and are provided for refer
 
 Scan the QR code to contact the group invitation assistant:
 
-<img src="../images/qr.png" alt="Toonflow community QR code" height="400"/>
+<img src="../images/qr.png" alt="YuYuer Drama community QR code" height="400"/>
 
 You can also click the icon to join Discord:
 
@@ -449,15 +449,15 @@ Or use the invitation link: [https://discord.gg/HEjKmpNpAZ](https://discord.gg/H
 
 ## 7. 💌 Contact Us
 
-📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 Open-Source License
 
-Toonflow is licensed under the [MIT License](../../LICENSE). Third-party dependencies and assets remain subject to their respective licenses and copyright notices.
+YuYuer Drama is licensed under the [MIT License](../../LICENSE). Third-party dependencies and assets remain subject to their respective licenses and copyright notices.
 
-[![Toonflow Star History](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![YuYuer Drama Star History](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **Non-retroactivity clause**: Users who used versions before v1.0.8 under AGPL-3.0 remain subject to AGPL-3.0. Versions v1.0.8 through v1.1.8 remain subject to Apache-2.0 and its additional agreement. These users are not bound by this license change.
 
@@ -480,4 +480,4 @@ Copyright © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Toonflow footer" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="YuYuer Drama footer" width="100%" />

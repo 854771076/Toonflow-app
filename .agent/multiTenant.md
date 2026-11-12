@@ -95,7 +95,7 @@ data/
 - 管理后台位于独立包 `packages/multiTenant/adminWeb`，使用 Vue Router 提供总览、用户管理，并将业务导航分为“模型服务”（供应商管理、模型路由、价格配置）与“平台设置”（系统配置、数据源映射）。平台专用云凭据放在供应商管理，路由绑定与价格各在所属页面维护；路由与组件仍留在后台包，继续复用已有认证、启停及创作入口，不在宿主复制第二套后台业务。
 - Windows SDK 将 Ctrl 刷新误判为新窗口时，仅保留后台根、`/multiTenant/overview`、`/multiTenant/configuration`、`/multiTenant/users`、`/multiTenant/sourceMapping`、`/multiTenant/models`、`/multiTenant/providers` 与 `/multiTenant/prices` 的合法 hash，重新构造宿主 URL 并保留 `host=1` 握手标记；其他目标回到后台根，不能退回创作主页。新增后台页时同步调整此白名单。
 - 总览和配置只展示真实可得的服务状态、访问端口及创作入口等信息，配置操作使用已有启停接口。本轮已明确授权下方普通账号管理范围，不能继续用旧“未授权用户 CRUD”限制阻断；该授权不包括虚构统计、组织租户 CRUD、成员角色管理、订阅收费、可编辑数据库连接或其他新后端。
-- 复用现有 Toonflow Logo 与语义主题变量，支持窄屏导航、深浅主题和长译文；不能因后台改版改变原有认证、主窗生命周期、`10888` 网关或账号隔离边界。管理会话通过 HttpOnly Cookie 恢复，当前进程退出后失效；主窗口重载无需重复登录。管理令牌不放进 URL、宿主设置或浏览器持久缓存，也不在窗口间传递管理令牌。
+- 复用现有 YuYuer Drama Logo 与语义主题变量，支持窄屏导航、深浅主题和长译文；不能因后台改版改变原有认证、主窗生命周期、`10888` 网关或账号隔离边界。管理会话通过 HttpOnly Cookie 恢复，当前进程退出后失效；主窗口重载无需重复登录。管理令牌不放进 URL、宿主设置或浏览器持久缓存，也不在窗口间传递管理令牌。
 - 宿主创作端和后台统一复用 `apps/web/src/lib/appearance.ts` 应用主题，不分别维护主题、主色、字号和圆角逻辑。后台从已鉴权的状态接口取得超管身份及主题、语言、主色、字号、圆角等 UI 白名单；不能为同步外观而读取或回传完整主机设置、供应商凭据或其他秘密。
 - 原生主机身份必须由本次启动的随机 secret 证明。主窗口 preload 通过 `/api/multiTenant/hostSession` 换取主机 HttpOnly Cookie；打开创作 Web 时，普通 Web 窗口通过 `/api/multiTenant/user/host` 证明同一 secret 后，以超管身份访问旧设置与项目。前端初始化等待 `window.toonflowHostReady`，不向页面暴露 secret，不将其写入 URL、磁盘或持久设置，不把主机管理 Cookie 当作公开创作入口的授权。
 - 原生打开的创作窗口保持普通 Web 能力，不授予 RPC；只在明确的本机 `10888` 创作入口执行原生身份兑换。普通浏览器手工访问 `10888` 必须登录，不能依据 loopback、Host、自报标记或客户端提供的账号 ID 自动授予超管身份。
@@ -156,7 +156,7 @@ data/
 ## 模型路由、专用云凭据与余额计费
 
 - 后台 `/multiTenant/providers` 维护供应商与平台专用云凭据，`/multiTenant/models` 维护模型路由，`/multiTenant/prices` 维护用户售价与可选上游成本。模型、供应商及账务管理接口仅允许已认证超管，公开创作入口返回 `403`。路由保存使用 `revision` CAS；旧路由 ID 不得移除，只能停用，不删除历史关联与账目。
-- 对外别名 `publicId`、内部永久 `route.id` 与真实 `upstreamModelId` 必须分开。例如创作 Web 请求 `qwen8`，经多租户后端路由到实际 `gpt6` 或 Toonflow 云来源；管理员可编辑别名及改绑上游，但不能改变既有路由的内部身份。旧记录未设置 `publicId` 时回退内部 UUID，别名不能重复或占用其他路由的内部 ID。
+- 对外别名 `publicId`、内部永久 `route.id` 与真实 `upstreamModelId` 必须分开。例如创作 Web 请求 `qwen8`，经多租户后端路由到实际 `gpt6` 或 YuYuer Drama 云来源；管理员可编辑别名及改绑上游，但不能改变既有路由的内部身份。旧记录未设置 `publicId` 时回退内部 UUID，别名不能重复或占用其他路由的内部 ID。
 - 保存仅对新建、新启用或实际 `type/target/providerId/upstreamModelId` 绑定改变的启用路由检查当前上游可用性。既有失效绑定不变时，不能阻止逐条停用、改名或改价；继续保留永久 ID、schema 和 CAS 校验，不能将兼容旧失效记录当作允许新建失效绑定。
 - 创作端目录每条路由仅发布一条 `providerId: "multiTenant"`、`modelId: publicId`，并带 `routeId` 供旧 UUID 选择迁移；不能把别名和 UUID 发布为两个重复模型。共享选择逻辑应按旧 `routeId` 找回并迁移到当前 `modelId`，旧供应商／模型配对仍不能绕过网关。新请求按当前绑定解析，历史 execution、价格和任务快照沿原路由 ID／版本恢复，不受改名或改绑影响。
 - 文本、图片、视频、音频选择统一复用 `nodeAi`／`modelCatalog`，设置目录也来自同一来源。平台选择保留稳定 `routeId`，真正 HTTP 提交前 fresh 读取目录解析当前 `publicId`；兼容旧 UUID 与仍能关联的当前 alias，离线旧 alias 无法关联到内部路由时明确要求重选，不能猜绑定或静默选其他模型。

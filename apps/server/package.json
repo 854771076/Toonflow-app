@@ -11,7 +11,6 @@
     "./documentFormats": "./src/lib/documentFormats.ts",
     "./nodeMenu": "./src/lib/nodeMenu.ts",
     "./modelReasoning": "./src/lib/modelReasoning.ts",
-    "./channel": "./src/utils/channel/types.ts",
     "./mcp": "./src/utils/mcp/runtime.ts",
     "./mobileLink": "./src/utils/mobileLink/index.ts",
     "./browser": "./src/utils/browser/index.ts",
@@ -23,7 +22,7 @@
   },
   "scripts": {
     "routes": "bun src/core.ts",
-    "dev": "NODE_ENV=dev bun --watch src/index.ts",
+    "dev": "NODE_ENV=dev bun --env-file=.env --watch src/index.ts",
     "build": "bun scripts/build.ts",
     "start": "bun ../../build/server/index.js",
     "typecheck": "tsc"

@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,15 +45,15 @@
 <div align="center">
 
 <p align="center">
-  <img src="./docs/images/logo.png" alt="Toonflow Logo" width="120" height="120" />
+  <img src="./docs/images/logo.png" alt="YuYuer Drama Logo" width="120" height="120" />
 </p>
 
-<h1 align="center">Toonflow｜开源 AI 短剧、漫剧与视频创作平台</h1>
+<h1 align="center">YuYuer Drama｜开源 AI 短剧、漫剧与视频创作平台</h1>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%E7%9F%AD%E5%89%A7%E5%B7%A5%E5%8E%82;%E8%AE%A9%E7%81%B5%E6%84%9F%E6%88%90%E4%B8%BA%E7%9C%8B%E5%BE%97%E8%A7%81%E7%9A%84%E6%95%85%E4%BA%8B" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%E7%9F%AD%E5%89%A7%E5%B7%A5%E5%8E%82;%E8%AE%A9%E7%81%B5%E6%84%9F%E6%88%90%E4%B8%BA%E7%9C%8B%E5%BE%97%E8%A7%81%E7%9A%84%E6%95%85%E4%BA%8B" alt="Toonflow · AI 短剧工厂 · 让灵感成为看得见的故事" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%E7%9F%AD%E5%89%A7%E5%B7%A5%E5%8E%82;%E8%AE%A9%E7%81%B5%E6%84%9F%E6%88%90%E4%B8%BA%E7%9C%8B%E5%BE%97%E8%A7%81%E7%9A%84%E6%95%85%E4%BA%8B" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%E7%9F%AD%E5%89%A7%E5%B7%A5%E5%8E%82;%E8%AE%A9%E7%81%B5%E6%84%9F%E6%88%90%E4%B8%BA%E7%9C%8B%E5%BE%97%E8%A7%81%E7%9A%84%E6%95%85%E4%BA%8B" alt="YuYuer Drama · AI 短剧工厂 · 让灵感成为看得见的故事" width="600" />
   </picture>
 </a>
 
@@ -125,7 +125,7 @@
   </a>
 </p>
 
-Toonflow 是面向短剧、漫剧和短视频创作者的开源 AI 创作工具。通过无限画布编写剧本与分镜、管理角色和场景素材、生成图片与视频。支持本地部署、自由接入模型，并可通过 AI Agent、MCP 与插件扩展创作流程。
+YuYuer Drama 是面向短剧、漫剧和短视频创作者的开源 AI 创作工具。通过无限画布编写剧本与分镜、管理角色和场景素材、生成图片与视频。支持本地部署、自由接入模型，并可通过 AI Agent、MCP 与插件扩展创作流程。
 
 </div>
 
@@ -134,12 +134,12 @@ Toonflow 是面向短剧、漫剧和短视频创作者的开源 AI 创作工具�
     <tr>
       <td width="50%" align="center">
         <a href="./docs/images/gStar.png">
-          <img src="./docs/images/gStar.png" alt="Toonflow AtomGit G-Star 认证证书 No.540" width="100%" />
+          <img src="./docs/images/gStar.png" alt="YuYuer Drama AtomGit G-Star 认证证书 No.540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="./docs/images/gvp.jpg">
-          <img src="./docs/images/gvp.jpg" alt="Toonflow Gitee GVP 认证证书" width="100%" />
+          <img src="./docs/images/gvp.jpg" alt="YuYuer Drama Gitee GVP 认证证书" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@ Toonflow 是面向短剧、漫剧和短视频创作者的开源 AI 创作工具�
 
 ## 1. 💛 赞助与支持
 
-感谢以下合作伙伴对 Toonflow 开源项目的支持。
+感谢以下合作伙伴对 YuYuer Drama 开源项目的支持。
 
 <table>
   <tr>
@@ -202,7 +202,7 @@ Toonflow 是面向短剧、漫剧和短视频创作者的开源 AI 创作工具�
 
 ## 2. 🌟 亮点
 
-Toonflow 是面向短剧、漫剧与短视频制作的开源 AI 创作平台，把剧本、资产与视频片段整合进同一张无限画布。
+YuYuer Drama 是面向短剧、漫剧与短视频制作的开源 AI 创作平台，把剧本、资产与视频片段整合进同一张无限画布。
 
 | 能力 | 说明 |
 | --- | --- |
@@ -214,7 +214,7 @@ Toonflow 是面向短剧、漫剧与短视频制作的开源 AI 创作平台，�
 | 🔧 **自由接入模型** | 配置第三方 API，也可接入本地 ComfyUI 和 LLM。 |
 | 🌐 **多语言支持** | 支持 21 种界面语言。 |
 
-### 如何用 Toonflow 制作 AI 短剧与漫剧
+### 如何用 YuYuer Drama 制作 AI 短剧与漫剧
 
 1. **编写剧本与分镜**：在文本节点中整理故事、人物设定和镜头描述，使用语言模型辅助创作，再审阅与修改内容。
 2. **准备角色与场景素材**：导入参考图片，或通过图片生成节点制作角色、场景和分镜图。
@@ -225,13 +225,13 @@ Toonflow 是面向短剧、漫剧与短视频制作的开源 AI 创作平台，�
 
 ### 常见问题
 
-**Toonflow 可以用于哪些 AI 短剧和漫剧制作环节？**
+**YuYuer Drama 可以用于哪些 AI 短剧和漫剧制作环节？**
 
-Toonflow 提供文本、图片与视频生成节点，可用于剧本与分镜创作、角色和场景素材制作、视频镜头生成，以及素材的预览与整理。创作者需要审阅和调整内容，具体生成能力取决于配置的模型。
+YuYuer Drama 提供文本、图片与视频生成节点，可用于剧本与分镜创作、角色和场景素材制作、视频镜头生成，以及素材的预览与整理。创作者需要审阅和调整内容，具体生成能力取决于配置的模型。
 
-**Toonflow 免费吗？模型调用需要付费吗？**
+**YuYuer Drama 免费吗？模型调用需要付费吗？**
 
-Toonflow 采用 MIT 开源许可，可自行部署。第三方模型服务的 API 调用可能收费；使用本地模型或 ComfyUI 时，需要自行准备相应的运行环境与算力。作品示例中的制作费用仅代表该案例，不是固定价格。
+YuYuer Drama 采用 MIT 开源许可，可自行部署。第三方模型服务的 API 调用可能收费；使用本地模型或 ComfyUI 时，需要自行准备相应的运行环境与算力。作品示例中的制作费用仅代表该案例，不是固定价格。
 
 **可以接入自己的模型和 ComfyUI 工作流吗？**
 
@@ -249,25 +249,25 @@ Toonflow 采用 MIT 开源许可，可自行部署。第三方模型服务的 AP
 
 <div align="center">
 
-<a href="./docs/images/screenshots/projectHome.png"><img src="./docs/images/screenshots/projectHome.png" alt="Toonflow 项目首页与灵感创作" width="80%" /></a><br /><sub>项目首页与灵感创作</sub>
+<a href="./docs/images/screenshots/projectHome.png"><img src="./docs/images/screenshots/projectHome.png" alt="YuYuer Drama 项目首页与灵感创作" width="80%" /></a><br /><sub>项目首页与灵感创作</sub>
 
-<a href="./docs/images/screenshots/quickStart.png"><img src="./docs/images/screenshots/quickStart.png" alt="Toonflow 首次启动与快速配置" width="80%" /></a><br /><sub>首次启动与快速配置</sub>
+<a href="./docs/images/screenshots/quickStart.png"><img src="./docs/images/screenshots/quickStart.png" alt="YuYuer Drama 首次启动与快速配置" width="80%" /></a><br /><sub>首次启动与快速配置</sub>
 
-<a href="./docs/images/screenshots/canvasDark.png"><img src="./docs/images/screenshots/canvasDark.png" alt="Toonflow 深色主题画布与 AI 助手" width="80%" /></a><br /><sub>创作画布 · 深色主题</sub>
+<a href="./docs/images/screenshots/canvasDark.png"><img src="./docs/images/screenshots/canvasDark.png" alt="YuYuer Drama 深色主题画布与 AI 助手" width="80%" /></a><br /><sub>创作画布 · 深色主题</sub>
 
-<a href="./docs/images/screenshots/canvasLight.png"><img src="./docs/images/screenshots/canvasLight.png" alt="Toonflow 浅色主题画布与 AI 助手" width="80%" /></a><br /><sub>创作画布 · 浅色主题</sub>
+<a href="./docs/images/screenshots/canvasLight.png"><img src="./docs/images/screenshots/canvasLight.png" alt="YuYuer Drama 浅色主题画布与 AI 助手" width="80%" /></a><br /><sub>创作画布 · 浅色主题</sub>
 
-<a href="./docs/images/screenshots/assetCanvas.png"><img src="./docs/images/screenshots/assetCanvas.png" alt="Toonflow 角色、场景与道具资产画布" width="80%" /></a><br /><sub>角色、场景与道具资产</sub>
+<a href="./docs/images/screenshots/assetCanvas.png"><img src="./docs/images/screenshots/assetCanvas.png" alt="YuYuer Drama 角色、场景与道具资产画布" width="80%" /></a><br /><sub>角色、场景与道具资产</sub>
 
-<a href="./docs/images/screenshots/directorStudio.png"><img src="./docs/images/screenshots/directorStudio.png" alt="Toonflow 3D 导演台与镜头预演" width="80%" /></a><br /><sub>3D 导演台与镜头预演</sub>
+<a href="./docs/images/screenshots/directorStudio.png"><img src="./docs/images/screenshots/directorStudio.png" alt="YuYuer Drama 3D 导演台与镜头预演" width="80%" /></a><br /><sub>3D 导演台与镜头预演</sub>
 
-<a href="./docs/images/screenshots/characterImageGeneration.png"><img src="./docs/images/screenshots/characterImageGeneration.png" alt="Toonflow 角色三视图图片生成" width="80%" /></a><br /><sub>角色三视图与图片生成</sub>
+<a href="./docs/images/screenshots/characterImageGeneration.png"><img src="./docs/images/screenshots/characterImageGeneration.png" alt="YuYuer Drama 角色三视图图片生成" width="80%" /></a><br /><sub>角色三视图与图片生成</sub>
 
-<a href="./docs/images/screenshots/videoGeneration.png"><img src="./docs/images/screenshots/videoGeneration.png" alt="Toonflow 多参考素材视频生成" width="80%" /></a><br /><sub>多参考素材视频生成</sub>
+<a href="./docs/images/screenshots/videoGeneration.png"><img src="./docs/images/screenshots/videoGeneration.png" alt="YuYuer Drama 多参考素材视频生成" width="80%" /></a><br /><sub>多参考素材视频生成</sub>
 
-<a href="./docs/images/screenshots/nodeMenu.png"><img src="./docs/images/screenshots/nodeMenu.png" alt="Toonflow 节点菜单与分组操作" width="80%" /></a><br /><sub>节点菜单与分组操作</sub>
+<a href="./docs/images/screenshots/nodeMenu.png"><img src="./docs/images/screenshots/nodeMenu.png" alt="YuYuer Drama 节点菜单与分组操作" width="80%" /></a><br /><sub>节点菜单与分组操作</sub>
 
-<a href="./docs/images/screenshots/pluginMarket.png"><img src="./docs/images/screenshots/pluginMarket.png" alt="Toonflow 插件市场" width="80%" /></a><br /><sub>插件市场</sub>
+<a href="./docs/images/screenshots/pluginMarket.png"><img src="./docs/images/screenshots/pluginMarket.png" alt="YuYuer Drama 插件市场" width="80%" /></a><br /><sub>插件市场</sub>
 
 </div>
 
@@ -295,16 +295,16 @@ Windows 的 Intel / AMD 电脑选择 `toonflow-版本号-Setup.exe`，ARM64 电�
 
 Linux 选择对应架构的 `toonflow-版本号-linux-x64.deb` 或 `toonflow-版本号-linux-arm64.deb`，在下载目录执行 `sudo apt install ./安装包文件名.deb`，安装后从应用菜单打开。安装需要联网；apt 会准备 FFmpeg、curl、unzip、CA 证书等依赖，安装脚本在解包应用前下载固定版本的 Bun 并校验大小与 SHA-256，配置阶段再安装运行时。下载或校验失败会在解包前中止安装。
 
-macOS 两种架构均使用统一的 Electrobun SDK，最低支持 macOS 14。选择对应架构的 `toonflow-版本号-macos-arm64.dmg` 或 `toonflow-版本号-macos-x64.dmg`，打开后将 `toonflow.app` 拖入“应用程序”，再从“应用程序”打开 Toonflow。正式发布流程使用 Developer ID Application 签署应用与 DMG，并完成 Apple 公证。旧版 Intel Mac 客户端首次迁移时须下载完整 DMG 覆盖安装，不能通过旧版增量更新直接迁移；安装前退出应用并备份原数据目录。
+macOS 两种架构均使用统一的 Electrobun SDK，最低支持 macOS 14。选择对应架构的 `toonflow-版本号-macos-arm64.dmg` 或 `toonflow-版本号-macos-x64.dmg`，打开后将 `toonflow.app` 拖入“应用程序”，再从“应用程序”打开 YuYuer Drama。正式发布流程使用 Developer ID Application 签署应用与 DMG，并完成 Apple 公证。旧版 Intel Mac 客户端首次迁移时须下载完整 DMG 覆盖安装，不能通过旧版增量更新直接迁移；安装前退出应用并备份原数据目录。
 
 macOS 若遇到系统安全提示，请按以下顺序处理。
 
 <details>
 <summary><strong>macOS 无法安装或打开时的处理方法</strong></summary>
 
-**1. 在“隐私与安全性”中允许 Toonflow**
+**1. 在“隐私与安全性”中允许 YuYuer Drama**
 
-如果提示“无法验证开发者”或“Apple 无法检查 App 是否包含恶意软件”，先尝试打开 Toonflow，再前往“系统设置 → 隐私与安全性”，找到 Toonflow 被阻止的提示，点击“仍要打开”，并按提示确认。详见 [Apple 官方说明](https://support.apple.com/zh-cn/102445)。
+如果提示“无法验证开发者”或“Apple 无法检查 App 是否包含恶意软件”，先尝试打开 YuYuer Drama，再前往“系统设置 → 隐私与安全性”，找到 YuYuer Drama 被阻止的提示，点击“仍要打开”，并按提示确认。详见 [Apple 官方说明](https://support.apple.com/zh-cn/102445)。
 
 **2. 仍因系统隔离限制无法打开时，再尝试移除隔离属性**
 
@@ -423,7 +423,7 @@ bun run start:server
 
 ### 4.5 云平台部署
 
-合作平台 [智星云](https://www.ai-galaxy.com/) 提供官方授权的 Toonflow 商用镜像，可直接使用预装环境。具体步骤见 [镜像部署图文教程](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1)。
+合作平台 [智星云](https://www.ai-galaxy.com/) 提供官方授权的 YuYuer Drama 商用镜像，可直接使用预装环境。具体步骤见 [镜像部署图文教程](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1)。
 
 ---
 
@@ -449,7 +449,7 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 拉群小助手:
 
-<img src="./docs/images/qr.png" alt="Toonflow QR" height="400"/>
+<img src="./docs/images/qr.png" alt="YuYuer Drama QR" height="400"/>
 
 也可以点击图标加入 Discord：
 
@@ -461,15 +461,15 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 ## 7. 💌 联系我们
 
-📧 邮箱：[ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 邮箱：[ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 开源许可
 
-Toonflow 采用 [MIT 许可证](./LICENSE)。第三方依赖和素材遵循各自的许可与版权声明。
+YuYuer Drama 采用 [MIT 许可证](./LICENSE)。第三方依赖和素材遵循各自的许可与版权声明。
 
-[![Toonflow Star History](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![YuYuer Drama Star History](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **不追溯条款**：v1.0.8 发布前基于 AGPL-3.0 使用的用户，继续按 AGPL-3.0 执行，v1.0.8 ~ v1.1.8 继续按 Apache-2.0 与附加协议执行，不受本协议变更约束。
 
@@ -492,4 +492,4 @@ Copyright © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Toonflow 页脚" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="YuYuer Drama 页脚" width="100%" />

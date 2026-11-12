@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Toonflow लोगो" width="120" height="120" />
+  <img src="../images/logo.png" alt="YuYuer Drama लोगो" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="Toonflow · AI लघु नाटक स्टुडिओ · कल्पनांना कथांमध्ये रूपांतरित करा" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="YuYuer Drama · AI लघु नाटक स्टुडिओ · कल्पनांना कथांमध्ये रूपांतरित करा" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Toonflow AtomGit G-स्टार प्रमाणपत्र क्रमांक 540" width="100%" />
+          <img src="../images/gStar.png" alt="YuYuer Drama AtomGit G-स्टार प्रमाणपत्र क्रमांक 540" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Toonflow Gitee GVP प्रमाणपत्र" width="100%" />
+          <img src="../images/gvp.jpg" alt="YuYuer Drama Gitee GVP प्रमाणपत्र" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 प्रायोजक आणि सहकार्य
 
-Toonflow ओपन-सोर्स प्रोजेक्टला समर्थन दिल्याबद्दल खालील भागीदारांचे आभार.
+YuYuer Drama ओपन-सोर्स प्रोजेक्टला समर्थन दिल्याबद्दल खालील भागीदारांचे आभार.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@ Toonflow ओपन-सोर्स प्रोजेक्टला समर�
 
 ## 2. 🌟 ठळक मुद्दे
 
-Toonflow हे लघुनाट्ये, ॲनिमेटेड कॉमिक्स आणि लहान व्हिडिओ तयार करण्यासाठीचे मुक्त-स्रोत AI व्यासपीठ आहे. पटकथा, सर्जनशील सामग्री आणि व्हिडिओ क्लिप एका अनंत कॅनव्हासवर एकत्र आणते.
+YuYuer Drama हे लघुनाट्ये, ॲनिमेटेड कॉमिक्स आणि लहान व्हिडिओ तयार करण्यासाठीचे मुक्त-स्रोत AI व्यासपीठ आहे. पटकथा, सर्जनशील सामग्री आणि व्हिडिओ क्लिप एका अनंत कॅनव्हासवर एकत्र आणते.
 
 | क्षमता | वर्णन |
 | --- | --- |
@@ -224,25 +224,25 @@ Toonflow हे लघुनाट्ये, ॲनिमेटेड कॉम�
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Toonflow · प्रकल्पाचे मुख्यपृष्ठ आणि कल्पना निर्मिती" width="80%" /></a><br /><sub>प्रकल्पाचे मुख्यपृष्ठ आणि कल्पना निर्मिती</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="YuYuer Drama · प्रकल्पाचे मुख्यपृष्ठ आणि कल्पना निर्मिती" width="80%" /></a><br /><sub>प्रकल्पाचे मुख्यपृष्ठ आणि कल्पना निर्मिती</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Toonflow · पहिली सुरुवात आणि झटपट सेटअप" width="80%" /></a><br /><sub>पहिली सुरुवात आणि झटपट सेटअप</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="YuYuer Drama · पहिली सुरुवात आणि झटपट सेटअप" width="80%" /></a><br /><sub>पहिली सुरुवात आणि झटपट सेटअप</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Toonflow · सर्जनशील कॅनव्हास · गडद थीम" width="80%" /></a><br /><sub>सर्जनशील कॅनव्हास · गडद थीम</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="YuYuer Drama · सर्जनशील कॅनव्हास · गडद थीम" width="80%" /></a><br /><sub>सर्जनशील कॅनव्हास · गडद थीम</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Toonflow · सर्जनशील कॅनव्हास · उजळ थीम" width="80%" /></a><br /><sub>सर्जनशील कॅनव्हास · उजळ थीम</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="YuYuer Drama · सर्जनशील कॅनव्हास · उजळ थीम" width="80%" /></a><br /><sub>सर्जनशील कॅनव्हास · उजळ थीम</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Toonflow · पात्रे, दृश्ये आणि वस्तूंसाठीची सामग्री" width="80%" /></a><br /><sub>पात्रे, दृश्ये आणि वस्तूंसाठीची सामग्री</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="YuYuer Drama · पात्रे, दृश्ये आणि वस्तूंसाठीची सामग्री" width="80%" /></a><br /><sub>पात्रे, दृश्ये आणि वस्तूंसाठीची सामग्री</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Toonflow · 3D दिग्दर्शक स्टुडिओ आणि शॉटचे पूर्वावलोकन" width="80%" /></a><br /><sub>3D दिग्दर्शक स्टुडिओ आणि शॉटचे पूर्वावलोकन</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="YuYuer Drama · 3D दिग्दर्शक स्टुडिओ आणि शॉटचे पूर्वावलोकन" width="80%" /></a><br /><sub>3D दिग्दर्शक स्टुडिओ आणि शॉटचे पूर्वावलोकन</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Toonflow · पात्रांची तीन बाजूंनी दृश्ये आणि प्रतिमा निर्मिती" width="80%" /></a><br /><sub>पात्रांची तीन बाजूंनी दृश्ये आणि प्रतिमा निर्मिती</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="YuYuer Drama · पात्रांची तीन बाजूंनी दृश्ये आणि प्रतिमा निर्मिती" width="80%" /></a><br /><sub>पात्रांची तीन बाजूंनी दृश्ये आणि प्रतिमा निर्मिती</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Toonflow · अनेक संदर्भ सामग्रींसह व्हिडिओ निर्मिती" width="80%" /></a><br /><sub>अनेक संदर्भ सामग्रींसह व्हिडिओ निर्मिती</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="YuYuer Drama · अनेक संदर्भ सामग्रींसह व्हिडिओ निर्मिती" width="80%" /></a><br /><sub>अनेक संदर्भ सामग्रींसह व्हिडिओ निर्मिती</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Toonflow · नोड मेनू आणि गटांवरील क्रिया" width="80%" /></a><br /><sub>नोड मेनू आणि गटांवरील क्रिया</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="YuYuer Drama · नोड मेनू आणि गटांवरील क्रिया" width="80%" /></a><br /><sub>नोड मेनू आणि गटांवरील क्रिया</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Toonflow · प्लगइन बाजारपेठ" width="80%" /></a><br /><sub>प्लगइन बाजारपेठ</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="YuYuer Drama · प्लगइन बाजारपेठ" width="80%" /></a><br /><sub>प्लगइन बाजारपेठ</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ Android अॅप फक्त ARM64 उपकरणांना समर्थ
 
 Windows इंस्टॉलर स्वयंचलितपणे WebView2 ओळखतो आणि स्थापित करतो. इंस्टॉलेशननंतर लगेच ॲप बंद झाल्यास, [WebView2 डाउनलोड पेज](https://developer.microsoft.com/microsoft-edge/webview2/) वरून रनटाइम मॅन्युअली डाउनलोड करा आणि इंस्टॉल करा.
 
-macOS (Apple Silicon) वर Toonflow ला Applications फोल्डरमध्ये ओढा आणि थेट उघडा. त्याआधी Terminal मध्ये कोणतीही कमांड चालवण्याची गरज नाही. macOS ने सुरक्षेचा इशारा दाखवल्यास खालील पायऱ्या क्रमाने करा.
+macOS (Apple Silicon) वर YuYuer Drama ला Applications फोल्डरमध्ये ओढा आणि थेट उघडा. त्याआधी Terminal मध्ये कोणतीही कमांड चालवण्याची गरज नाही. macOS ने सुरक्षेचा इशारा दाखवल्यास खालील पायऱ्या क्रमाने करा.
 
 <details>
-<summary><strong>macOS वर Toonflow स्थापित होत नसेल किंवा उघडत नसेल तर</strong></summary>
+<summary><strong>macOS वर YuYuer Drama स्थापित होत नसेल किंवा उघडत नसेल तर</strong></summary>
 
-**1. गोपनीयता आणि सुरक्षितता मध्ये Toonflow ला अनुमती द्या**
+**1. गोपनीयता आणि सुरक्षितता मध्ये YuYuer Drama ला अनुमती द्या**
 
-डेव्हलपरची पडताळणी केली जाऊ शकत नाही किंवा Apple दुर्भावनापूर्ण सॉफ्टवेअरसाठी ॲप तपासू शकत नाही अशी चेतावणी तुम्हाला दिसल्यास, प्रथम Toonflow उघडण्याचा प्रयत्न करा. त्यानंतर सिस्टम सेटिंग्ज → गोपनीयता आणि सुरक्षितता वर जा, Toonflow अवरोधित करण्यात आलेला संदेश शोधा, तरीही उघडा क्लिक करा आणि सूचित केल्यानुसार पुष्टी करा. पहा [Apple च्या अधिकृत सूचना](https://support.apple.com/zh-cn/102445).
+डेव्हलपरची पडताळणी केली जाऊ शकत नाही किंवा Apple दुर्भावनापूर्ण सॉफ्टवेअरसाठी ॲप तपासू शकत नाही अशी चेतावणी तुम्हाला दिसल्यास, प्रथम YuYuer Drama उघडण्याचा प्रयत्न करा. त्यानंतर सिस्टम सेटिंग्ज → गोपनीयता आणि सुरक्षितता वर जा, YuYuer Drama अवरोधित करण्यात आलेला संदेश शोधा, तरीही उघडा क्लिक करा आणि सूचित केल्यानुसार पुष्टी करा. पहा [Apple च्या अधिकृत सूचना](https://support.apple.com/zh-cn/102445).
 
 **2. अलग ठेवण्याचे निर्बंध अजूनही उघडण्यास प्रतिबंध करत असल्यास, अलग ठेवण्याचे गुणधर्म काढून टाकण्याचा प्रयत्न करा**
 
@@ -388,7 +388,7 @@ bun run start:server
 
 ### 4.5 मेघ उपयोजन
 
-आमचा भागीदार [AI Galaxy (智星云)](https://www.ai-galaxy.com/) अधिकृत मान्यताप्राप्त व्यावसायिक Toonflow इमेज पुरवतो. त्यात वापरासाठी तयार वातावरण असते. पायऱ्यांसाठी [चित्रांसह इमेज स्थापनेचे मार्गदर्शन](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1) पाहा.
+आमचा भागीदार [AI Galaxy (智星云)](https://www.ai-galaxy.com/) अधिकृत मान्यताप्राप्त व्यावसायिक YuYuer Drama इमेज पुरवतो. त्यात वापरासाठी तयार वातावरण असते. पायऱ्यांसाठी [चित्रांसह इमेज स्थापनेचे मार्गदर्शन](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1) पाहा.
 
 ---
 
@@ -414,7 +414,7 @@ https://github.com/user-attachments/assets/2d9fddac-dfdf-4640-b030-b09d7f7287e9
 
 गट आमंत्रण सहाय्यकाशी संपर्क साधण्यासाठी QR कोड स्कॅन करा:
 
-<img src="../images/qr.png" alt="Toonflow समुदाय QR कोड" height="400"/>
+<img src="../images/qr.png" alt="YuYuer Drama समुदाय QR कोड" height="400"/>
 
 Discord मध्ये सामील होण्यासाठी तुम्ही चिन्हावर देखील क्लिक करू शकता:
 
@@ -426,15 +426,15 @@ Discord मध्ये सामील होण्यासाठी तुम
 
 ## 7. 💌 आमच्याशी संपर्क साधा
 
-📧 ईमेल: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 ईमेल: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 मुक्त-स्रोत परवाना
 
-Toonflow [MIT License](../../LICENSE) अंतर्गत परवानाकृत आहे. तृतीय-पक्ष अवलंबित्व आणि मालमत्ता त्यांच्या संबंधित परवाने आणि कॉपीराइट सूचनांच्या अधीन राहतील.
+YuYuer Drama [MIT License](../../LICENSE) अंतर्गत परवानाकृत आहे. तृतीय-पक्ष अवलंबित्व आणि मालमत्ता त्यांच्या संबंधित परवाने आणि कॉपीराइट सूचनांच्या अधीन राहतील.
 
-[![Toonflow स्टार इतिहास](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![YuYuer Drama स्टार इतिहास](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **नॉन-रेट्रोएक्टिव्हिटी क्लॉज**: जे वापरकर्ते AGPL-3.0 अंतर्गत v1.0.8 आधीच्या आवृत्त्या वापरतात ते AGPL-3.0 च्या अधीन राहतील. v1.0.8 ते v1.1.8 आवृत्त्या Apache-2.0 आणि त्याच्या अतिरिक्त कराराच्या अधीन राहतील. हे वापरकर्ते या परवाना बदलास बांधील नाहीत.
 
@@ -457,4 +457,4 @@ Xi'an Zhongxing Digital Intelligence Technology Co., Ltd. (西安中星数字智
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Toonflow फूटर" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="YuYuer Drama फूटर" width="100%" />

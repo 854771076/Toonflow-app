@@ -12,41 +12,13 @@ import { readDocument } from "@/utils/documents";
 import { getConfiguredProviders, getModelLimits, getModelReasoning, getProviderBaseUrl, providerSchema } from "@/utils/ai/provider";
 import { createBillingUsageTracker } from "@/utils/ai/billingUsage";
 import * as gatewayAuth from "@/utils/gatewayAuth";
+import { getGatewayModels } from "@/utils/ai/gatewayModels";
 
 export { fetchProviderModels } from "@/utils/ai/models";
-export { accountProviderSchema, getAccountProvider, getAccountToken, getConfiguredProviders, getModelLimits, getModelReasoning, providerSchema, reasoningEffortsSchema } from "@/utils/ai/provider";
+export { getConfiguredProviders, getModelLimits, getModelReasoning, providerSchema, reasoningEffortsSchema } from "@/utils/ai/provider";
 
 const gatewayProviderId = "gateway";
-const gatewayProviderLabel = "Toonflow 网关";
-
-interface GatewayModelEntry {
-  id: string;
-  label: string;
-}
-
-let gatewayModelsCache: { sub: string; expiresAt: number; models: GatewayModelEntry[] } | undefined;
-
-async function getGatewayModels(): Promise<GatewayModelEntry[]> {
-  const sessionId = gatewayAuth.currentGatewaySessionId();
-  const session = sessionId ? gatewayAuth.getSession(sessionId) : undefined;
-  if (!session) throw Object.assign(new Error("登录已失效，请重新登录"), { status: 401 });
-
-  const cached = gatewayModelsCache;
-  if (cached && cached.sub === session.sub && cached.expiresAt > Date.now()) return cached.models;
-
-  const res = await gatewayAuth.gatewayApiFetch("/v1/models");
-  if (!res.ok) throw Object.assign(new Error("获取网关模型列表失败"), { status: res.status === 401 ? 401 : 502 });
-  const body = (await res.json()) as { data?: { id?: unknown; display_name?: unknown }[] };
-  const models = (Array.isArray(body.data) ? body.data : []).flatMap(item => {
-    const id = typeof item?.id === "string" ? item.id.trim() : "";
-    if (!id) return [];
-    const label = typeof item.display_name === "string" && item.display_name.trim() ? item.display_name.trim() : id;
-    return [{ id, label }];
-  });
-
-  gatewayModelsCache = { sub: session.sub, expiresAt: Date.now() + 5 * 60 * 1000, models };
-  return models;
-}
+const gatewayProviderLabel = "YuYuer Drama 网关";
 
 async function getGatewayModel(modelId: string) {
   const models = await getGatewayModels();
@@ -72,10 +44,7 @@ async function getGatewayModel(modelId: string) {
 export async function getConfiguredModel(providerId: string, modelId: string) {
   if (providerId === gatewayProviderId) return getGatewayModel(modelId);
   const parsed = providerSchema.safeParse(getConfiguredProviders().find(item => item?.id === providerId));
-  if (!parsed.success) {
-    const official = providerId.toLowerCase() === "toonflow";
-    throw Object.assign(new Error(official ? "请先登录 Toonflow 账号并刷新供应商" : "请先在设置中配置模型供应商"), { status: official ? 401 : 400 });
-  }
+  if (!parsed.success) throw Object.assign(new Error("请先在设置中配置模型供应商"), { status: 400 });
   const provider = parsed.data;
   const model = provider.models.find(item => item.id === modelId);
   if (!model) throw Object.assign(new Error("所选模型不存在，请重新选择"), { status: 400 });
@@ -93,7 +62,7 @@ export type ConfiguredModel = Awaited<ReturnType<typeof getConfiguredModel>>;
 export async function listAiModels() {
   if (gatewayAuth.currentGatewaySessionId()) {
     const models = await getGatewayModels();
-    return models.map(entry => {
+    return models.filter(entry => entry.type === "text").map(entry => {
       const model = { id: entry.id, label: entry.label, reasoningEfforts: false as const };
       const limits = getModelLimits(gatewayProviderId, model);
       return {

@@ -5,12 +5,13 @@ import { createHash } from "node:crypto";
 import { mediaProviders, type Provider, type ProviderTaskData } from "@toonflow/providers";
 import type { GeneratedMedia, MediaGenerationRequest, MediaModel, MediaReference } from "@toonflow/tools-scaffold/runtime";
 import conf from "@/utils/conf";
-import { getAccountProvider } from "@/utils/ai/provider";
 import { getMediaProvider, listMediaProviders, loadMediaProviderSource } from "@/utils/media/provider";
 import { lockWorkspaceFiles, resolveWorkspacePath, writeWorkspaceFile } from "@/utils/workspace/files";
 import { getWorkspaceStore } from "@/utils/storage";
 import { beginGeneration, getProviderPrice } from "@/utils/media/billing";
 import { detectMimeType, readPriceReference } from "@/utils/media/priceReference";
+import * as gatewayAuth from "@/utils/gatewayAuth";
+import { getGatewayModels, type GatewayModelEntry } from "@/utils/ai/gatewayModels";
 
 const maxMediaSize = 100 * 1024 * 1024;
 export type MediaGenerationCheckpoint = {
@@ -59,9 +60,16 @@ function imageOptions(value: unknown, pattern: RegExp) {
 }
 
 export async function listMediaModels(): Promise<MediaModel[]> {
+  if (gatewayAuth.currentGatewaySessionId()) {
+    const models = await getGatewayModels();
+    return models
+      .filter((entry): entry is GatewayModelEntry & { type: "image" | "video" } => entry.type === "image" || entry.type === "video")
+      .map(entry => ({
+        providerId: "gateway", providerLabel: "YuYuer Drama 网关", modelId: entry.id, label: entry.label, type: entry.type, supportsPrice: false,
+      }));
+  }
   const installedProviders = await listMediaProviders();
-  installedProviders.sort((left, right) => Number(right.id === "toonflow") - Number(left.id === "toonflow"));
-  return installedProviders.filter(provider => provider.id !== "toonflow" || !!getAccountProvider()).flatMap(provider => provider.models.flatMap(model => {
+  return installedProviders.flatMap(provider => provider.models.flatMap(model => {
     if (model.type !== "image" && model.type !== "video" && model.type !== "audio") return [];
     const builtIn = (mediaProviders as readonly Provider[]).find(item => item.id === provider.id)?.models.find(item => item.id === model.id);
     return [{
@@ -167,7 +175,7 @@ function resumableAssets(assets: MediaAsset[], mediaType: "image" | "video" | "a
 async function prepareRequest<T>(directory: string | undefined, mediaType: "image" | "video" | "audio", request: MediaGenerationRequest,
   read: (cwd: string, reference: MediaReference, type: string, signal?: AbortSignal) => Promise<T>, signal?: AbortSignal) {
   // ACT: 仅向已适配引用映射的内置供应商传递，其他第三方适配器仍接收原有公共参数。
-  const referenceOrder = mediaType === "video" && ["toonflow", "apiMart", "metaso", "compshare"].includes(request.providerId) ? request.referenceOrder : undefined;
+  const referenceOrder = mediaType === "video" && ["apiMart", "metaso", "compshare"].includes(request.providerId) ? request.referenceOrder : undefined;
   if (referenceOrder) {
     const media = { image: request.images, video: request.videos, audio: request.audios };
     for (const [index, reference] of referenceOrder.entries()) {
@@ -320,7 +328,7 @@ async function executeMedia(
       const generate = mediaType === "image" ? provider.generateImage : mediaType === "video" ? provider.generateVideo : provider.generateAudio;
       if (typeof generate !== "function") invalid(t`此供应商不支持${translateMessage({ image: "图片", video: "视频", audio: "音频" }[mediaType])}生成`);
       const rules = Array.isArray(provider.rules) ? provider.rules : [];
-      if (provider.id !== "toonflow" && rules.some(rule => rule.field === "apiKey")
+      if (rules.some(rule => rule.field === "apiKey")
         && (typeof provider.config.apiKey !== "string" || !provider.config.apiKey.trim())) invalid("请先在媒体模型设置中配置供应商 API Key");
       const { type, ...parameters } = await prepareRequest(directory, mediaType, upstreamRequest, readReference, signal);
       signal?.throwIfAborted();

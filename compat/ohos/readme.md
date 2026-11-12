@@ -1,4 +1,4 @@
-# Toonflow OHOS
+# YuYuer Drama OHOS
 
 独立鸿蒙兼容构建，复用 `apps/mobile/src/server.ts`、完整网页与内置插件。ArkTS UIAbility/ArkWeb 加载应用内服务在随机 localhost 端口提供的页面；服务由 C++ 桥嵌入 Node 共享库运行。构建时只转换 OHOS 所需的 Bun 接口，其他平台沿用 Bun。
 

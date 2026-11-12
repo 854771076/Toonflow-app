@@ -20,29 +20,26 @@
       </div>
       <div v-else class="welcomeContent">
         <h1 id="welcomeTitle">快速开始</h1>
-        <p class="description">登录 Toonflow 即可免配置快速开始，直接开启创作。</p>
-        <accountPanel v-if="!loggedIn" class="accountContent" @loggedIn="startWithAccount" />
-        <el-button v-else class="startButton" type="primary" :loading="saving" @click="completeSetup">开始使用</el-button>
+        <p class="description">配置第三方模型，开启创作。</p>
+        <el-button class="startButton" type="primary" :loading="saving" @click="completeSetup">开始使用</el-button>
         <div class="secondaryActions">
           <el-button class="secondaryButton" round :disabled="saving" @click="view = 'custom'">
             <icon-key class="buttonIcon" />
             配置第三方模型
           </el-button>
-          <span class="separator">或</span>
-          <el-button class="secondaryButton" round :loading="saving" @click="completeSetup">稍后配置</el-button>
         </div>
       </div>
 
       <footer class="pageFooter">
         <el-button class="deviceLink" size="small" :icon="IconDevices" @click="mobileConnectVisible = true">{{ mobileConnectionLabel }}</el-button>
-        <p>© {{ new Date().getFullYear() }} Toonflow · 保留所有权利。</p>
+        <p>© {{ new Date().getFullYear() }} YuYuer Drama · 保留所有权利。</p>
       </footer>
     </section>
     <div class="artPanel" aria-hidden="true">
       <bg class="artBg" />
       <div class="artBrand">
         <span class="artLogo" v-html="logoSvg" />
-        <span class="artName">Toonflow</span>
+        <span class="artName">YuYuer Drama</span>
       </div>
     </div>
     <mobileConnect v-model="mobileConnectVisible" />
@@ -54,35 +51,26 @@ import { defineAsyncComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { IconArrowLeft, IconDevices } from "@tabler/icons-vue";
-import { customProviders, toonflowAccountToken } from "@/stores/settings";
+import { customProviders } from "@/stores/settings";
 import { useHelloStore } from "@/stores/hello";
-import anonymousData from "@/lib/anonymousData";
 import logoSvg from "@toonflow/assets/logo.svg?raw";
 import bg from "./bg.vue";
 import languageSelect from "@/components/languageSelect.vue";
 import { mobileConnectionLabel } from "@/lib/mobile";
 
-const accountPanel = defineAsyncComponent(() => import("@/components/settings/panels/account/index.vue"));
 const languageModel = defineAsyncComponent(() => import("@/components/settings/panels/languageModel/index.vue"));
 const mobileConnect = defineAsyncComponent(() => import("@/components/mobileConnect.vue"));
 const mobileConnectVisible = ref(false);
 const view = ref<"welcome" | "custom">("welcome");
-const loggedIn = ref(!!toonflowAccountToken.value);
 const saving = ref(false);
 const router = useRouter();
 const hello = useHelloStore();
-
-function startWithAccount() {
-  loggedIn.value = true;
-  void completeSetup();
-}
 
 async function completeSetup() {
   if (saving.value) return;
   saving.value = true;
   try {
     await hello.complete();
-    anonymousData.track(view.value === "custom" || toonflowAccountToken.value ? "onboarding.complete" : "onboarding.skip");
     await router.replace("/home");
   } catch {
     ElMessage.error("保存引导状态失败，请重试");
@@ -167,22 +155,6 @@ async function completeSetup() {
         text-align: center;
       }
 
-      .accountContent {
-        padding: 0;
-
-        :deep(.authHeader) {
-          display: block;
-
-          .authLogo, .authInfo {
-            display: none;
-          }
-
-          .authTabs {
-            width: 100%;
-          }
-        }
-      }
-
       .startButton {
         width: 100%;
         min-height: 42px;
@@ -201,11 +173,6 @@ async function completeSetup() {
         justify-content: center;
         gap: 10px;
         margin-top: 20px;
-
-        .separator {
-          color: var(--el-text-color-secondary);
-          font-size: 13px;
-        }
 
         .secondaryButton {
           height: auto;

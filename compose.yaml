@@ -1,6 +1,6 @@
 services:
   toonflow:
-    build: .
+    image: crpi-045itdvshm4mk2lq.cn-beijing.personal.cr.aliyuncs.com/aigc-work/toonflow:latest
     init: true
     restart: unless-stopped
     ports:

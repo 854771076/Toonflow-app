@@ -675,7 +675,7 @@ defineExpose({ ready, flushSave, cancelSave, getDocument, openDocument, writeDoc
   overflow: hidden;
   background: var(--el-bg-color);
   .documentLayout { width: 100%; height: 100%; border-top: 1px solid var(--el-border-color); }
-  .dockviewToonflow {
+  .dockviewYuYuer Drama {
     --dv-background-color: var(--el-bg-color);
     --dv-group-view-background-color: var(--el-bg-color);
     --dv-tabs-and-actions-container-background-color: var(--el-fill-color-light);

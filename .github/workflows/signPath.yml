@@ -87,7 +87,7 @@ jobs:
           if ($installers.Count -ne 1) { throw '签名结果必须包含且仅包含一个安装包。' }
           $signature = Get-AuthenticodeSignature -LiteralPath $installers[0].FullName
           if (!$signature.SignerCertificate -or $signature.SignerCertificate.Thumbprint -ne '3C9837E1C5EB015CA15D32DDD317BB936D446870') {
-            throw '安装包签名与 Toonflow 的 SignPath 测试证书不一致。'
+            throw '安装包签名与 YuYuer Drama 的 SignPath 测试证书不一致。'
           }
           # ACT: PowerShell 将 CERT_E_UNTRUSTEDROOT 映射为 UnknownError；仅容许固定测试证书的这一链错误。
           $untrustedRootMessage = [System.ComponentModel.Win32Exception]::new(-2146762487).Message

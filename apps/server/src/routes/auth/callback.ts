@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
     return;
   }
 
-  const redirectUri = `${cfg.appPublicUrl}/api/auth/callback`;
+  const redirectUri = g.resolveRedirectUri(req);
 
   try {
     const tokens = await g.exchangeCode({

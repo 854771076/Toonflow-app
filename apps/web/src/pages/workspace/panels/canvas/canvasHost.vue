@@ -16,7 +16,6 @@
       :activateCanvas="activateCanvas"
       :resolveCanvasContext="resolveCanvasContext"
       :flushCanvases="flushSave" />
-    <uploadPluginDialog v-if="pendingUpload" :plugin="pendingUpload.plugin" :pluginFile="pendingUpload.file" :token="toonflowAccountToken" @closed="pendingUpload = undefined" />
   </div>
 </template>
 
@@ -27,9 +26,6 @@ import { waitForControlValue } from "@/lib/mcpControl";
 import canvasPanel from "./index.vue";
 import useWorkspaceFiles from "@/lib/workspaceFiles";
 import { useWorkspaceStore } from "@/stores/workspace";
-import { toonflowAccountToken } from "@/stores/settings";
-import uploadPluginDialog from "@/components/settings/panels/pluginMarket/uploadPluginDialog.vue";
-import { providePluginUpload } from "@/components/settings/panels/pluginMarket/marketUpload";
 import { createCanvasMention, mentionNodeOutputs, queryMentionNodes, type MentionCanvasSource } from "@toonflow/server/agent/mentionSources";
 import type { NodeDocumentState } from "@toonflow/nodes-scaffold/nodeDocument";
 import { copyCanvasFiles, findRemainingCanvas, readCanvasFiles, type DocumentNode, type DocumentNodeOptions } from "./canvasFiles";
@@ -46,7 +42,6 @@ const canvasReady = computed(() => activeInstance.value?.canvasReady ?? false);
 const canvasListReady = computed(() => activeInstance.value?.canvasListReady ?? false);
 const lifetime = new AbortController();
 const workspaceStore = useWorkspaceStore();
-const pendingUpload = providePluginUpload();
 const canvases = shallowRef<{ id: string; name: string }[]>([]);
 let fileActionBusy = false;
 provide("canvasList", canvases);

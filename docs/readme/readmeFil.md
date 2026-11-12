@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Toonflow&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=YuYuer Drama&fontSize=90&fontColor=ffffff&animation=fadeIn&fontAlignY=50" alt="YuYuer Drama" width="100%" />
 
 <p>
   <a href="https://github.com/HBAI-Ltd/Toonflow-app">
@@ -45,13 +45,13 @@
 <div align="center">
 
 <p align="center">
-  <img src="../images/logo.png" alt="Logo ng Toonflow" width="120" height="120" />
+  <img src="../images/logo.png" alt="Logo ng YuYuer Drama" width="120" height="120" />
 </p>
 
 <a href="https://git.io/typing-svg">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=Toonflow;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="Toonflow · AI studio para sa maikling drama · Gawing kuwento ang mga ideya" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&duration=3000&pause=1000&color=000000&center=true&vCenter=true&width=600&lines=YuYuer Drama;AI%20Short%20Drama%20Studio;Turn%20ideas%20into%20stories" alt="YuYuer Drama · AI studio para sa maikling drama · Gawing kuwento ang mga ideya" width="600" />
   </picture>
 </a>
 
@@ -134,12 +134,12 @@
     <tr>
       <td width="50%" align="center">
         <a href="../images/gStar.png">
-          <img src="../images/gStar.png" alt="Sertipikong AtomGit G-Star No.540 ng Toonflow" width="100%" />
+          <img src="../images/gStar.png" alt="Sertipikong AtomGit G-Star No.540 ng YuYuer Drama" width="100%" />
         </a>
       </td>
       <td width="50%" align="center">
         <a href="../images/gvp.jpg">
-          <img src="../images/gvp.jpg" alt="Sertipikong Gitee GVP ng Toonflow" width="100%" />
+          <img src="../images/gvp.jpg" alt="Sertipikong Gitee GVP ng YuYuer Drama" width="100%" />
         </a>
       </td>
     </tr>
@@ -158,7 +158,7 @@
 
 ## 1. 💛 Mga Sponsor at Suporta
 
-Salamat sa mga sumusunod na katuwang sa pagsuporta sa open-source na proyektong Toonflow.
+Salamat sa mga sumusunod na katuwang sa pagsuporta sa open-source na proyektong YuYuer Drama.
 
 <table>
   <tr>
@@ -200,7 +200,7 @@ Salamat sa mga sumusunod na katuwang sa pagsuporta sa open-source na proyektong 
 
 ## 2. 🌟 Mga Pangunahing Kakayahan
 
-Ang Toonflow ay isang open-source na AI platform para sa maiikling drama, animated na komiks, at maiikling video. Pinagsasama nito ang mga iskrip, asset, at video clip sa iisang walang-hanggang canvas.
+Ang YuYuer Drama ay isang open-source na AI platform para sa maiikling drama, animated na komiks, at maiikling video. Pinagsasama nito ang mga iskrip, asset, at video clip sa iisang walang-hanggang canvas.
 
 | Kakayahan | Paglalarawan |
 | --- | --- |
@@ -224,25 +224,25 @@ Mga sinusuportahang wika: 简体中文, 繁體中文, English, 日本語, Рус
 
 <div align="center">
 
-<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="Toonflow · Pangunahing pahina ng proyekto at paglikha mula sa ideya" width="80%" /></a><br /><sub>Pangunahing pahina ng proyekto at paglikha mula sa ideya</sub>
+<a href="../images/screenshots/projectHome.png"><img src="../images/screenshots/projectHome.png" alt="YuYuer Drama · Pangunahing pahina ng proyekto at paglikha mula sa ideya" width="80%" /></a><br /><sub>Pangunahing pahina ng proyekto at paglikha mula sa ideya</sub>
 
-<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="Toonflow · Unang pagbukas at mabilis na pag-setup" width="80%" /></a><br /><sub>Unang pagbukas at mabilis na pag-setup</sub>
+<a href="../images/screenshots/quickStart.png"><img src="../images/screenshots/quickStart.png" alt="YuYuer Drama · Unang pagbukas at mabilis na pag-setup" width="80%" /></a><br /><sub>Unang pagbukas at mabilis na pag-setup</sub>
 
-<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="Toonflow · Canvas para sa paglikha · Madilim na tema" width="80%" /></a><br /><sub>Canvas para sa paglikha · Madilim na tema</sub>
+<a href="../images/screenshots/canvasDark.png"><img src="../images/screenshots/canvasDark.png" alt="YuYuer Drama · Canvas para sa paglikha · Madilim na tema" width="80%" /></a><br /><sub>Canvas para sa paglikha · Madilim na tema</sub>
 
-<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="Toonflow · Canvas para sa paglikha · Maliwanag na tema" width="80%" /></a><br /><sub>Canvas para sa paglikha · Maliwanag na tema</sub>
+<a href="../images/screenshots/canvasLight.png"><img src="../images/screenshots/canvasLight.png" alt="YuYuer Drama · Canvas para sa paglikha · Maliwanag na tema" width="80%" /></a><br /><sub>Canvas para sa paglikha · Maliwanag na tema</sub>
 
-<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="Toonflow · Mga asset ng tauhan, tagpuan, at kagamitan" width="80%" /></a><br /><sub>Mga asset ng tauhan, tagpuan, at kagamitan</sub>
+<a href="../images/screenshots/assetCanvas.png"><img src="../images/screenshots/assetCanvas.png" alt="YuYuer Drama · Mga asset ng tauhan, tagpuan, at kagamitan" width="80%" /></a><br /><sub>Mga asset ng tauhan, tagpuan, at kagamitan</sub>
 
-<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="Toonflow · 3D na mesa ng direktor at paunang pagtingin sa kuha" width="80%" /></a><br /><sub>3D na mesa ng direktor at paunang pagtingin sa kuha</sub>
+<a href="../images/screenshots/directorStudio.png"><img src="../images/screenshots/directorStudio.png" alt="YuYuer Drama · 3D na mesa ng direktor at paunang pagtingin sa kuha" width="80%" /></a><br /><sub>3D na mesa ng direktor at paunang pagtingin sa kuha</sub>
 
-<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="Toonflow · Tatlong anggulo ng tauhan at pagbuo ng larawan" width="80%" /></a><br /><sub>Tatlong anggulo ng tauhan at pagbuo ng larawan</sub>
+<a href="../images/screenshots/characterImageGeneration.png"><img src="../images/screenshots/characterImageGeneration.png" alt="YuYuer Drama · Tatlong anggulo ng tauhan at pagbuo ng larawan" width="80%" /></a><br /><sub>Tatlong anggulo ng tauhan at pagbuo ng larawan</sub>
 
-<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="Toonflow · Pagbuo ng video gamit ang maraming sanggunian" width="80%" /></a><br /><sub>Pagbuo ng video gamit ang maraming sanggunian</sub>
+<a href="../images/screenshots/videoGeneration.png"><img src="../images/screenshots/videoGeneration.png" alt="YuYuer Drama · Pagbuo ng video gamit ang maraming sanggunian" width="80%" /></a><br /><sub>Pagbuo ng video gamit ang maraming sanggunian</sub>
 
-<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="Toonflow · Menu ng node at pagpapangkat" width="80%" /></a><br /><sub>Menu ng node at pagpapangkat</sub>
+<a href="../images/screenshots/nodeMenu.png"><img src="../images/screenshots/nodeMenu.png" alt="YuYuer Drama · Menu ng node at pagpapangkat" width="80%" /></a><br /><sub>Menu ng node at pagpapangkat</sub>
 
-<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="Toonflow · Pamilihan ng mga Plugin" width="80%" /></a><br /><sub>Pamilihan ng mga Plugin</sub>
+<a href="../images/screenshots/pluginMarket.png"><img src="../images/screenshots/pluginMarket.png" alt="YuYuer Drama · Pamilihan ng mga Plugin" width="80%" /></a><br /><sub>Pamilihan ng mga Plugin</sub>
 
 </div>
 
@@ -262,14 +262,14 @@ ARM64 device lang ang sinusuportahan ng Android app. I-download at i-install ang
 
 Awtomatikong tinutukoy at ini-install ng Windows installer ang WebView2. Kung agad na nagsasara ang app pagkatapos ng pag-install, manu-manong i-download at i-install ang runtime mula sa [pahina ng pag-download ng WebView2](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-Sa macOS (Apple Silicon), i-drag ang Toonflow papunta sa Applications at buksan ito. Hindi kailangang magpatakbo muna ng mga command sa terminal. Kung may babala sa seguridad ang macOS, sundin ang mga hakbang sa ibaba ayon sa pagkakasunod.
+Sa macOS (Apple Silicon), i-drag ang YuYuer Drama papunta sa Applications at buksan ito. Hindi kailangang magpatakbo muna ng mga command sa terminal. Kung may babala sa seguridad ang macOS, sundin ang mga hakbang sa ibaba ayon sa pagkakasunod.
 
 <details>
-<summary><strong>Kung hindi ma-install o mabuksan ang Toonflow sa macOS</strong></summary>
+<summary><strong>Kung hindi ma-install o mabuksan ang YuYuer Drama sa macOS</strong></summary>
 
-**1. Payagan ang Toonflow sa Privacy & Security**
+**1. Payagan ang YuYuer Drama sa Privacy & Security**
 
-Kung may babalang hindi mapatunayan ang developer o hindi masuri ng Apple kung may mapaminsalang software ang app, subukan munang buksan ang Toonflow. Pagkatapos, pumunta sa System Settings → Privacy & Security, hanapin ang abisong na-block ang Toonflow, piliin ang Open Anyway, at kumpirmahin ayon sa mga tagubilin. Tingnan ang [opisyal na gabay ng Apple](https://support.apple.com/zh-cn/102445).
+Kung may babalang hindi mapatunayan ang developer o hindi masuri ng Apple kung may mapaminsalang software ang app, subukan munang buksan ang YuYuer Drama. Pagkatapos, pumunta sa System Settings → Privacy & Security, hanapin ang abisong na-block ang YuYuer Drama, piliin ang Open Anyway, at kumpirmahin ayon sa mga tagubilin. Tingnan ang [opisyal na gabay ng Apple](https://support.apple.com/zh-cn/102445).
 
 **2. Kung hinaharang pa rin ng quarantine, subukang alisin ang quarantine attribute**
 
@@ -388,7 +388,7 @@ Kapag nakita ang “服务启动成功” (matagumpay na nagsimula ang serbisyo)
 
 ### 4.5 Deployment sa Cloud
 
-Nagbibigay ang katuwang naming [AI Galaxy (智星云)](https://www.ai-galaxy.com/) ng opisyal na awtorisadong komersyal na Toonflow image na may handa nang environment. Tingnan ang [gabay na may mga larawan para sa deployment ng image](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
+Nagbibigay ang katuwang naming [AI Galaxy (智星云)](https://www.ai-galaxy.com/) ng opisyal na awtorisadong komersyal na YuYuer Drama image na may handa nang environment. Tingnan ang [gabay na may mga larawan para sa deployment ng image](https://mp.weixin.qq.com/s/lq9X1ovQ1_TKeXMOLgicKg?scene=1).
 
 ---
 
@@ -414,7 +414,7 @@ Ang mga halagang ito ay naitala para sa halimbawang ito at ibinibigay bilang san
 
 I-scan ang QR code upang kontakin ang assistant para sa imbitasyon sa grupo:
 
-<img src="../images/qr.png" alt="QR code ng komunidad ng Toonflow" height="400"/>
+<img src="../images/qr.png" alt="QR code ng komunidad ng YuYuer Drama" height="400"/>
 
 Maaari ring i-click ang icon upang sumali sa Discord:
 
@@ -426,15 +426,15 @@ O gamitin ang link ng imbitasyon: [https://discord.gg/HEjKmpNpAZ](https://discor
 
 ## 7. 💌 Makipag-ugnayan sa Amin
 
-📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=Toonflow咨询)
+📧 Email: [ltlctools@outlook.com](mailto:ltlctools@outlook.com?subject=YuYuer Drama咨询)
 
 ---
 
 ## 8. 📜 Lisensya ng Open Source
 
-Ang Toonflow ay nasa ilalim ng [Lisensyang MIT](../../LICENSE). Nananatiling sakop ng kani-kanilang lisensya at abiso sa copyright ang mga third-party dependency at asset.
+Ang YuYuer Drama ay nasa ilalim ng [Lisensyang MIT](../../LICENSE). Nananatiling sakop ng kani-kanilang lisensya at abiso sa copyright ang mga third-party dependency at asset.
 
-[![Kasaysayan ng mga Star ng Toonflow](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
+[![Kasaysayan ng mga Star ng YuYuer Drama](https://api.star-history.com/svg?repos=HBAI-Ltd/Toonflow-app&type=Date)](https://www.star-history.com/#HBAI-Ltd/Toonflow-app&Date)
 
 > **Sugnay na hindi retroaktibo**: Ang mga gumamit ng mga bersyon bago ang v1.0.8 sa ilalim ng AGPL-3.0 ay patuloy na sakop ng AGPL-3.0. Ang mga bersyong v1.0.8 hanggang v1.1.8 ay patuloy na sakop ng Apache-2.0 at ng karagdagang kasunduan nito. Hindi sakop ng pagbabagong ito sa lisensya ang mga gumagamit na iyon.
 
@@ -457,4 +457,4 @@ Copyright © 2026 北京爱阿科技有限公司
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Ibabang bahagi ng Toonflow" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer" alt="Ibabang bahagi ng YuYuer Drama" width="100%" />

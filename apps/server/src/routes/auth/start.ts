@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
   const codeVerifier = g.generateCodeVerifier();
   const state = g.generateState();
   const codeChallenge = g.computeCodeChallenge(codeVerifier);
-  const redirectUri = `${cfg.appPublicUrl}/api/auth/callback`;
+  const redirectUri = g.resolveRedirectUri(req);
 
   const authorizeUrl = g.buildAuthorizeUrl({
     clientId: cfg.clientId,

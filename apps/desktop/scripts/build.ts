@@ -78,10 +78,10 @@ if (isWindows) {
   const assemblyInfo = resolve(protocolDir, "assemblyInfo.cs");
   writeAtomicSync(assemblyInfo, [
     "using System.Reflection;",
-    '[assembly: AssemblyTitle("Toonflow")]',
-    '[assembly: AssemblyProduct("Toonflow")]',
+    '[assembly: AssemblyTitle("YuYuer Drama")]',
+    '[assembly: AssemblyProduct("YuYuer Drama")]',
     '[assembly: AssemblyCompany("HBAI-Ltd")]',
-    '[assembly: AssemblyDescription("Toonflow desktop component")]',
+    '[assembly: AssemblyDescription("YuYuer Drama desktop component")]',
     '[assembly: AssemblyCopyright("Copyright (c) HBAI-Ltd")]',
     `[assembly: AssemblyVersion("${version}.0")]`,
     `[assembly: AssemblyFileVersion("${version}.0")]`,
