@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../shared/appLocalizations.dart";
+import "../../shared/designTokens.dart";
 import "agentTypes.dart";
 
 /// Agent 消息列表：渲染用户/助手气泡、思考块与工具徽标。
@@ -21,7 +23,7 @@ class AgentMessageList extends StatelessWidget {
       return Center(
         child: Text(
           l10n.noConversation,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: TextStyle(color: context.theme.colors.muted),
         ),
       );
     }
@@ -45,7 +47,6 @@ class _MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Align(
       alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -55,11 +56,11 @@ class _MessageBubble extends StatelessWidget {
           maxWidth: MediaQuery.of(context).size.width * 0.82,
         ),
         decoration: BoxDecoration(
-          color: message.isUser ? scheme.primaryContainer : scheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
+          color: message.isUser ? context.theme.colors.primary : context.theme.colors.card,
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
         ),
         child: message.isUser
-            ? Text(message.content)
+            ? Text(message.content, style: TextStyle(color: context.theme.colors.primaryForeground))
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -70,7 +71,6 @@ class _MessageBubble extends StatelessWidget {
   }
 
   List<Widget> _assistantChildren(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final children = <Widget>[];
     for (final part in message.parts) {
       if (part.type == "tool") {
@@ -85,7 +85,7 @@ class _MessageBubble extends StatelessWidget {
     if (error != null && error.isNotEmpty) {
       children.add(Padding(
         padding: const EdgeInsets.only(top: 4),
-        child: Text(error, style: TextStyle(color: scheme.error)),
+        child: Text(error, style: TextStyle(color: context.theme.colors.error)),
       ));
     }
     if (message.parts.isEmpty) {
@@ -95,13 +95,9 @@ class _MessageBubble extends StatelessWidget {
         children.add(Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(
-              width: 12,
-              height: 12,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
+            const FCircularProgress(size: .xs),
             const SizedBox(width: 8),
-            Text(l10n.thinking, style: TextStyle(color: scheme.onSurfaceVariant)),
+            Text(l10n.thinking, style: TextStyle(color: context.theme.colors.muted)),
           ],
         ));
       }
@@ -125,29 +121,28 @@ class _ThinkingBlockState extends State<_ThinkingBlock> {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final muted = TextStyle(color: scheme.onSurfaceVariant, fontSize: 13);
+    final muted = TextStyle(color: context.theme.colors.muted);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InkWell(
-          onTap: () => setState(() => _expanded = !_expanded),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _expanded ? Icons.expand_more : Icons.chevron_right,
-                  size: 18,
-                  color: scheme.onSurfaceVariant,
-                ),
-                const SizedBox(width: 4),
-                Icon(Icons.psychology_outlined, size: 16, color: scheme.onSurfaceVariant),
-                const SizedBox(width: 4),
-                Text(widget.l10n.thinking, style: muted),
-              ],
-            ),
+        FTile.raw(
+          onPress: () => setState(() => _expanded = !_expanded),
+          style: .delta(
+            rawContentStyle: .delta(padding: .value(const EdgeInsets.symmetric(vertical: 4))),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                _expanded ? FLucideIcons.chevronDown : FLucideIcons.chevronRight,
+                size: 18,
+                color: context.theme.colors.muted,
+              ),
+              const SizedBox(width: 4),
+              Icon(FLucideIcons.brain, size: 16, color: context.theme.colors.muted),
+              const SizedBox(width: 4),
+              Text(widget.l10n.thinking, style: muted),
+            ],
           ),
         ),
         if (_expanded && widget.part.content.isNotEmpty)
@@ -167,14 +162,13 @@ class _ToolBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final (color, label) = _toolStatus(tool.status);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.handyman_outlined, size: 16, color: scheme.onSurfaceVariant),
+          Icon(FLucideIcons.wrench, size: 16, color: context.theme.colors.muted),
           const SizedBox(width: 4),
           Flexible(
             child: Text(
@@ -186,7 +180,7 @@ class _ToolBadge extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             decoration: BoxDecoration(
-              color: scheme.surfaceContainerHighest,
+              color: context.theme.colors.muted,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
@@ -202,13 +196,13 @@ class _ToolBadge extends StatelessWidget {
   (Color, String) _toolStatus(String status) {
     switch (status) {
       case "success":
-        return (Colors.green, "success");
+        return (DesignTokens.success, "success");
       case "error":
-        return (Colors.red, "error");
+        return (DesignTokens.danger, "error");
       case "interrupted":
-        return (Colors.grey, "interrupted");
+        return (DesignTokens.info, "interrupted");
       default:
-        return (Colors.blue, "running");
+        return (DesignTokens.primary, "running");
     }
   }
 }

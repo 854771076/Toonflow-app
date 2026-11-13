@@ -1,6 +1,7 @@
 import "../../core/config.dart";
 
 /// 9 种画布节点类型（服务端契约，type 带 remote- 前缀，原样保存）。
+/// [canvasGroup] 为本地分组容器类型，不参与“添加节点”面板，仅由打组创建。
 class CanvasNodeType {
   CanvasNodeType._();
 
@@ -13,6 +14,7 @@ class CanvasNodeType {
   static const String audioGeneration = "remote-audioGenerationNode";
   static const String director3d = "remote-director3dNode";
   static const String frameAnalysis = "remote-frameAnalysisNode";
+  static const String canvasGroup = "canvasGroup";
 
   static const List<String> all = [
     text,
@@ -42,6 +44,15 @@ class CanvasNode {
   final Map<String, dynamic> data;
   final bool selected;
 
+  /// 子节点指向所属分组的 id；分组容器自身为 null（不嵌套分组）。
+  final String? parentNode;
+
+  /// 分组容器的宽高（世界坐标），仅 [CanvasNodeType.canvasGroup] 使用。
+  final double? width;
+  final double? height;
+
+  static const Object _unset = Object();
+
   CanvasNode({
     required this.id,
     required this.type,
@@ -49,17 +60,32 @@ class CanvasNode {
     required this.y,
     required this.data,
     this.selected = false,
+    this.parentNode,
+    this.width,
+    this.height,
   });
 
   String get label => data["label"]?.toString() ?? "";
 
   String get prompt => data["prompt"]?.toString() ?? "";
 
+  bool get isGroup => type == CanvasNodeType.canvasGroup;
+
+  String get groupColor => data["groupColor"]?.toString() ?? "#808080";
+
+  double get groupOpacity {
+    final value = data["groupOpacity"];
+    return value is num ? value.toDouble() : 25;
+  }
+
   CanvasNode copyWith({
     double? x,
     double? y,
     Map<String, dynamic>? data,
     bool? selected,
+    Object? parentNode = _unset,
+    double? width,
+    double? height,
   }) {
     return CanvasNode(
       id: id,
@@ -68,6 +94,11 @@ class CanvasNode {
       y: y ?? this.y,
       data: data ?? this.data,
       selected: selected ?? this.selected,
+      parentNode: identical(parentNode, _unset)
+          ? this.parentNode
+          : parentNode as String?,
+      width: width ?? this.width,
+      height: height ?? this.height,
     );
   }
 
@@ -77,6 +108,9 @@ class CanvasNode {
     "position": {"x": x, "y": y},
     "data": data,
     "selected": selected,
+    if (parentNode != null) "parentNode": parentNode,
+    if (width != null) "width": width,
+    if (height != null) "height": height,
   };
 
   static CanvasNode fromJson(Map<String, dynamic> json) {
@@ -96,6 +130,9 @@ class CanvasNode {
           ? Map<String, dynamic>.from(json["data"] as Map)
           : <String, dynamic>{},
       selected: json["selected"] == true,
+      parentNode: json["parentNode"] as String?,
+      width: (json["width"] as num?)?.toDouble(),
+      height: (json["height"] as num?)?.toDouble(),
     );
   }
 }

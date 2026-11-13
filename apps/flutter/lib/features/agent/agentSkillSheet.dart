@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../shared/appLocalizations.dart";
 import "agentTypes.dart";
@@ -20,20 +21,20 @@ class AgentSkillSheet extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(l10n.skills, style: Theme.of(context).textTheme.titleMedium),
+            child: Text(l10n.skills, style: context.theme.typography.display.lg),
           ),
-          const Divider(height: 1),
+          FDivider(style: .delta(padding: .value(EdgeInsets.zero))),
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: skills.length,
               itemBuilder: (context, index) {
                 final skill = skills[index];
-                return ListTile(
-                  leading: const Icon(Icons.auto_awesome_outlined),
+                return FTile(
+                  prefix: const Icon(FLucideIcons.sparkles),
                   title: Text(skill.displayName.isEmpty ? skill.name : skill.displayName),
                   subtitle: skill.description.isEmpty ? null : Text(skill.description),
-                  onTap: () {
+                  onPress: () {
                     Navigator.pop(context);
                     onSelect(skill);
                   },

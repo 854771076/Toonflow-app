@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../shared/appLocalizations.dart";
 
@@ -89,19 +90,17 @@ class _TextEditorState extends State<TextEditor> {
     return Column(
       children: [
         _buildToolbar(l10n),
-        const Divider(height: 1),
+        const FDivider(),
         Expanded(
-          child: TextField(
-            controller: _controller,
+          child: FTextField(
+            control: FTextFieldControl.managed(
+              controller: _controller,
+              onChange: (_) => _notifyChanged(),
+            ),
             maxLines: null,
             expands: true,
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.top,
-            onChanged: (_) => _notifyChanged(),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.all(16),
-            ),
           ),
         ),
       ],
@@ -114,36 +113,46 @@ class _TextEditorState extends State<TextEditor> {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
         children: [
-          IconButton(
-            tooltip: "Bold",
-            icon: const Icon(Icons.format_bold),
-            onPressed: () => _surround("**", "**"),
+          FButton.icon(
+            variant: .ghost,
+            size: .sm,
+            semanticsTooltip: "Bold",
+            onPress: () => _surround("**", "**"),
+            child: const Icon(FLucideIcons.bold),
           ),
-          IconButton(
-            tooltip: "Italic",
-            icon: const Icon(Icons.format_italic),
-            onPressed: () => _surround("*", "*"),
+          FButton.icon(
+            variant: .ghost,
+            size: .sm,
+            semanticsTooltip: "Italic",
+            onPress: () => _surround("*", "*"),
+            child: const Icon(FLucideIcons.italic),
           ),
-          IconButton(
-            tooltip: "Heading",
-            icon: const Icon(Icons.title),
-            onPressed: () => _insertLinePrefix("# "),
+          FButton.icon(
+            variant: .ghost,
+            size: .sm,
+            semanticsTooltip: "Heading",
+            onPress: () => _insertLinePrefix("# "),
+            child: const Icon(FLucideIcons.heading),
           ),
-          IconButton(
-            tooltip: "Bulleted list",
-            icon: const Icon(Icons.format_list_bulleted),
-            onPressed: () => _insertLinePrefix("- "),
+          FButton.icon(
+            variant: .ghost,
+            size: .sm,
+            semanticsTooltip: "Bulleted list",
+            onPress: () => _insertLinePrefix("- "),
+            child: const Icon(FLucideIcons.list),
           ),
-          IconButton(
-            tooltip: l10n.save,
-            icon: _saving
+          FButton.icon(
+            variant: .ghost,
+            size: .sm,
+            semanticsTooltip: l10n.save,
+            onPress: _saving ? null : _save,
+            child: _saving
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.save_outlined),
-            onPressed: _saving ? null : _save,
+                : const Icon(FLucideIcons.save),
           ),
         ],
       ),

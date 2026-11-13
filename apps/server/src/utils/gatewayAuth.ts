@@ -1,6 +1,4 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import { createHash, randomBytes, randomUUID } from "node:crypto";
-import type { Request } from "express";
 
 export interface GatewaySession {
   sessionId: string;
@@ -18,10 +16,7 @@ export interface GatewaySession {
 
 export interface GatewayConfig {
   baseUrl: string;
-  publicUrl: string;
   clientId: string;
-  scopes: string;
-  appPublicUrl: string;
 }
 
 interface TokenResponse {
@@ -57,67 +52,12 @@ setInterval(() => {
 export function getConfig(): GatewayConfig {
   const baseUrl = process.env.GATEWAY_BASE_URL?.trim();
   const clientId = process.env.GATEWAY_CLIENT_ID?.trim();
-  const appPublicUrl = process.env.APP_PUBLIC_URL?.trim();
 
   if (!baseUrl || !clientId) {
     throw new Error("gateway 未配置：GATEWAY_BASE_URL 和 GATEWAY_CLIENT_ID 为必填");
   }
-  if (!appPublicUrl) {
-    throw new Error("gateway 未配置：APP_PUBLIC_URL 为必填");
-  }
 
-  const publicUrl = process.env.GATEWAY_PUBLIC_URL?.trim() || baseUrl;
-  const scopes = process.env.GATEWAY_CLIENT_SCOPES?.trim() || "openid profile email api:read api:write";
-
-  return {
-    baseUrl,
-    publicUrl,
-    clientId,
-    scopes,
-    appPublicUrl,
-  };
-}
-
-export function resolveRedirectUri(req: Request): string {
-  // ACT: 本地开发走 http 直连（web Vite 代理 / Android 模拟器 / 真机局域网），
-  // req.protocol 默认为 http；生产 https 需开启 trust proxy 并透传 x-forwarded-proto。
-  // host 来自请求头，即使被篡改，网关也会按登记的 redirect_uri 白名单校验，安全性不受影响。
-  const host = req.get("host");
-  if (host) return `${req.protocol}://${host}/api/auth/callback`;
-  return `${getConfig().appPublicUrl}/api/auth/callback`;
-}
-
-export function generateCodeVerifier(): string {
-  const base = randomUUID() + randomUUID();
-  return base.slice(0, 128);
-}
-
-export function computeCodeChallenge(verifier: string): string {
-  return createHash("sha256").update(verifier).digest("base64url");
-}
-
-export function generateState(): string {
-  return randomBytes(32).toString("hex");
-}
-
-export function buildAuthorizeUrl(params: {
-  clientId: string;
-  redirectUri: string;
-  state: string;
-  codeChallenge: string;
-  scopes: string;
-}): string {
-  const url = new URL("/oauth/authorize", params.redirectUri.startsWith("http")
-    ? (getConfig().publicUrl.startsWith("http") ? getConfig().publicUrl : getConfig().baseUrl)
-    : getConfig().baseUrl);
-  url.searchParams.set("response_type", "code");
-  url.searchParams.set("client_id", params.clientId);
-  url.searchParams.set("redirect_uri", params.redirectUri);
-  url.searchParams.set("scope", params.scopes);
-  url.searchParams.set("state", params.state);
-  url.searchParams.set("code_challenge", params.codeChallenge);
-  url.searchParams.set("code_challenge_method", "S256");
-  return url.toString();
+  return { baseUrl, clientId };
 }
 
 async function gatewayFetch(path: string, init: RequestInit): Promise<Response> {
@@ -128,30 +68,6 @@ async function gatewayFetch(path: string, init: RequestInit): Promise<Response> 
     headers.set("Content-Type", "application/x-www-form-urlencoded");
   }
   return fetch(url.toString(), { ...init, headers });
-}
-
-export async function exchangeCode(params: {
-  code: string;
-  redirectUri: string;
-  clientId: string;
-  codeVerifier: string;
-}): Promise<TokenResponse> {
-  const body = new URLSearchParams({
-    grant_type: "authorization_code",
-    code: params.code,
-    redirect_uri: params.redirectUri,
-    client_id: params.clientId,
-    code_verifier: params.codeVerifier,
-  });
-  const res = await gatewayFetch("/oauth/token", {
-    method: "POST",
-    body,
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`exchangeCode failed ${res.status}: ${text}`);
-  }
-  return (await res.json()) as TokenResponse;
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {

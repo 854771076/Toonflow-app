@@ -1,9 +1,11 @@
 import "dart:typed_data";
 
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/apiClient.dart";
 import "../../shared/appLocalizations.dart";
+import "../../shared/designTokens.dart";
 
 /// 根据文件扩展名推断 mimeType；无法识别时返回 null。
 String? assetMimeType(String path) {
@@ -209,11 +211,12 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
+    return FScaffold(
+      header: FHeader(
         title: Text(widget.selecting ? l10n.chooseAsset : l10n.assetLibrary),
       ),
-      body: _loading
+      childPad: false,
+      child: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
               ? Center(
@@ -222,8 +225,10 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
                     children: [
                       Text(_error!),
                       const SizedBox(height: 8),
-                      OutlinedButton(
-                        onPressed: _load,
+                      FButton(
+                        variant: .outline,
+                        mainAxisSize: .min,
+                        onPress: _load,
                         child: Text(l10n.retry),
                       ),
                     ],
@@ -236,7 +241,10 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
                       width: 200,
                       child: _buildSidebar(l10n),
                     ),
-                    const VerticalDivider(width: 1),
+                    FDivider(
+                      axis: .vertical,
+                      style: .delta(padding: .value(EdgeInsets.zero)),
+                    ),
                     Expanded(child: _buildMain(l10n)),
                   ],
                 ),
@@ -250,13 +258,11 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-          child: ListTile(
-            dense: true,
+          child: FTile(
             selected: _folder == ".",
-            selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
-            leading: const Icon(Icons.grid_view_outlined),
+            prefix: const Icon(FLucideIcons.grid3x3),
             title: Text(l10n.allAssets),
-            onTap: () => _navigateTo("."),
+            onPress: () => _navigateTo("."),
           ),
         ),
         Expanded(
@@ -281,14 +287,17 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: l10n.searchAssets,
-              prefixIcon: const Icon(Icons.search),
-              border: const OutlineInputBorder(),
-              isDense: true,
+          child: FTextField(
+            control: FTextFieldControl.managed(
+              onChange: (value) => setState(() => _search = value.text),
             ),
-            onChanged: (value) => setState(() => _search = value),
+            hint: l10n.searchAssets,
+            prefixBuilder: (context, style, variants) => FTextField.prefixIconBuilder(
+              context,
+              style,
+              variants,
+              const Icon(FLucideIcons.search),
+            ),
           ),
         ),
         Padding(
@@ -313,8 +322,8 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 220,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
                       childAspectRatio: 1.05,
                     ),
                     itemCount: entries.length,
@@ -341,10 +350,12 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
   }
 
   Widget _kindChip(String value, String label) {
-    return ChoiceChip(
-      label: Text(label),
-      selected: _kind == value,
-      onSelected: (_) => setState(() => _kind = value),
+    return FButton(
+      variant: _kind == value ? .primary : .outline,
+      size: .sm,
+      mainAxisSize: .min,
+      onPress: () => setState(() => _kind = value),
+      child: Text(label),
     );
   }
 }
@@ -379,9 +390,7 @@ class _DirectoryTileState extends State<_DirectoryTile> {
         InkWell(
           onTap: () => widget.onSelect(widget.entry.path),
           child: Container(
-            color: selected
-                ? Theme.of(context).colorScheme.primaryContainer
-                : null,
+            color: selected ? context.theme.colors.secondary : null,
             padding: const EdgeInsets.only(left: 4, right: 8),
             child: Row(
               children: [
@@ -394,13 +403,13 @@ class _DirectoryTileState extends State<_DirectoryTile> {
                           onTap: () => setState(() => _expanded = !_expanded),
                           child: Icon(
                             _expanded
-                                ? Icons.expand_more
-                                : Icons.chevron_right,
+                                ? FLucideIcons.chevronDown
+                                : FLucideIcons.chevronRight,
                             size: 18,
                           ),
                         ),
                 ),
-                const Icon(Icons.folder_outlined, size: 20),
+                const Icon(FLucideIcons.folder, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -486,15 +495,22 @@ class _AssetCardState extends State<_AssetCard> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final kind = assetMediaKind(widget.entry.path);
     return InkWell(
       onTap: widget.onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: colorScheme.outlineVariant),
-          borderRadius: BorderRadius.circular(8),
+          color: context.theme.colors.card,
+          border: Border.all(color: context.theme.colors.border),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+          boxShadow: const [
+            BoxShadow(
+              color: DesignTokens.shadowCard,
+              blurRadius: 36,
+              offset: Offset(0, 12),
+            ),
+          ],
         ),
         clipBehavior: Clip.antiAlias,
         child: Opacity(
@@ -509,7 +525,7 @@ class _AssetCardState extends State<_AssetCard> {
                   widget.entry.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 13),
+                  style: context.theme.typography.body.sm,
                 ),
               ),
             ],
@@ -520,10 +536,9 @@ class _AssetCardState extends State<_AssetCard> {
   }
 
   Widget _buildVisual(String? kind) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final placeholder = colorScheme.onSurfaceVariant;
+    final placeholder = context.theme.colors.mutedForeground;
     if (widget.entry.type == "directory") {
-      return Icon(Icons.folder, size: 52, color: colorScheme.secondary);
+      return Icon(FLucideIcons.folder, size: 52, color: context.theme.colors.secondary);
     }
     if (_isImage) {
       if (_bytes != null) {
@@ -535,7 +550,7 @@ class _AssetCardState extends State<_AssetCard> {
         );
       }
       if (_failed) {
-        return Icon(Icons.broken_image_outlined, size: 52, color: placeholder);
+        return Icon(FLucideIcons.imageOff, size: 52, color: placeholder);
       }
       return const Center(
         child: SizedBox(
@@ -548,13 +563,13 @@ class _AssetCardState extends State<_AssetCard> {
     final IconData icon;
     switch (kind) {
       case "video":
-        icon = Icons.movie_outlined;
+        icon = FLucideIcons.video;
         break;
       case "audio":
-        icon = Icons.audiotrack;
+        icon = FLucideIcons.music;
         break;
       default:
-        icon = Icons.insert_drive_file_outlined;
+        icon = FLucideIcons.file;
     }
     return Icon(icon, size: 52, color: placeholder);
   }

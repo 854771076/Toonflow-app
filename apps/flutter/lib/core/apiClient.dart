@@ -97,11 +97,11 @@ class ApiClient {
   }
 
   /// 读取二进制内容（如图片素材），返回字节。
-  Future<Uint8List> getBytes(String path, {Map<String, dynamic>? query}) async {
+  Future<Uint8List> getBytes(String path, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
     final res = await _dio.get(
       path,
       queryParameters: query,
-      options: Options(headers: _headers, responseType: ResponseType.bytes),
+      options: Options(headers: {..._headers, ...?headers}, responseType: ResponseType.bytes),
     );
     return res.data as Uint8List;
   }

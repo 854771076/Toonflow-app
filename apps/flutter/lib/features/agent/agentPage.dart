@@ -3,6 +3,7 @@ import "dart:convert";
 import "dart:math";
 
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/apiClient.dart";
 import "../../shared/appLocalizations.dart";
@@ -447,33 +448,37 @@ class _AgentPageState extends State<AgentPage> {
 
   void _showError(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    showFToast(
+      context: context,
+      variant: .destructive,
+      title: Text(message),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final noModel = !_loading && _models.isEmpty;
-    return Scaffold(
-      appBar: AppBar(
+    return FScaffold(
+      header: FHeader(
         title: Text(_currentSessionName.isEmpty ? l10n.agent : _currentSessionName),
-        actions: [
+        suffixes: [
           _buildModelSelector(l10n),
-          IconButton(
-            icon: const Icon(Icons.history),
-            tooltip: l10n.conversation,
-            onPressed: () => Scaffold.of(context).openEndDrawer(),
+          FHeaderAction(
+            icon: const Icon(FLucideIcons.history),
+            semanticsTooltip: l10n.conversation,
+            onPress: _openSessions,
           ),
         ],
       ),
-      endDrawer: _buildSessionsDrawer(l10n),
-      body: Column(
+      childPad: false,
+      child: Column(
         children: [
           Expanded(
             child: _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: FCircularProgress())
                 : _loadingMessages
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: FCircularProgress())
                     : AgentMessageList(
                         messages: _messages,
                         scrollController: _scrollController,
@@ -498,98 +503,109 @@ class _AgentPageState extends State<AgentPage> {
     if (_models.isEmpty) {
       return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8),
-        child: Icon(Icons.psychology_outlined),
+        child: Icon(FLucideIcons.brain),
       );
     }
     final current = _modelIndex >= 0 ? _models[_modelIndex] : null;
-    return PopupMenuButton<int>(
-      tooltip: l10n.model,
-      onSelected: _selectModel,
-      itemBuilder: (context) => [
-        for (int i = 0; i < _models.length; i++)
-          PopupMenuItem<int>(
-            value: i,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 18,
-                  child: i == _modelIndex ? const Icon(Icons.check, size: 18) : null,
-                ),
-                const SizedBox(width: 8),
-                Expanded(child: Text(_models[i].displayLabel)),
-              ],
-            ),
-          ),
-      ],
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.psychology_outlined),
-            const SizedBox(width: 4),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 120),
-              child: Text(
-                current?.label ?? l10n.model,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,
+    return Material(
+      type: MaterialType.transparency,
+      child: PopupMenuButton<int>(
+        tooltip: l10n.model,
+        onSelected: _selectModel,
+        itemBuilder: (context) => [
+          for (int i = 0; i < _models.length; i++)
+            PopupMenuItem<int>(
+              value: i,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 18,
+                    child: i == _modelIndex ? const Icon(FLucideIcons.check, size: 18) : null,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(_models[i].displayLabel)),
+                ],
               ),
             ),
-          ],
+        ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(FLucideIcons.brain),
+              const SizedBox(width: 4),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 120),
+                child: Text(
+                  current?.label ?? l10n.model,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.theme.typography.body.md,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSessionsDrawer(AppLocalizations l10n) {
-    return Drawer(
-      child: SafeArea(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(l10n.conversation),
-              trailing: TextButton.icon(
-                icon: const Icon(Icons.add),
-                label: Text(l10n.newConversation),
-                onPressed: () {
-                  Navigator.pop(context);
-                  _newConversation();
-                },
-              ),
+  void _openSessions() {
+    showFSheet(
+      context: context,
+      side: FLayout.rtl,
+      builder: (context) => _buildSessionsSheet(AppLocalizations.of(context)),
+    );
+  }
+
+  Widget _buildSessionsSheet(AppLocalizations l10n) {
+    return SafeArea(
+      child: Column(
+        children: [
+          FTile(
+            title: Text(l10n.conversation),
+            suffix: FButton(
+              onPress: () {
+                Navigator.pop(context);
+                _newConversation();
+              },
+              variant: .ghost,
+              prefix: const Icon(FLucideIcons.plus),
+              child: Text(l10n.newConversation),
             ),
-            const Divider(height: 1),
-            Expanded(
-              child: _sessions.isEmpty
-                  ? Center(child: Text(l10n.noConversation))
-                  : ListView.builder(
-                      itemCount: _sessions.length,
-                      itemBuilder: (context, index) {
-                        final session = _sessions[index];
-                        final selected = session.file == _currentSessionFile;
-                        return ListTile(
-                          selected: selected,
-                          title: Text(
-                            session.name.isEmpty ? session.file : session.name,
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.edit_outlined),
-                            tooltip: l10n.rename,
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _rename(session.file);
-                            },
-                          ),
-                          onTap: () {
+          ),
+          FDivider(style: .delta(padding: .value(EdgeInsets.zero))),
+          Expanded(
+            child: _sessions.isEmpty
+                ? Center(child: Text(l10n.noConversation))
+                : ListView.builder(
+                    itemCount: _sessions.length,
+                    itemBuilder: (context, index) {
+                      final session = _sessions[index];
+                      final selected = session.file == _currentSessionFile;
+                      return FTile(
+                        selected: selected,
+                        title: Text(
+                          session.name.isEmpty ? session.file : session.name,
+                        ),
+                        suffix: FButton.icon(
+                          onPress: () {
                             Navigator.pop(context);
-                            _switchSession(session.file);
+                            _rename(session.file);
                           },
-                        );
-                      },
-                    ),
-            ),
-          ],
-        ),
+                          variant: .ghost,
+                          semanticsTooltip: l10n.rename,
+                          child: const Icon(FLucideIcons.pencil),
+                        ),
+                        onPress: () {
+                          Navigator.pop(context);
+                          _switchSession(session.file);
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }

@@ -12,15 +12,16 @@ export async function createCreationApp(): Promise<App<Element>> {
     import("@/App.vue"), import("@/router"), import("@/stores/settings"), import("@/lib/i18n"),
     import("@/lib/saveFile"), import("@/lib/desktopProtocol"), import("@/stores/desktopUpdate"),
   ]);
-  await loadSettings();
   const app = createApp(appRoot);
   app.onUnmount(registerLanguage());
   app.use(createPinia().use(createPersistedState({ storage: settingsStorage })));
-  // ACT: 非桌面端（SaaS web）走 OAuth，需要在 router 守卫启动前完成 session 检查。
+  // ACT: 非桌面端（SaaS web）走 OAuth，先恢复 session（exchange）再加载设置，
+  // 避免 loadSettings 里的模型列表请求在 gateway_session 失效时 401 阻断启动。
   if (!actualPlatform.isLocalDesktop) {
     const { useAuthStore } = await import("@/stores/auth");
     await useAuthStore().init();
   }
+  await loadSettings();
   app.use(router);
   await router.isReady();
   app.onUnmount(registerDownloads());

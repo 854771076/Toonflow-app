@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/apiClient.dart";
 import "../../core/workspaceFiles.dart";
@@ -114,20 +115,39 @@ class _DocumentPageState extends State<DocumentPage> {
 
   Future<bool> _confirmDiscard(String label) async {
     final l10n = AppLocalizations.of(context);
-    final result = await showDialog<bool>(
+    final result = await showFDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        content: Text("${l10n.unsaved}: $label"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
+      builder: (context, style, animation) => FDialog(
+        animation: animation,
+        builder: (context, style) => Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text("${l10n.unsaved}: $label"),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FButton(
+                    variant: .ghost,
+                    size: .sm,
+                    onPress: () => Navigator.pop(context, false),
+                    child: Text(l10n.cancel),
+                  ),
+                  const SizedBox(width: 8),
+                  FButton(
+                    variant: .primary,
+                    size: .sm,
+                    onPress: () => Navigator.pop(context, true),
+                    child: Text(l10n.closeTab),
+                  ),
+                ],
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.closeTab),
-          ),
-        ],
+        ),
       ),
     );
     return result == true;
@@ -136,28 +156,45 @@ class _DocumentPageState extends State<DocumentPage> {
   Future<void> _newFile() async {
     final l10n = AppLocalizations.of(context);
     final controller = TextEditingController();
-    final name = await showDialog<String>(
+    final name = await showFDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.newFile),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: l10n.fileName,
-            border: const OutlineInputBorder(),
+      builder: (context, style, animation) => FDialog(
+        animation: animation,
+        builder: (context, style) => Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.newFile, style: style.titleTextStyle),
+              const SizedBox(height: 12),
+              FTextField(
+                control: FTextFieldControl.managed(controller: controller),
+                hint: l10n.fileName,
+                autofocus: true,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FButton(
+                    variant: .ghost,
+                    size: .sm,
+                    onPress: () => Navigator.pop(context),
+                    child: Text(l10n.cancel),
+                  ),
+                  const SizedBox(width: 8),
+                  FButton(
+                    variant: .primary,
+                    size: .sm,
+                    onPress: () => Navigator.pop(context, controller.text.trim()),
+                    child: Text(l10n.confirm),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: Text(l10n.confirm),
-          ),
-        ],
       ),
     );
     controller.dispose();
@@ -198,34 +235,41 @@ class _DocumentPageState extends State<DocumentPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
+    return FScaffold(
+      childPad: false,
+      header: FHeader(
         title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.note_add_outlined),
-            tooltip: l10n.newFile,
-            onPressed: _newFile,
+        suffixes: [
+          FHeaderAction(
+            icon: const Icon(FLucideIcons.filePlus2),
+            semanticsTooltip: l10n.newFile,
+            onPress: _newFile,
           ),
-          IconButton(
-            icon: const Icon(Icons.file_open_outlined),
-            tooltip: l10n.quickOpen,
-            onPressed: _quickOpen,
+          FHeaderAction(
+            icon: const Icon(FLucideIcons.folderOpen),
+            semanticsTooltip: l10n.quickOpen,
+            onPress: _quickOpen,
           ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            tooltip: l10n.searchInWorkspace,
-            onPressed: _search,
+          FHeaderAction(
+            icon: const Icon(FLucideIcons.search),
+            semanticsTooltip: l10n.searchInWorkspace,
+            onPress: _search,
           ),
         ],
       ),
-      body: Row(
+      child: Row(
         children: [
           SizedBox(
             width: 220,
-            child: FileTree(files: _files, onOpenFile: _openFile),
+            child: FCard(
+              clipBehavior: Clip.antiAlias,
+              child: FileTree(files: _files, onOpenFile: _openFile),
+            ),
           ),
-          const VerticalDivider(width: 1),
+          const FDivider(
+            axis: Axis.vertical,
+            style: .delta(padding: .value(EdgeInsets.zero)),
+          ),
           Expanded(child: _buildEditorArea(l10n)),
         ],
       ),
@@ -240,7 +284,7 @@ class _DocumentPageState extends State<DocumentPage> {
     return Column(
       children: [
         _buildTabBar(l10n),
-        const Divider(height: 1),
+        const FDivider(style: .delta(padding: .value(EdgeInsets.zero))),
         Expanded(
           child: TextEditor(
             key: ValueKey(tab.path),
@@ -258,18 +302,23 @@ class _DocumentPageState extends State<DocumentPage> {
   }
 
   Widget _buildTabBar(AppLocalizations l10n) {
-    return SizedBox(
-      height: 40,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          for (var i = 0; i < _tabs.length; i++) _buildTab(i, l10n),
-          IconButton(
-            icon: const Icon(Icons.close, size: 16),
-            tooltip: l10n.closeAll,
-            onPressed: _tabs.isEmpty ? null : _closeAll,
-          ),
-        ],
+    return FCard(
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        height: 40,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (var i = 0; i < _tabs.length; i++) _buildTab(i, l10n),
+            FButton.icon(
+              variant: .ghost,
+              size: .sm,
+              semanticsTooltip: l10n.closeAll,
+              onPress: _tabs.isEmpty ? null : _closeAll,
+              child: const Icon(FLucideIcons.x, size: 16),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -284,9 +333,7 @@ class _DocumentPageState extends State<DocumentPage> {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: active
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.transparent,
+              color: active ? context.theme.colors.primary : Colors.transparent,
               width: 2,
             ),
           ),
@@ -303,7 +350,7 @@ class _DocumentPageState extends State<DocumentPage> {
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: Icon(
-                  Icons.close,
+                  FLucideIcons.x,
                   size: 14,
                   semanticLabel: l10n.closeTab,
                 ),

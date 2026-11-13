@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "core/apiClient.dart";
 import "core/authService.dart";
@@ -157,9 +158,42 @@ class _YuYuerAppState extends State<YuYuerApp> {
       themeMode: _themeMode,
       locale: _locale,
       localeResolutionCallback: _resolveLocale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: [
+        ...AppLocalizations.localizationsDelegates,
+        ...FLocalizations.localizationsDelegates,
+      ],
+      supportedLocales: [
+        ...AppLocalizations.supportedLocales,
+        ...FLocalizations.supportedLocales,
+      ],
+      builder: (context, child) {
+        final isDark = _themeMode == ThemeMode.dark ||
+            (_themeMode == ThemeMode.system &&
+                MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+        return FTheme(
+          data: isDark ? AppTheme.foruiDark() : AppTheme.foruiLight(),
+          // forui 的 FScaffold 不提供 Material 祖先，而页面内混用了 TextField、
+          // InkWell、ListTile 等 Material 组件，缺少 Material 会报
+          // "No Material widget found"；这里统一补一层透明 Material。
+          child: Material(
+            type: MaterialType.transparency,
+            child: FToaster(child: FTooltipGroup(child: child!)),
+          ),
+        );
+      },
       home: _buildHome(),
+      // Supabase OAuth 深链回跳 yuyuer://auth/callback 会被 Flutter Navigator
+      // 当作命名路由 push；实际由 supabase_flutter 的 app_links 通道处理，
+      // 这里返回空占位页面，避免 "Could not find a generator for route" 报错。
+      onGenerateRoute: (settings) {
+        if (settings.name?.startsWith("/callback") == true) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (_) => const SizedBox.shrink(),
+          );
+        }
+        return null;
+      },
     );
   }
 

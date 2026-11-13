@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/apiClient.dart";
 import "../../core/sessionStore.dart";
 import "../../shared/appLocalizations.dart";
+import "../../shared/designTokens.dart";
 import "settingsApi.dart";
 
 /// 设置页：集中通用设置、设备互联与插件/MCP 只读浏览。
@@ -105,17 +107,30 @@ class _SettingsPageState extends State<SettingsPage> {
       const MapEntry("zh_TW", "繁體中文"),
       const MapEntry("en", "English"),
     ];
-    final selected = await showDialog<String>(
+    final selected = await showFDialog<String>(
       context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(l10n.language),
-        children: [
-          for (final option in options)
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, option.key),
-              child: Text(option.value),
-            ),
-        ],
+      builder: (context, style, animation) => FDialog(
+        animation: animation,
+        builder: (context, style) => Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.language, style: style.titleTextStyle),
+              const SizedBox(height: 8),
+              for (final option in options)
+                FButton(
+                  variant: FButtonVariant.ghost,
+                  onPress: () => Navigator.pop(context, option.key),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(option.value),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
     if (selected == null || selected == _language) return;
@@ -131,17 +146,30 @@ class _SettingsPageState extends State<SettingsPage> {
       MapEntry("light", l10n.light),
       MapEntry("dark", l10n.dark),
     ];
-    final selected = await showDialog<String>(
+    final selected = await showFDialog<String>(
       context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(l10n.theme),
-        children: [
-          for (final option in options)
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, option.key),
-              child: Text(option.value),
-            ),
-        ],
+      builder: (context, style, animation) => FDialog(
+        animation: animation,
+        builder: (context, style) => Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.theme, style: style.titleTextStyle),
+              const SizedBox(height: 8),
+              for (final option in options)
+                FButton(
+                  variant: FButtonVariant.ghost,
+                  onPress: () => Navigator.pop(context, option.key),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(option.value),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
     if (selected == null || selected == _themeMode) return;
@@ -153,24 +181,44 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _editServerAddress() async {
     final l10n = AppLocalizations.of(context);
     final controller = TextEditingController(text: _baseUrl);
-    final value = await showDialog<String>(
+    final value = await showFDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.serverAddress),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.url,
+      builder: (context, style, animation) => FDialog(
+        animation: animation,
+        builder: (context, style) => Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.serverAddress, style: style.titleTextStyle),
+              const SizedBox(height: 12),
+              FTextField(
+                control: FTextFieldControl.managed(controller: controller),
+                keyboardType: TextInputType.url,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FButton(
+                    variant: FButtonVariant.ghost,
+                    mainAxisSize: MainAxisSize.min,
+                    onPress: () => Navigator.pop(context),
+                    child: Text(l10n.cancel),
+                  ),
+                  const SizedBox(width: 8),
+                  FButton(
+                    variant: FButtonVariant.primary,
+                    mainAxisSize: MainAxisSize.min,
+                    onPress: () => Navigator.pop(context, controller.text.trim()),
+                    child: Text(l10n.save),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: Text(l10n.save),
-          ),
-        ],
       ),
     );
     controller.dispose();
@@ -246,36 +294,43 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.settings)),
-      body: ListView(
-        children: [
-          _sectionHeader(l10n.general),
-          ListTile(
-            leading: const Icon(Icons.translate),
-            title: Text(l10n.language),
-            subtitle: Text(_languageLabel(l10n)),
-            onTap: _selectLanguage,
+    return FScaffold(
+      header: FHeader(title: Text(l10n.settings)),
+      childPad: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+        child: FCard(
+          clipBehavior: Clip.antiAlias,
+          child: ListView(
+            children: [
+              _sectionHeader(l10n.general),
+              FTile(
+                prefix: Icon(FLucideIcons.languages),
+                title: Text(l10n.language),
+                subtitle: Text(_languageLabel(l10n)),
+                onPress: _selectLanguage,
+              ),
+              FTile(
+                prefix: Icon(FLucideIcons.sunMoon),
+                title: Text(l10n.theme),
+                subtitle: Text(_themeLabel(l10n)),
+                onPress: _selectTheme,
+              ),
+              FTile(
+                prefix: Icon(FLucideIcons.server),
+                title: Text(l10n.serverAddress),
+                subtitle: Text(_baseUrl),
+                onPress: _editServerAddress,
+              ),
+              const FDivider(),
+              _sectionHeader(l10n.deviceLink),
+              _buildDeviceLink(l10n),
+              const FDivider(),
+              _sectionHeader(l10n.pluginAndMcp),
+              _buildMcp(l10n),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.brightness_6_outlined),
-            title: Text(l10n.theme),
-            subtitle: Text(_themeLabel(l10n)),
-            onTap: _selectTheme,
-          ),
-          ListTile(
-            leading: const Icon(Icons.dns_outlined),
-            title: Text(l10n.serverAddress),
-            subtitle: Text(_baseUrl),
-            onTap: _editServerAddress,
-          ),
-          const Divider(),
-          _sectionHeader(l10n.deviceLink),
-          _buildDeviceLink(l10n),
-          const Divider(),
-          _sectionHeader(l10n.pluginAndMcp),
-          _buildMcp(l10n),
-        ],
+        ),
       ),
     );
   }
@@ -283,7 +338,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _sectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(title, style: Theme.of(context).textTheme.titleSmall),
+      child: Text(
+        title,
+        style: context.theme.typography.body.sm.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
@@ -292,15 +352,16 @@ class _SettingsPageState extends State<SettingsPage> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ListTile(
-            leading: const Icon(Icons.phonelink_ring),
+          FTile(
+            prefix: Icon(FLucideIcons.monitorSmartphone),
             title: Text(l10n.paired),
             subtitle: Text(_deviceName ?? ""),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: OutlinedButton(
-              onPressed: _unpair,
+            child: FButton(
+              variant: FButtonVariant.outline,
+              onPress: _unpair,
               child: Text(l10n.unpair),
             ),
           ),
@@ -312,30 +373,32 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(l10n.notPaired, style: Theme.of(context).textTheme.bodySmall),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _pairCodeController,
-            decoration: InputDecoration(
-              labelText: l10n.pairCode,
-              border: const OutlineInputBorder(),
+          Text(
+            l10n.notPaired,
+            style: context.theme.typography.body.xs.copyWith(
+              color: context.theme.colors.mutedForeground,
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
-            controller: _deviceNameController,
-            decoration: InputDecoration(
-              labelText: l10n.deviceName,
-              border: const OutlineInputBorder(),
-            ),
+          FTextField(
+            control: FTextFieldControl.managed(controller: _pairCodeController),
+            label: Text(l10n.pairCode),
+          ),
+          const SizedBox(height: 12),
+          FTextField(
+            control: FTextFieldControl.managed(controller: _deviceNameController),
+            label: Text(l10n.deviceName),
           ),
           if (_pairError != null) ...[
             const SizedBox(height: 8),
-            Text(_pairError!, style: const TextStyle(color: Colors.red)),
+            Text(
+              _pairError!,
+              style: const TextStyle(color: DesignTokens.danger),
+            ),
           ],
           const SizedBox(height: 12),
-          FilledButton(
-            onPressed: _pairing ? null : _pair,
+          FButton(
+            onPress: _pairing ? null : _pair,
             child: _pairing
                 ? const SizedBox(
                     width: 20,
@@ -357,7 +420,9 @@ class _SettingsPageState extends State<SettingsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             l10n.desktopOnly,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: context.theme.typography.body.xs.copyWith(
+              color: context.theme.colors.mutedForeground,
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -373,9 +438,9 @@ class _SettingsPageState extends State<SettingsPage> {
           )
         else
           ..._mcpServers.map(
-            (server) => ListTile(
-              leading: Icon(
-                server.enabled ? Icons.check_circle : Icons.cancel_outlined,
+            (server) => FTile(
+              prefix: Icon(
+                server.enabled ? FLucideIcons.circleCheck : FLucideIcons.circleX,
               ),
               title: Text(server.name),
               subtitle: Text(

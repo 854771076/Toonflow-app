@@ -3,9 +3,11 @@ import "dart:math";
 import "dart:typed_data";
 
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/apiClient.dart";
 import "../../shared/appLocalizations.dart";
+import "../../shared/designTokens.dart";
 
 /// 媒体模型（对应 `/api/ai/media/models` 返回项）。
 class MediaModel {
@@ -280,124 +282,29 @@ class _GeneratePageState extends State<GeneratePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.generate)),
-      body: ListView(
+    return FScaffold(
+      childPad: false,
+      header: FHeader(title: Text(l10n.generate)),
+      child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          SegmentedButton<String>(
-            segments: [
-              ButtonSegment(value: "image", label: Text(l10n.nodeTypeImage)),
-              ButtonSegment(value: "video", label: Text(l10n.nodeTypeVideo)),
-              ButtonSegment(value: "audio", label: Text(l10n.nodeTypeAudio)),
-            ],
-            selected: {_mediaType},
-            onSelectionChanged: _generating
-                ? null
-                : (selection) => _switchMediaType(selection.first),
-          ),
-          const SizedBox(height: 16),
-          if (_loadingModels)
-            const LinearProgressIndicator()
-          else if (_models.isNotEmpty)
-            DropdownButtonFormField<MediaModel>(
-              initialValue: _selected,
-              decoration: InputDecoration(
-                labelText: l10n.modelId,
-                border: const OutlineInputBorder(),
-              ),
-              items: _models
-                  .map((m) => DropdownMenuItem(
-                        value: m,
-                        child: Text("${m.providerLabel} / ${m.label}"),
-                      ))
-                  .toList(),
-              onChanged: _generating
-                  ? null
-                  : (value) => setState(() => _selected = value),
-            )
-          else ...[
-            TextField(
-              controller: _providerController,
-              decoration: InputDecoration(
-                labelText: l10n.providerId,
-                border: const OutlineInputBorder(),
-              ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: context.theme.colors.card,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
+              boxShadow: const [
+                BoxShadow(
+                  color: DesignTokens.shadowCard,
+                  blurRadius: 36,
+                  offset: Offset(0, 12),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _modelController,
-              decoration: InputDecoration(
-                labelText: l10n.modelId,
-                border: const OutlineInputBorder(),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: _buildForm(l10n),
             ),
-          ],
-          const SizedBox(height: 12),
-          if (_mediaType == "image") ...[
-            TextField(
-              controller: _referenceImagesController,
-              minLines: 2,
-              maxLines: 4,
-              decoration: InputDecoration(
-                labelText: l10n.referenceImages,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-          ],
-          if (_mediaType == "video") ...[
-            TextField(
-              controller: _ratioController,
-              decoration: InputDecoration(
-                labelText: l10n.ratio,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _resolutionController,
-              decoration: InputDecoration(
-                labelText: l10n.resolution,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _durationController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: l10n.duration,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-          ],
-          if (_mediaType == "audio") ...[
-            TextField(
-              controller: _voiceController,
-              decoration: InputDecoration(
-                labelText: l10n.voice,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-          ],
-          TextField(
-            controller: _promptController,
-            minLines: 2,
-            maxLines: 5,
-            decoration: InputDecoration(
-              labelText: l10n.prompt,
-              border: const OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 20),
-          FilledButton.icon(
-            onPressed: _generating ? null : _generate,
-            icon: const Icon(Icons.auto_awesome),
-            label: Text(l10n.startGenerate),
           ),
           const SizedBox(height: 20),
           if (_status.isNotEmpty)
@@ -419,11 +326,11 @@ class _GeneratePageState extends State<GeneratePage> {
           if (_error != null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(_error!, style: const TextStyle(color: Colors.red)),
+              child: Text(_error!, style: const TextStyle(color: DesignTokens.danger)),
             ),
           if (_mediaType == "image" && _resultImage != null)
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(DesignTokens.radius),
               child: Image.memory(_resultImage!),
             ),
           // ACT: 视频/音频结果仅展示工作区相对路径与状态文案，不内置播放器，
@@ -443,5 +350,126 @@ class _GeneratePageState extends State<GeneratePage> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildForm(AppLocalizations l10n) {
+    return [
+      FSelectGroup<String>(
+        enabled: !_generating,
+        control: FMultiValueControl.managedRadio(
+          initial: _mediaType,
+          onChange: (values) => _switchMediaType(values.first),
+        ),
+        children: [
+          FSelectGroupItemMixin.radio(
+            value: "image",
+            label: Text(l10n.nodeTypeImage),
+          ),
+          FSelectGroupItemMixin.radio(
+            value: "video",
+            label: Text(l10n.nodeTypeVideo),
+          ),
+          FSelectGroupItemMixin.radio(
+            value: "audio",
+            label: Text(l10n.nodeTypeAudio),
+          ),
+        ],
+      ),
+      const SizedBox(height: 16),
+      if (_loadingModels)
+        const FProgress()
+      else if (_models.isNotEmpty)
+        FSelect<MediaModel>.rich(
+          control: FSelectControl.managed(
+            initial: _selected,
+            onChange: (value) => setState(() => _selected = value),
+          ),
+          enabled: !_generating,
+          label: Text(l10n.modelId),
+          format: (m) => "${m.providerLabel} / ${m.label}",
+          children: [
+            for (final m in _models)
+              FSelectItemMixin.item<MediaModel>(
+                title: Text("${m.providerLabel} / ${m.label}"),
+                value: m,
+              ),
+          ],
+        )
+      else ...[
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _providerController,
+          ),
+          label: Text(l10n.providerId),
+        ),
+        const SizedBox(height: 12),
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _modelController,
+          ),
+          label: Text(l10n.modelId),
+        ),
+      ],
+      const SizedBox(height: 12),
+      if (_mediaType == "image") ...[
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _referenceImagesController,
+          ),
+          minLines: 2,
+          maxLines: 4,
+          label: Text(l10n.referenceImages),
+        ),
+        const SizedBox(height: 12),
+      ],
+      if (_mediaType == "video") ...[
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _ratioController,
+          ),
+          label: Text(l10n.ratio),
+        ),
+        const SizedBox(height: 12),
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _resolutionController,
+          ),
+          label: Text(l10n.resolution),
+        ),
+        const SizedBox(height: 12),
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _durationController,
+          ),
+          keyboardType:
+              const TextInputType.numberWithOptions(decimal: true),
+          label: Text(l10n.duration),
+        ),
+        const SizedBox(height: 12),
+      ],
+      if (_mediaType == "audio") ...[
+        FTextField(
+          control: FTextFieldControl.managed(
+            controller: _voiceController,
+          ),
+          label: Text(l10n.voice),
+        ),
+        const SizedBox(height: 12),
+      ],
+      FTextField(
+        control: FTextFieldControl.managed(
+          controller: _promptController,
+        ),
+        minLines: 2,
+        maxLines: 5,
+        label: Text(l10n.prompt),
+      ),
+      const SizedBox(height: 20),
+      FButton(
+        onPress: _generating ? null : _generate,
+        prefix: const Icon(FLucideIcons.sparkles),
+        child: Text(l10n.startGenerate),
+      ),
+    ];
   }
 }

@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/workspaceFiles.dart";
 import "../../shared/appLocalizations.dart";
+import "../../shared/designTokens.dart";
 import "workspaceScan.dart";
 
 /// 快速打开：输入文件名模糊匹配工作区文件，点击打开。
@@ -60,32 +62,49 @@ class _QuickOpenDialogState extends State<QuickOpenDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return AlertDialog(
-      title: Text(l10n.quickOpen),
-      content: SizedBox(
-        width: 480,
-        height: 400,
-        child: Column(
-          children: [
-            TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                hintText: l10n.fileName,
-                border: const OutlineInputBorder(),
+    return FDialog(
+      builder: (context, style) => Padding(
+        padding: const EdgeInsets.all(DesignTokens.spaceXl),
+        child: SizedBox(
+          width: 480,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.quickOpen, style: style.titleTextStyle),
+              const SizedBox(height: DesignTokens.spaceMd),
+              SizedBox(
+                height: 400,
+                child: Column(
+                  children: [
+                    FTextField(
+                      autofocus: true,
+                      hint: l10n.fileName,
+                      control: FTextFieldControl.managed(
+                        onChange: (value) => setState(() => _query = value.text),
+                      ),
+                    ),
+                    const SizedBox(height: DesignTokens.spaceMd),
+                    Expanded(child: _buildList(l10n)),
+                  ],
+                ),
               ),
-              onChanged: (value) => setState(() => _query = value),
-            ),
-            const SizedBox(height: 12),
-            Expanded(child: _buildList(l10n)),
-          ],
+              const SizedBox(height: DesignTokens.spaceLg),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FButton(
+                    variant: .ghost,
+                    mainAxisSize: .min,
+                    onPress: () => Navigator.pop(context),
+                    child: Text(l10n.cancel),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel),
-        ),
-      ],
     );
   }
 
@@ -104,12 +123,11 @@ class _QuickOpenDialogState extends State<QuickOpenDialog> {
       itemCount: results.length,
       itemBuilder: (context, index) {
         final entry = results[index];
-        return ListTile(
-          dense: true,
-          leading: const Icon(Icons.description_outlined),
+        return FTile(
+          prefix: const Icon(FLucideIcons.file),
           title: Text(entry.name, overflow: TextOverflow.ellipsis),
           subtitle: Text(entry.path, overflow: TextOverflow.ellipsis),
-          onTap: () => Navigator.pop(context, entry.path),
+          onPress: () => Navigator.pop(context, entry.path),
         );
       },
     );

@@ -1,12 +1,20 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
-import "package:webview_flutter/webview_flutter.dart";
+import "package:forui/forui.dart";
+import "package:supabase_flutter/supabase_flutter.dart";
 
 import "../../core/apiClient.dart";
+import "../../core/config.dart";
 import "../../core/sessionStore.dart";
 import "../../shared/appLocalizations.dart";
-import "../settings/settingsPage.dart";
+import "../../shared/designTokens.dart";
 
-/// 登录页：输入服务端地址，通过 WebView 走服务端 OAuth2 授权。
+const String _loginTitle = "欢迎使用 YuYuer Drama";
+const String _loginSubtitle = "使用 new-api 账号登录开始创作";
+const String _loginButtonText = "使用 new-api 账号登录";
+
+/// 登录页：通过 Supabase signInWithOAuth 拉起 new-api 授权登录。
 class LoginPage extends StatefulWidget {
   final ApiClient client;
   final Future<void> Function() onLoggedIn;
@@ -28,38 +36,73 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _baseUrlController = TextEditingController();
-  bool _webViewMode = false;
+  StreamSubscription<AuthState>? _authSub;
   bool _connecting = false;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    SessionStore.getBaseUrl().then((url) {
-      if (mounted) _baseUrlController.text = url;
-    });
+    // Supabase 完成 OAuth 回跳后触发 signedIn，携带 provider_token（new-api access token）。
+    if (AppConfig.supabaseUrl.isNotEmpty) {
+      _authSub = Supabase.instance.client.auth.onAuthStateChange.listen(_onAuthState);
+    }
   }
 
   @override
   void dispose() {
-    _baseUrlController.dispose();
+    _authSub?.cancel();
     super.dispose();
   }
 
+  void _onAuthState(AuthState state) {
+    if (state.event != AuthChangeEvent.signedIn) return;
+    final token = state.session?.providerToken;
+    if (token == null || token.isEmpty) return;
+    _exchange(token, state.session?.providerRefreshToken);
+  }
+
   Future<void> _openLogin() async {
-    final baseUrl = _baseUrlController.text.trim();
-    if (baseUrl.isEmpty) return;
+    if (AppConfig.supabaseUrl.isEmpty) {
+      setState(() => _error = "未配置 Supabase 登录");
+      return;
+    }
+    setState(() => _error = null);
+    try {
+      await Supabase.instance.client.auth.signInWithOAuth(
+        OAuthProvider("custom:newapi"),
+        redirectTo: "${AppConfig.authScheme}://auth/callback",
+      );
+    } catch (e) {
+      if (mounted) setState(() => _error = e.toString());
+    }
+  }
+
+  /// 用 provider_token 与后端交换 gateway_session，成功后切到主界面。
+  Future<void> _exchange(String accessToken, String? refreshToken) async {
+    if (_connecting) return;
     setState(() {
       _connecting = true;
       _error = null;
     });
-    await SessionStore.saveBaseUrl(baseUrl);
-    if (!mounted) return;
-    setState(() {
-      _connecting = false;
-      _webViewMode = true;
-    });
+    try {
+      final data = await widget.client.postData("/api/auth/exchange", body: {
+        "accessToken": accessToken,
+        if (refreshToken != null && refreshToken.isNotEmpty) "refreshToken": refreshToken,
+      }) as Map<String, dynamic>;
+      final sessionId = data["sessionId"] as String?;
+      if (sessionId == null || sessionId.isEmpty) {
+        throw const ApiException(-1, "登录失败");
+      }
+      await _onSession(sessionId);
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _connecting = false;
+          _error = e.toString();
+        });
+      }
+    }
   }
 
   Future<void> _onSession(String cookie) async {
@@ -68,150 +111,77 @@ class _LoginPageState extends State<LoginPage> {
     await widget.onLoggedIn();
   }
 
-  void _openSettings() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => SettingsPage(
-          client: widget.client,
-          onLocaleChanged: widget.onLocaleChanged,
-          onThemeModeChanged: widget.onThemeModeChanged,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_webViewMode) {
-      return _buildWebView(context);
-    }
-    return _buildForm(context);
-  }
-
-  Widget _buildForm(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.login),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: _openSettings,
-            tooltip: l10n.settings,
-          ),
-          IconButton(
-            icon: const Icon(Icons.translate),
-            onPressed: widget.onToggleLanguage,
-            tooltip: l10n.switchLanguage,
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              l10n.serverAddress,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _baseUrlController,
-              keyboardType: TextInputType.url,
-              decoration: InputDecoration(
-                hintText: "http://127.0.0.1:3100",
-                border: const OutlineInputBorder(),
+    return FScaffold(
+      childPad: false,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: FCard(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      _loginTitle,
+                      textAlign: TextAlign.center,
+                      style: context.theme.typography.display.xl.copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: context.theme.colors.foreground,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _loginSubtitle,
+                      textAlign: TextAlign.center,
+                      style: context.theme.typography.body.xs.copyWith(
+                        color: context.theme.colors.mutedForeground,
+                      ),
+                    ),
+                    if (_error != null) ...[
+                      const SizedBox(height: 16),
+                      Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: DesignTokens.danger),
+                      ),
+                    ],
+                    const SizedBox(height: 32),
+                    FButton(
+                      onPress: _connecting ? null : _openLogin,
+                      size: .lg,
+                      child: _connecting
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text(_loginButtonText),
+                    ),
+                    const SizedBox(height: 16),
+                    Align(
+                      alignment: Alignment.center,
+                      child: FButton.icon(
+                        onPress: widget.onToggleLanguage,
+                        variant: .ghost,
+                        semanticsTooltip: l10n.switchLanguage,
+                        child: const Icon(FLucideIcons.languages),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            if (_error != null) ...[
-              const SizedBox(height: 12),
-              Text(_error!, style: const TextStyle(color: Colors.red)),
-            ],
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: _connecting ? null : _openLogin,
-              child: _connecting
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(l10n.connect),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWebView(BuildContext context) {
-    final baseUrl = _baseUrlController.text.trim();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).login),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => setState(() => _webViewMode = false),
           ),
-        ],
-      ),
-      body: _LoginWebView(baseUrl: baseUrl, onSession: _onSession),
-    );
-  }
-}
-
-/// 承载 OAuth2 授权流程的 WebView，完成后提取 `gateway_session` cookie。
-class _LoginWebView extends StatefulWidget {
-  final String baseUrl;
-  final Future<void> Function(String cookie) onSession;
-
-  const _LoginWebView({required this.baseUrl, required this.onSession});
-
-  @override
-  State<_LoginWebView> createState() => _LoginWebViewState();
-}
-
-class _LoginWebViewState extends State<_LoginWebView> {
-  late final WebViewController _controller;
-  bool _done = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (url) => _onPageFinished(url),
         ),
-      )
-      ..loadRequest(Uri.parse("${widget.baseUrl}/api/auth/start"));
-  }
-
-  Future<void> _onPageFinished(String url) async {
-    if (_done) return;
-    if (!url.startsWith(widget.baseUrl)) return;
-    if (url.contains("/api/auth")) return;
-    try {
-      final cookies =
-          await WebViewCookieManager().getCookies(domain: Uri.parse(widget.baseUrl));
-      for (final cookie in cookies) {
-        if (cookie.name == "gateway_session" && cookie.value.isNotEmpty) {
-          _done = true;
-          await widget.onSession(cookie.value);
-          return;
-        }
-      }
-    } catch (_) {
-      // 提取失败则等待下一次导航完成。
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WebViewWidget(controller: _controller);
+      ),
+    );
   }
 }

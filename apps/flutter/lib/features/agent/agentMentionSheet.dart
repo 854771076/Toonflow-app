@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../shared/appLocalizations.dart";
 import "agentApi.dart";
@@ -66,7 +67,11 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
       Navigator.pop(context, mention);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      showFToast(
+        context: context,
+        variant: .destructive,
+        title: Text(e.toString()),
+      );
     }
   }
 
@@ -84,18 +89,19 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(l10n.mention, style: Theme.of(context).textTheme.titleMedium),
+                    child: Text(l10n.mention, style: context.theme.typography.display.lg),
                   ),
                   if (_pathStack.isNotEmpty)
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      tooltip: l10n.back,
-                      onPressed: _goBack,
+                    FButton.icon(
+                      onPress: _goBack,
+                      variant: .ghost,
+                      semanticsTooltip: l10n.back,
+                      child: const Icon(FLucideIcons.arrowLeft),
                     ),
                 ],
               ),
             ),
-            const Divider(height: 1),
+            FDivider(style: .delta(padding: .value(EdgeInsets.zero))),
             Expanded(child: _buildBody(l10n)),
           ],
         ),
@@ -105,7 +111,7 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
 
   Widget _buildBody(AppLocalizations l10n) {
     if (_loading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: FCircularProgress());
     }
     if (_error != null) {
       return Center(
@@ -114,7 +120,11 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
           children: [
             Text(_error!),
             const SizedBox(height: 8),
-            OutlinedButton(onPressed: _load, child: Text(l10n.retry)),
+            FButton(
+              onPress: _load,
+              variant: .outline,
+              child: Text(l10n.retry),
+            ),
           ],
         ),
       );
@@ -123,7 +133,7 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
       return Center(
         child: Text(
           l10n.noFiles,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: TextStyle(color: context.theme.colors.muted),
         ),
       );
     }
@@ -131,12 +141,12 @@ class _AgentMentionSheetState extends State<AgentMentionSheet> {
       itemCount: _assets.length,
       itemBuilder: (context, index) {
         final asset = _assets[index];
-        return ListTile(
-          leading: Icon(
-            asset.isDirectory ? Icons.folder_outlined : Icons.insert_drive_file_outlined,
+        return FTile(
+          prefix: Icon(
+            asset.isDirectory ? FLucideIcons.folder : FLucideIcons.file,
           ),
           title: Text(asset.name),
-          onTap: asset.isDirectory
+          onPress: asset.isDirectory
               ? () => _openDirectory(asset)
               : () => _selectAsset(asset),
         );

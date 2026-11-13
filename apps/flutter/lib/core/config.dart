@@ -7,7 +7,26 @@ class AppConfig {
   static const String appName = "YuYuer Drama";
 
   /// 默认服务端地址，可被用户在登录页覆盖并持久化。
-  static const String defaultBaseUrl = "http://127.0.0.1:3100";
+  /// 通过 `--dart-define=API_BASE_URL=...` 注入，未注入时回退本地开发地址。
+  static const String defaultBaseUrl = String.fromEnvironment(
+    "API_BASE_URL",
+    defaultValue: "http://127.0.0.1:3100",
+  );
+
+  /// Supabase 项目地址（登录用）。优先取服务端 settings.json，其次 `--dart-define=SUPABASE_URL=...`，最后回退开发项目地址。
+  static const String supabaseUrl = String.fromEnvironment(
+    "SUPABASE_URL",
+    defaultValue: "https://jknkenfhhwpxwwgqmcxv.supabase.co",
+  );
+
+  /// Supabase 匿名公钥（登录用）。优先取服务端 settings.json，其次 `--dart-define=SUPABASE_ANON_KEY=...`，最后回退开发公钥。
+  static const String supabaseAnonKey = String.fromEnvironment(
+    "SUPABASE_ANON_KEY",
+    defaultValue: "sb_publishable_Y1bDLtBvaQktz_na-W9o_A_sxB5NfTO",
+  );
+
+  /// OAuth 深链 scheme，与 AndroidManifest.xml、Info.plist 保持一致。
+  static const String authScheme = "yuyuer";
 
   /// 本地持久化键：服务端地址。
   static const String baseUrlKey = "yuyuer.baseUrl";

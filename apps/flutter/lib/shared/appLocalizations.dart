@@ -57,6 +57,8 @@ class AppLocalizations {
   String get connect => _t("connect");
 
   String get projects => _t("projects");
+  String get home => _t("home");
+  String get teamProject => _t("teamProject");
   String get addProject => _t("addProject");
   String get noProjects => _t("noProjects");
   String get selectDirectory => _t("selectDirectory");
@@ -64,6 +66,8 @@ class AppLocalizations {
   String get parentDirectory => _t("parentDirectory");
   String get useThisDirectory => _t("useThisDirectory");
   String get projectName => _t("projectName");
+  String get newFolder => _t("newFolder");
+  String get invalidName => _t("invalidName");
   String get confirm => _t("confirm");
   String get cancel => _t("cancel");
 
@@ -85,6 +89,40 @@ class AppLocalizations {
   String get addNode => _t("addNode");
   String get deleteNode => _t("deleteNode");
   String get autoLayout => _t("autoLayout");
+  String get snapToGrid => _t("snapToGrid");
+  String get duplicateNode => _t("duplicateNode");
+  String get fitView => _t("fitView");
+  String get zoomIn => _t("zoomIn");
+  String get zoomOut => _t("zoomOut");
+  String get showEdges => _t("showEdges");
+  String get showMiniMap => _t("showMiniMap");
+  String get undo => _t("undo");
+  String get redo => _t("redo");
+  String get arrangeHorizontal => _t("arrangeHorizontal");
+  String get arrangeVertical => _t("arrangeVertical");
+  String get arrangeGrid => _t("arrangeGrid");
+  String get organizeSelection => _t("organizeSelection");
+  String get groupSelection => _t("groupSelection");
+  String get ungroupSelection => _t("ungroupSelection");
+  String get groupColor => _t("groupColor");
+  String get group => _t("group");
+  String get deleteSelection => _t("deleteSelection");
+  String get exitProject => _t("exitProject");
+  String get searchNode => _t("searchNode");
+  String get doubleClickToCreate => _t("doubleClickToCreate");
+  String get moveTool => _t("moveTool");
+  String get handTool => _t("handTool");
+  String get help => _t("help");
+  String get helpTutorial => _t("helpTutorial");
+  String get reportBug => _t("reportBug");
+  String get joinCommunity => _t("joinCommunity");
+  String get businessCooperation => _t("businessCooperation");
+  String get communityTip => _t("communityTip");
+  String get businessTip => _t("businessTip");
+  String get copyLink => _t("copyLink");
+  String get linkCopied => _t("linkCopied");
+  String get accountSettings => _t("accountSettings");
+  String get rechargeBalance => _t("rechargeBalance");
   String get saveFailed => _t("saveFailed");
   String get label => _t("label");
   String get nodeTypeText => _t("nodeTypeText");
@@ -146,6 +184,8 @@ class AppLocalizations {
   String get skills => _t("skills");
   String get mention => _t("mention");
   String get rename => _t("rename");
+  String get remove => _t("remove");
+  String get exportZip => _t("exportZip");
   String get delete => _t("delete");
   String get noConversation => _t("noConversation");
   String get loadFailed => _t("loadFailed");
@@ -189,6 +229,8 @@ class AppLocalizations {
       "parentDirectory": "上级目录",
       "useThisDirectory": "使用此目录",
       "projectName": "项目名称",
+      "newFolder": "新建文件夹",
+      "invalidName": "请输入有效的单个文件或文件夹名称",
       "confirm": "确定",
       "cancel": "取消",
       "canvas": "画布",
@@ -198,6 +240,36 @@ class AppLocalizations {
       "addNode": "添加节点",
       "deleteNode": "删除节点",
       "autoLayout": "自动布局",
+      "snapToGrid": "网格吸附",
+      "duplicateNode": "创建副本",
+      "fitView": "适应视图",
+      "zoomIn": "放大",
+      "zoomOut": "缩小",
+      "showEdges": "显示连线",
+      "showMiniMap": "显示地图",
+      "undo": "撤销",
+      "redo": "重做",
+      "arrangeHorizontal": "水平排列",
+      "arrangeVertical": "垂直排列",
+      "arrangeGrid": "宫格排列",
+      "organizeSelection": "整理选中",
+      "deleteSelection": "删除选中",
+      "exitProject": "退出项目",
+      "searchNode": "搜索节点",
+      "doubleClickToCreate": "双击画布 自由生成节点",
+      "moveTool": "移动工具，点击切换为抓手",
+      "handTool": "抓手工具，点击切换为移动",
+      "help": "帮助",
+      "helpTutorial": "使用教程",
+      "reportBug": "汇报 BUG",
+      "joinCommunity": "加入交流群",
+      "businessCooperation": "商务合作",
+      "communityTip": "YuYuer Drama 是为爱发电的开源项目。欢迎文明交流、友善反馈；回复可能需要一些时间，请避免责问或命令式沟通，感谢你的理解与尊重。",
+      "businessTip": "此联系方式仅用于商务合作接洽，不提供问题答疑。使用问题欢迎在交流群交流，需求与 BUG 可通过反馈表提交。感谢理解。",
+      "copyLink": "复制链接",
+      "linkCopied": "链接已复制",
+      "accountSettings": "账户设置",
+      "rechargeBalance": "充值 / 余额",
       "saveFailed": "保存失败",
       "label": "名称",
       "nodeTypeText": "文本",
@@ -226,6 +298,8 @@ class AppLocalizations {
       "loading": "加载中…",
       "retry": "重试",
       "error": "出错了",
+      "home": "首页",
+      "teamProject": "团队项目",
       "assetLibrary": "素材库",
       "allAssets": "全部素材",
       "all": "全部",
@@ -266,6 +340,8 @@ class AppLocalizations {
       "skills": "技能",
       "mention": "提及",
       "rename": "重命名",
+      "remove": "移除",
+      "exportZip": "打包导出 ZIP",
       "delete": "删除",
       "noConversation": "暂无对话",
       "loadFailed": "加载失败",
@@ -307,6 +383,8 @@ class AppLocalizations {
       "parentDirectory": "上一層目錄",
       "useThisDirectory": "使用此目錄",
       "projectName": "專案名稱",
+      "newFolder": "新增資料夾",
+      "invalidName": "請輸入有效的單一檔案或資料夾名稱",
       "confirm": "確定",
       "cancel": "取消",
       "canvas": "畫布",
@@ -316,6 +394,36 @@ class AppLocalizations {
       "addNode": "新增節點",
       "deleteNode": "刪除節點",
       "autoLayout": "自動佈局",
+      "snapToGrid": "網格吸附",
+      "duplicateNode": "建立副本",
+      "fitView": "適配視圖",
+      "zoomIn": "放大",
+      "zoomOut": "縮小",
+      "showEdges": "顯示連線",
+      "showMiniMap": "顯示地圖",
+      "undo": "復原",
+      "redo": "重做",
+      "arrangeHorizontal": "水平排列",
+      "arrangeVertical": "垂直排列",
+      "arrangeGrid": "宮格排列",
+      "organizeSelection": "整理選中",
+      "deleteSelection": "刪除選中",
+      "exitProject": "退出項目",
+      "searchNode": "搜尋節點",
+      "doubleClickToCreate": "雙擊畫布 自由生成節點",
+      "moveTool": "移動工具，點擊切換為抓手",
+      "handTool": "抓手工具，點擊切換為移動",
+      "help": "說明",
+      "helpTutorial": "使用教學",
+      "reportBug": "回報 BUG",
+      "joinCommunity": "加入交流群",
+      "businessCooperation": "商務合作",
+      "communityTip": "YuYuer Drama 是為愛發電的開源項目。歡迎文明交流、友善反饋；回覆可能需要一些時間，請避免責問或命令式溝通，感謝你的理解與尊重。",
+      "businessTip": "此聯繫方式僅用於商務合作接洽，不提供問題答疑。使用問題歡迎在交流群交流，需求與 BUG 可通過反饋表提交。感謝理解。",
+      "copyLink": "複製連結",
+      "linkCopied": "連結已複製",
+      "accountSettings": "帳戶設定",
+      "rechargeBalance": "充值 / 餘額",
       "saveFailed": "儲存失敗",
       "label": "名稱",
       "nodeTypeText": "文字",
@@ -344,6 +452,8 @@ class AppLocalizations {
       "loading": "載入中…",
       "retry": "重試",
       "error": "發生錯誤",
+      "home": "首頁",
+      "teamProject": "團隊專案",
       "assetLibrary": "素材庫",
       "allAssets": "全部素材",
       "all": "全部",
@@ -384,6 +494,7 @@ class AppLocalizations {
       "skills": "技能",
       "mention": "提及",
       "rename": "重新命名",
+      "exportZip": "打包匯出 ZIP",
       "delete": "刪除",
       "noConversation": "尚無對話",
       "loadFailed": "載入失敗",
@@ -425,6 +536,8 @@ class AppLocalizations {
       "parentDirectory": "Parent directory",
       "useThisDirectory": "Use this directory",
       "projectName": "Project name",
+      "newFolder": "New folder",
+      "invalidName": "Please enter a valid file or folder name",
       "confirm": "OK",
       "cancel": "Cancel",
       "canvas": "Canvas",
@@ -434,6 +547,36 @@ class AppLocalizations {
       "addNode": "Add node",
       "deleteNode": "Delete node",
       "autoLayout": "Auto layout",
+      "snapToGrid": "Snap to grid",
+      "duplicateNode": "Duplicate",
+      "fitView": "Fit view",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "showEdges": "Show edges",
+      "showMiniMap": "Show minimap",
+      "undo": "Undo",
+      "redo": "Redo",
+      "arrangeHorizontal": "Arrange horizontally",
+      "arrangeVertical": "Arrange vertically",
+      "arrangeGrid": "Arrange in grid",
+      "organizeSelection": "Organize selection",
+      "deleteSelection": "Delete selection",
+      "exitProject": "Exit project",
+      "searchNode": "Search node",
+      "doubleClickToCreate": "Double-click canvas to create nodes",
+      "moveTool": "Move tool, click to switch to hand",
+      "handTool": "Hand tool, click to switch to move",
+      "help": "Help",
+      "helpTutorial": "Tutorial",
+      "reportBug": "Report bug",
+      "joinCommunity": "Join community",
+      "businessCooperation": "Business cooperation",
+      "communityTip": "YuYuer Drama is an open-source project made with love. Feel free to share feedback politely; replies may take some time. Please avoid demanding or imperative communication. Thanks for your understanding and respect.",
+      "businessTip": "This contact is for business cooperation only and does not provide support. For usage questions, please join the community; for feature requests and bugs, please use the feedback form. Thanks for your understanding.",
+      "copyLink": "Copy link",
+      "linkCopied": "Link copied",
+      "accountSettings": "Account settings",
+      "rechargeBalance": "Top up / balance",
       "saveFailed": "Save failed",
       "label": "Label",
       "nodeTypeText": "Text",
@@ -462,6 +605,8 @@ class AppLocalizations {
       "loading": "Loading…",
       "retry": "Retry",
       "error": "Error",
+      "home": "Home",
+      "teamProject": "Team projects",
       "assetLibrary": "Asset library",
       "allAssets": "All assets",
       "all": "All",
@@ -502,6 +647,8 @@ class AppLocalizations {
       "skills": "Skills",
       "mention": "Mention",
       "rename": "Rename",
+      "remove": "Remove",
+      "exportZip": "Export ZIP",
       "delete": "Delete",
       "noConversation": "No conversation yet",
       "loadFailed": "Failed to load",

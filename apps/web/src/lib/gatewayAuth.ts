@@ -1,4 +1,7 @@
-// ACT: BFF 模式 — 前端不接触任何 OAuth token，只通过 HttpOnly cookie 与 server 端 session 交互。
+// 前端用 Supabase signInWithOAuth 登录，拿到 provider_token 后交给后端 /api/auth/exchange 建立后端 session。
+// 后端 session 仍是唯一登录态来源（HttpOnly cookie）；provider_token 仅用于首次建立，后续刷新由后端完成。
+
+import { supabase } from "@/lib/supabase";
 
 export interface AuthUser {
   sub: string;
@@ -13,31 +16,59 @@ export interface AuthSession {
   email?: string;
 }
 
+/** 用 Supabase session 里的 provider_token 与后端交换 gateway_session cookie。 */
+async function exchangeProviderToken(): Promise<boolean> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.provider_token;
+  if (!token) return false;
+  const res = await fetch("/api/auth/exchange", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      accessToken: token,
+      refreshToken: data.session?.provider_refresh_token,
+    }),
+  });
+  return res.ok;
+}
+
 /** 从 server 获取当前 session 状态。任何错误都视为未登录。 */
 export async function fetchAuthSession(): Promise<AuthSession> {
   try {
     const res = await fetch("/api/auth/session", { credentials: "include" });
-    if (!res.ok) return { authenticated: false };
-    const json = await res.json() as { code: number; data: AuthSession };
-    if (json.code !== 200 || !json.data) return { authenticated: false };
-    return json.data;
+    if (res.ok) {
+      const json = await res.json() as { code: number; data: AuthSession };
+      if (json.code === 200 && json.data?.authenticated) return json.data;
+    }
   } catch {
-    return { authenticated: false };
+    // 继续尝试用 provider_token 重建后端 session。
   }
+
+  if (await exchangeProviderToken()) {
+    const res = await fetch("/api/auth/session", { credentials: "include" });
+    if (res.ok) {
+      const json = await res.json() as { code: number; data: AuthSession };
+      if (json.code === 200 && json.data) return json.data;
+    }
+  }
+  return { authenticated: false };
 }
 
-/** 浏览器级跳转到 /api/auth/start，由 server 处理 PKCE 并 302 到 new-api。 */
-export function redirectToLogin(): never {
-  window.location.href = "/api/auth/start";
-  // redirectToLogin 永远不会返回；此处仅用于满足 TypeScript 返回类型。
-  throw new Error("redirectToLogin 触发了浏览器跳转，不应继续执行。");
+/** 触发 Supabase signInWithOAuth 跳转，登录后由 fetchAuthSession 完成 exchange。 */
+export function redirectToLogin(): void {
+  void supabase.auth.signInWithOAuth({ provider: "custom:newapi" });
 }
 
-/** 通知 server 注销，然后整页刷新清掉前端残留状态。 */
+/** 注销 Supabase 与后端 session，然后整页刷新清掉前端残留状态。 */
 export async function logout(): Promise<void> {
   try {
-    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    await supabase.auth.signOut();
   } finally {
-    window.location.reload();
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    } finally {
+      window.location.reload();
+    }
   }
 }

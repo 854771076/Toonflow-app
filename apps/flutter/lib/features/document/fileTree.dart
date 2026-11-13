@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:forui/forui.dart";
 
 import "../../core/workspaceFiles.dart";
 import "../../shared/appLocalizations.dart";
@@ -124,7 +125,7 @@ class _FileTreeTileState extends State<_FileTreeTile> {
         contentPadding: EdgeInsets.only(left: indent),
         dense: true,
         visualDensity: VisualDensity.compact,
-        leading: const Icon(Icons.description_outlined, size: 18),
+        leading: const Icon(FLucideIcons.file, size: 18),
         title: Text(widget.entry.name, overflow: TextOverflow.ellipsis),
         onTap: () => widget.onOpenFile(widget.entry.path),
       );
@@ -133,7 +134,7 @@ class _FileTreeTileState extends State<_FileTreeTile> {
       tilePadding: EdgeInsets.only(left: indent),
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: const Icon(Icons.folder_outlined, size: 18),
+      leading: const Icon(FLucideIcons.folder, size: 18),
       title: Text(widget.entry.name, overflow: TextOverflow.ellipsis),
       trailing: _loading
           ? const SizedBox(

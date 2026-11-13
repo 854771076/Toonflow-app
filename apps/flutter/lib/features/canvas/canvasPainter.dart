@@ -43,6 +43,29 @@ Offset canvasNodeOutputHandle(CanvasNode node, CanvasViewport viewport) {
   return Offset(rect.right, rect.center.dy);
 }
 
+/// 分组容器的屏幕矩形（宽高取自节点字段，缺失时回退到单个节点尺寸）。
+Rect canvasGroupScreenRect(CanvasNode node, CanvasViewport viewport) {
+  final w = (node.width ?? canvasNodeWidth) * viewport.zoom;
+  final h = (node.height ?? canvasNodeHeight) * viewport.zoom;
+  return Rect.fromLTWH(
+    node.x * viewport.zoom + viewport.x,
+    node.y * viewport.zoom + viewport.y,
+    w,
+    h,
+  );
+}
+
+/// 解析 #RRGGBB / #RGB 十六进制颜色，失败时回退到主色。
+Color hexToColor(String hex) {
+  var value = hex.replaceFirst("#", "");
+  if (value.length == 3) {
+    value = value.split("").map((c) => "$c$c").join();
+  }
+  if (value.length == 6) value = "FF$value";
+  final parsed = int.tryParse(value, radix: 16);
+  return parsed == null ? DesignTokens.primary : Color(parsed);
+}
+
 /// 节点类型对应的图标。
 IconData nodeIconForType(String type) {
   switch (type) {
@@ -76,6 +99,7 @@ class CanvasPainter extends CustomPainter {
     required this.edges,
     required this.viewport,
     required this.colorScheme,
+    required this.showEdges,
     this.selectionRect,
     this.connection,
   });
@@ -84,16 +108,57 @@ class CanvasPainter extends CustomPainter {
   final List<CanvasEdge> edges;
   final CanvasViewport viewport;
   final ColorScheme colorScheme;
+  final bool showEdges;
   final Rect? selectionRect;
   final CanvasConnectionDraft? connection;
 
   @override
   void paint(Canvas canvas, Size size) {
     _paintGrid(canvas, size);
-    _paintEdges(canvas);
+    if (showEdges) _paintEdges(canvas);
+    _paintGroups(canvas);
     _paintNodes(canvas);
     if (connection != null) _paintConnection(canvas);
     if (selectionRect != null) _paintSelectionRect(canvas);
+  }
+
+  void _paintGroups(Canvas canvas) {
+    for (final node in nodes) {
+      if (!node.isGroup) continue;
+      final rect = canvasGroupScreenRect(node, viewport);
+      final color = hexToColor(node.groupColor);
+      final rrect = RRect.fromRectAndRadius(
+        rect,
+        Radius.circular(DesignTokens.radius * viewport.zoom),
+      );
+      canvas.drawRRect(
+        rrect,
+        Paint()
+          ..color = color.withValues(
+            alpha: (node.groupOpacity / 100).clamp(0.0, 1.0),
+          ),
+      );
+      canvas.drawRRect(
+        rrect,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1
+          ..color = color,
+      );
+      if (node.label.isNotEmpty) {
+        _paintText(
+          canvas,
+          node.label,
+          Offset(rect.left + 8 * viewport.zoom, rect.top + 4 * viewport.zoom),
+          rect.width - 16 * viewport.zoom,
+          TextStyle(
+            color: color,
+            fontSize: 11 * viewport.zoom,
+            fontWeight: FontWeight.w600,
+          ),
+        );
+      }
+    }
   }
 
   void _paintGrid(Canvas canvas, Size size) {
@@ -282,6 +347,7 @@ class CanvasPainter extends CustomPainter {
         oldDelegate.viewport.y != viewport.y ||
         oldDelegate.nodes != nodes ||
         oldDelegate.edges != edges ||
+        oldDelegate.showEdges != showEdges ||
         oldDelegate.selectionRect != selectionRect ||
         oldDelegate.connection?.sourceId != connection?.sourceId ||
         oldDelegate.connection?.end != connection?.end;
